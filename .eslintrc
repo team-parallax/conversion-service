@@ -1,0 +1,10 @@
+{
+	"extends": [
+		"./node_modules/parallax-common-config/.eslintrc",
+		"./node_modules/parallax-common-config/.eslintrc.typescript"
+	],
+	"parserOptions": {
+		"project": "./tsconfig.json"
+	},
+	"rules": {"import-alias/import-alias":  0}
+}

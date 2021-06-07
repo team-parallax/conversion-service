@@ -1,0 +1,81 @@
+{
+	"name": "@teamparallax/conversion-service",
+	"version": "0.1.0",
+	"description": "A webservice with a REST Api which can convert document/media files using different binaries",
+	"license": "MIT",
+	"author": "Sven Patrick Meier <sven.patrick.meier@team-parallax.com>",
+	"main": "src/app.ts",
+	"husky": {
+		"hooks": {
+			"pre-commit": "yarn lint"
+		}
+	},
+	"scripts": {
+		"build:docker": "docker build -t teamparallax/conversion-service -f ./Dockerfile .",
+		"commit": "yarn git-cz",
+		"lint": "yarn eslint src --ext .ts",
+		"lint:fix": "yarn eslint src --ext .ts --fix",
+		"release": "standard-version",
+		"start": "ts-node src/app.ts",
+		"start:dev": "yarn tsoa:create:local && yarn start",
+		"start:docker": "docker run --name web-conversion-service -p 3000:3000 teamparallax/conversion-service",
+		"start:docker:dev": "yarn run build:docker && yarn run start:docker",
+		"test:all": "yarn jest --config ./jest.config.js --detectOpenHandles",
+		"test:all:ci": "yarn test:all:coverage --ci --reporters=default --reporters=jest-junit",
+		"tsoa:create:host": "tsoa spec --host $HOST && tsoa routes",
+		"tsoa:create:local": "tsoa spec --host 'localhost:3000' && tsoa routes"
+	},
+	"dependencies": {
+		"cors": "^2.8.5",
+		"express": "^4.17.1",
+		"fluent-ffmpeg": "^2.1.2",
+		"mime": "^2.4.6",
+		"multer": "^1.4.2",
+		"tsoa": "^3.2.1",
+		"uuid": "^8.3.0"
+	},
+	"devDependencies": {
+		"@types/cors": "^2.8.7",
+		"@types/express": "^4.17.7",
+		"@types/faker": "^5.5.3",
+		"@types/fluent-ffmpeg": "^2.1.16",
+		"@types/jest": "^26.0.8",
+		"@types/mime": "^2.0.3",
+		"@types/multer": "^1.4.4",
+		"@types/node": "^14.0.27",
+		"@types/swagger-ui-express": "^4.1.2",
+		"@types/uuid": "^8.3.0",
+		"@typescript-eslint/eslint-plugin": "^2.14.0",
+		"@typescript-eslint/parser": "^2.14.0",
+		"commitizen": "^4.2.3",
+		"concurrently": "^5.2.0",
+		"cz-conventional-changelog": "^3.3.0",
+		"eslint": "^7.6.0",
+		"eslint-plugin-filenames": "^1.3.2",
+		"eslint-plugin-import": "^2.22.0",
+		"eslint-plugin-import-alias": "^1.2.0",
+		"eslint-plugin-jsdoc": "^22.1.0",
+		"eslint-plugin-sort-imports-es6-autofix": "^0.5.0",
+		"eslint-plugin-sort-keys-fix": "^1.1.1",
+		"eslint-plugin-typescript-sort-keys": "^1.3.0",
+		"eslint-plugin-unused-imports": "^0.1.2",
+		"faker": "^5.5.3",
+		"husky": "^6.0.0",
+		"jest": "^26.2.2",
+		"jest-junit": "^12.0.0",
+		"lint-staged": "^10.0.9",
+		"parallax-common-config": "^0.10.7",
+		"source-map-support": "^0.5.16",
+		"standard-version": "^9.2.0",
+		"swagger-ui-express": "^4.1.4",
+		"ts-jest": "^26.1.4",
+		"ts-node": "^8.10.2",
+		"typescript": "^3.9.7",
+		"typescript-ioc": "^3.2.2"
+	},
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-conventional-changelog"
+		}
+	}
+}

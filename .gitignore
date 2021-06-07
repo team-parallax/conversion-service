@@ -1,0 +1,19 @@
+# System file
+.DS_Store
+# dependencies and build
+build
+dist
+input
+output
+node_modules
+# IDE files
+.idea
+.vscode
+# log files
+yarn-error.log
+yarn-debug.log
+# npm lock file
+package-lock.json
+# coverage
+coverage
+junit.xml

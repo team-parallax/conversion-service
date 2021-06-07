@@ -1,0 +1,615 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"IConversionProcessingResponse": {
+				"properties": {
+					"conversionId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"conversionId"
+				],
+				"type": "object",
+				"additionalProperties": false,
+				"example": {
+					"conversionId": "55309c37-aed3-4ee9-a143-f1e305333189"
+				}
+			},
+			"IUnsupportedConversionFormatError": {
+				"properties": {
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"EConversionStatus": {
+				"enum": [
+					"converted",
+					"in queue",
+					"processing"
+				],
+				"type": "string"
+			},
+			"IConversionStatus": {
+				"properties": {
+					"conversionId": {
+						"type": "string"
+					},
+					"status": {
+						"$ref": "#/components/schemas/EConversionStatus"
+					}
+				},
+				"required": [
+					"conversionId",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IConversionQueueStatus": {
+				"properties": {
+					"conversions": {
+						"items": {
+							"$ref": "#/components/schemas/IConversionStatus"
+						},
+						"type": "array"
+					},
+					"remainingConversions": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"conversions",
+					"remainingConversions"
+				],
+				"type": "object",
+				"additionalProperties": false,
+				"example": {
+					"conversions": [
+						{
+							"conversionId": "55309c37-aed3-4ee9-a143-f1e305333189",
+							"status": "converted"
+						},
+						{
+							"conversionId": "52a22c37-aed3-4ee9-a442-f1e30537v189",
+							"status": "processing"
+						},
+						{
+							"conversionId": "940403bf-98ad-454c-a3b4-2e6ebf915ac6",
+							"status": "in queue",
+							"queuePosition": 1
+						}
+					],
+					"remainingConversions": 1
+				}
+			},
+			"ICodec": {
+				"properties": {
+					"canDecode": {
+						"type": "boolean"
+					},
+					"canEncode": {
+						"type": "boolean"
+					},
+					"description": {
+						"type": "string"
+					},
+					"directRendering": {
+						"type": "boolean"
+					},
+					"drawHorizBand": {
+						"type": "boolean"
+					},
+					"intraFrameOnly": {
+						"type": "boolean"
+					},
+					"isLossless": {
+						"type": "boolean"
+					},
+					"isLossy": {
+						"type": "boolean"
+					},
+					"type": {
+						"type": "string"
+					},
+					"weirdFrameTruncation": {
+						"type": "boolean"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"canDecode",
+					"canEncode",
+					"description",
+					"type",
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false,
+				"example": {
+					"type": "audio",
+					"description": "(decoders: mp3float mp3 ) (encoders: libmp3lame )",
+					"canDecode": true,
+					"canEncode": true,
+					"intraFrameOnly": true,
+					"isLossy": true,
+					"isLossless": false,
+					"name": "mp3"
+				}
+			},
+			"IEncoder": {
+				"properties": {
+					"description": {
+						"type": "string"
+					},
+					"directRendering": {
+						"type": "boolean"
+					},
+					"drawHorizBand": {
+						"type": "boolean"
+					},
+					"experimental": {
+						"type": "boolean"
+					},
+					"frameMT": {
+						"type": "boolean"
+					},
+					"sliceMT": {
+						"type": "boolean"
+					},
+					"type": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"description",
+					"directRendering",
+					"drawHorizBand",
+					"experimental",
+					"frameMT",
+					"sliceMT",
+					"type",
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IFilter": {
+				"properties": {
+					"description": {
+						"type": "string"
+					},
+					"input": {
+						"type": "string"
+					},
+					"multipleInputs": {
+						"type": "boolean"
+					},
+					"multipleOutputs": {
+						"type": "boolean"
+					},
+					"output": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"description",
+					"input",
+					"multipleInputs",
+					"multipleOutputs",
+					"output",
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IFormat": {
+				"properties": {
+					"canDemux": {
+						"type": "boolean"
+					},
+					"canMux": {
+						"type": "boolean"
+					},
+					"description": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"canDemux",
+					"canMux",
+					"description",
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IFFmpegCapabilities": {
+				"properties": {
+					"codecs": {
+						"items": {
+							"$ref": "#/components/schemas/ICodec"
+						},
+						"type": "array"
+					},
+					"encoders": {
+						"items": {
+							"$ref": "#/components/schemas/IEncoder"
+						},
+						"type": "array"
+					},
+					"filters": {
+						"items": {
+							"$ref": "#/components/schemas/IFilter"
+						},
+						"type": "array"
+					},
+					"formats": {
+						"items": {
+							"$ref": "#/components/schemas/IFormat"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"codecs",
+					"encoders",
+					"filters",
+					"formats"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "@teamparallax/conversion-service",
+		"version": "0.1.0",
+		"description": "A webservice with a REST Api which can convert document/media files using different binaries",
+		"license": {
+			"name": "MIT"
+		},
+		"contact": {
+			"email": "sven.patrick.meier@team-parallax.com",
+			"name": "Sven Patrick Meier",
+			"url": "https://team-parallax.com/svenpatrickmeier"
+		}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/conversion": {
+			"post": {
+				"operationId": "ConvertFile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/IConversionProcessingResponse"
+										},
+										{
+											"$ref": "#/components/schemas/IUnsupportedConversionFormatError"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"description": "Adds the file from the request body to the internal conversion queue.\nThe files in queue will be processed after the FIFO principle.",
+				"tags": [
+					"Conversion"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"conversionFile": {
+										"type": "string",
+										"format": "binary"
+									},
+									"originalFormat": {
+										"type": "string"
+									},
+									"targetFormat": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "GetConversionQueueStatus",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IConversionQueueStatus"
+								}
+							}
+						}
+					}
+				},
+				"description": "Retrieves the status of the conversion queue and returns all conversions with\ntheir corresponding status and the amount of outstanding conversions.",
+				"tags": [
+					"Conversion"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/conversion/{conversionId}": {
+			"get": {
+				"operationId": "GetConvertedFile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IConversionStatus"
+								}
+							}
+						}
+					}
+				},
+				"description": "Returns the current status for a conversion given a conversionId",
+				"tags": [
+					"Conversion"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "Unique identifier for the conversion of a file.",
+						"in": "path",
+						"name": "conversionId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/conversion/{conversionId}/download": {
+			"get": {
+				"operationId": "GetConvertedFileDownload",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							},
+							"application/pdf": {
+								"schema": {
+									"type": "string",
+									"format": "byte"
+								}
+							}
+						}
+					}
+				},
+				"description": "Returns the current status for a conversion given a conversionId\nIf status is 'converted' the resulting converted file\nwill be available to download.",
+				"tags": [
+					"Conversion"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "the id of the file-conversion that is requested",
+						"in": "path",
+						"name": "conversionId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "extension",
+						"required": false,
+						"schema": {
+							"default": "mp3",
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/capabilities": {
+			"get": {
+				"operationId": "GetAvailableCapabilities",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IFFmpegCapabilities"
+								}
+							}
+						}
+					}
+				},
+				"description": "Returns a list of capabilities and options that\ncan be applied to an FFmpeg command.",
+				"tags": [
+					"Capabilities"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/capabilities/codecs": {
+			"get": {
+				"operationId": "GetAvailableCodecs",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/ICodec"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Capabilities"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/capabilities/encoders": {
+			"get": {
+				"operationId": "GetAvailableEncoders",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IEncoder"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Returns all available encoders FFmpeg is able to use.",
+				"tags": [
+					"Capabilities"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/capabilities/filter": {
+			"get": {
+				"operationId": "GetAvailableFilter",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IFilter"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Returns all available filters that can be used for conversion.",
+				"tags": [
+					"Capabilities"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/capabilities/formats": {
+			"get": {
+				"operationId": "GetAvailableFormats",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IFormat"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Returns all available formats that can be converted with FFmpeg.",
+				"tags": [
+					"Capabilities"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/ping": {
+			"get": {
+				"operationId": "GetPingResponse",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								},
+								"examples": {
+									"Example 1": {
+										"value": "pong"
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Misc."
+				],
+				"security": [],
+				"parameters": []
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "http://localhost:3000/"
+		}
+	]
+}

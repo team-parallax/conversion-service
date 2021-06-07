@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# System environment
+.DS_Store
+
+# IDE files
+idea/
+.vscode
+
+# log files
+yarn-error.log
+yarn-debug.log
+
+# npm lock file
+package-lock.json

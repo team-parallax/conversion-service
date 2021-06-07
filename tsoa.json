@@ -1,0 +1,73 @@
+{
+	"entryFile": "src/app.ts",
+	"noImplicitAdditionalProperties": "throw-on-extras",
+	"controllerPathGlobs": [
+		"src/controller/**/*.ts"
+	],
+	"spec": {
+		"contact": {
+			"email": "sven.patrick.meier@team-parallax.com",
+			"name": "Sven Patrick Meier",
+			"url": "https://team-parallax.com/svenpatrickmeier"
+		},
+		"host": "localhost:3000",
+		"outputDirectory": "./",
+		"schemes": [
+			"http",
+			"https"
+		],
+		"specMerging": "recursive",
+		"specVersion": 3,
+		"spec": {
+			"paths": {
+				"/conversion": {
+					"post": {
+						"requestBody": {
+							"required": true,
+							"content": {
+								"multipart/form-data": {
+									"schema": {
+										"type": "object",
+										"properties": {
+											"conversionFile": {
+												"type": "string",
+												"format": "binary"
+											},
+											"originalFormat": {
+												"type": "string"
+											},
+											"targetFormat": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"/conversion/{conversionId}/download": {
+					"get": {
+						"responses": {
+							"200": {
+								"description": "Ok",
+								"content": {
+									"application/pdf": {
+										"schema": {
+											"type": "string",
+											"format": "byte"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"routes": {
+		"middleware": "express",
+		"routesDir": "src/routes"
+	}
+}
