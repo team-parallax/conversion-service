@@ -287,11 +287,11 @@
 		"securitySchemes": {}
 	},
 	"info": {
-		"title": "@teamparallax/conversion-service",
+		"title": "conversion-service",
 		"version": "0.1.0",
 		"description": "A webservice with a REST Api which can convert document/media files using different binaries",
 		"license": {
-			"name": "MIT"
+			"name": "GPL-3.0-or-later"
 		},
 		"contact": {
 			"email": "sven.patrick.meier@team-parallax.com",

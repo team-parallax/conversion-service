@@ -21,15 +21,19 @@ import swaggerDocument from "../../../swagger.json"
 export class Api {
 	@Inject
 	private readonly logger!: Logger
+	/* TODO: This will move to initializing function with issue #16 */
 	private readonly _port: number
 	private readonly app: Application
+	/* TODO: This will move to initializing function with issue #16 */
 	private readonly defaultPort: number = 3000
 	private readonly startUpDelay: number = 1500
 	constructor(port?: number) {
 		this.app = express()
+		/* TODO: Extract from config object after issue #16 is done */
 		this._port = port ?? this.defaultPort
 		this.configureServer()
 		this.addApi()
+		/* TODO: This will move to initializing function with issue #16 */
 		Ffmpeg().setFfmpegPath("/opt/ffmpeg/bin/ffmpeg")
 		this.createApplicationDirectiories(["input", "output"])
 		setTimeout(
@@ -76,7 +80,7 @@ export class Api {
 					message: "Internal Server Error"
 				})
 			}
-			next()
+			return next()
 		})
 		this.app.use((req: Request, res: Response) => {
 			res.status(notFound).send({
@@ -98,7 +102,7 @@ export class Api {
 		this.app.use((req: Request, res: Response, next: NextFunction) => {
 			res.header("Access-Control-Allow-Origin", "*")
 			res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-			console.log(`Request received: ${req.method} ${req.url}`)
+			this.logger.log(`Request received: ${req.method} ${req.url}`)
 			next()
 		})
 	}
@@ -109,7 +113,7 @@ export class Api {
 			promises.push(createDirectoryIfNotPresent(path.join(basePath, directory)))
 		}
 		Promise.all(promises)
-			.then(res => console.log(res))
+			.then(res => this.logger.log(res))
 			.catch(console.error)
 	}
 	get port(): number {
