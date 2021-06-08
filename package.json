@@ -5,11 +5,6 @@
 	"license": "GPL-3.0-or-later",
 	"author": "Sven Patrick Meier <sven.patrick.meier@team-parallax.com>",
 	"main": "src/app.ts",
-	"husky": {
-		"hooks": {
-			"pre-commit": "yarn lint"
-		}
-	},
 	"scripts": {
 		"build:docker": "docker build -t teamparallax/conversion-service -f ./Dockerfile .",
 		"commit": "yarn git-cz",
@@ -24,7 +19,8 @@
 		"test:all:ci": "yarn test:all:coverage --ci --reporters=default --reporters=jest-junit",
 		"test:all:coverage": "yarn test:all --coverage",
 		"tsoa:create:host": "tsoa spec --host $HOST && tsoa routes",
-		"tsoa:create:local": "tsoa spec --host 'localhost:3000' && tsoa routes"
+		"tsoa:create:local": "tsoa spec --host 'localhost:3000' && tsoa routes",
+		"prepare": "husky install"
 	},
 	"dependencies": {
 		"cors": "^2.8.5",
@@ -78,5 +74,8 @@
 		"commitizen": {
 			"path": "./node_modules/cz-conventional-changelog"
 		}
+	},
+	"lint-staged": {
+		"*.ts": "eslint --cache --fix"
 	}
 }
