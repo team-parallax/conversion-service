@@ -44,8 +44,7 @@ lint_code:
   stage: lint
   script:
     - yarn lint
-  rules:
-    - if: $CI_COMMIT_BRANCH
+
 
 test_all:
   stage: test
@@ -58,5 +57,3 @@ test_all:
     untracked: false
     reports:
       junit: junit.xml
-  rules:
-    - if: $CI_COMMIT_BRANCH
