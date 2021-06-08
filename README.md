@@ -1,5 +1,7 @@
 # team-parallax/conversion-service
 
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+
 This project provides a webservice with a REST-API for file-conversions using `ffmpeg`, `imageMagick` and `unoconv`.
 
 [[_TOC_]]

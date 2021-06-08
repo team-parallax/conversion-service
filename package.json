@@ -7,7 +7,7 @@
 	"main": "src/app.ts",
 	"scripts": {
 		"build:docker": "docker build -t teamparallax/conversion-service -f ./Dockerfile .",
-		"commit": "yarn git-cz",
+		"git:commit": "yarn git-cz",
 		"lint": "yarn eslint src --ext .ts",
 		"lint:fix": "yarn eslint src --ext .ts --fix",
 		"release": "standard-version",
