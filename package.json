@@ -1,18 +1,13 @@
 {
-	"name": "@teamparallax/conversion-service",
-	"version": "0.1.0",
+	"name": "conversion-service",
+	"version": "0.1.2",
 	"description": "A webservice with a REST Api which can convert document/media files using different binaries",
-	"license": "MIT",
+	"license": "GPL-3.0-or-later",
 	"author": "Sven Patrick Meier <sven.patrick.meier@team-parallax.com>",
 	"main": "src/app.ts",
-	"husky": {
-		"hooks": {
-			"pre-commit": "yarn lint"
-		}
-	},
 	"scripts": {
 		"build:docker": "docker build -t teamparallax/conversion-service -f ./Dockerfile .",
-		"commit": "yarn git-cz",
+		"git:commit": "yarn git-cz",
 		"lint": "yarn eslint src --ext .ts",
 		"lint:fix": "yarn eslint src --ext .ts --fix",
 		"release": "standard-version",
@@ -24,7 +19,8 @@
 		"test:all:ci": "yarn test:all:coverage --ci --reporters=default --reporters=jest-junit",
 		"test:all:coverage": "yarn test:all --coverage",
 		"tsoa:create:host": "tsoa spec --host $HOST && tsoa routes",
-		"tsoa:create:local": "tsoa spec --host 'localhost:3000' && tsoa routes"
+		"tsoa:create:local": "tsoa spec --host 'localhost:3000' && tsoa routes",
+		"prepare": "husky install"
 	},
 	"dependencies": {
 		"cors": "^2.8.5",
@@ -78,5 +74,8 @@
 		"commitizen": {
 			"path": "./node_modules/cz-conventional-changelog"
 		}
+	},
+	"lint-staged": {
+		"*.ts": "eslint --cache --fix"
 	}
 }

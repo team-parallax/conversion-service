@@ -1,5 +1,8 @@
 # System file
 .DS_Store
+# ENVIRONMENT variable files
+.env
+.local.env
 # dependencies and build
 build
 dist
@@ -9,6 +12,8 @@ node_modules
 # IDE files
 .idea
 .vscode
+# eslint cach
+.eslintcache
 # log files
 yarn-error.log
 yarn-debug.log

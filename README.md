@@ -1,18 +1,19 @@
 # team-parallax/conversion-service
 
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+
 This project provides a webservice with a REST-API for file-conversions using `ffmpeg`, `imageMagick` and `unoconv`.
+
+[[_TOC_]]
 
 ## Prerequisites
 
-1. FFmpeg needs to be installed on your local machine if you are not running the webservice in a docker. In order to get everything working read this [ffmpeg](#correct-path-for-ffmpeg)
+1. FFmpeg needs to be installed on your local machine if you are not running the webservice in a docker. In order to get everything working read these documents as it requires a little more attention to configure everything properly:
+    - [ffmpeg](docs/ffmpeg) docs
+    - [imageMagick](docs/imageMagick) docs
+    - [unoconv](docs/unoconv) docs
 
 2. Docker installation (required to build and run docker containers)
-
-### Correct path for ffmpeg
-
-In order to work properly a correct set PATH variable for ffmpeg needs to exist. When running this webservice within this docker (based on [teamparallax/ffmpeg-alpine:1.0.3-rc](https://hub.docker.com/r/teamparallax/ffmpeg-alpine)) the ffmpeg installation path is `/opt/ffmpeg/bin/ffmpeg`. The used library `fluent-ffmpeg` will use the value of FFMPEG_PATH variable to run `ffmpeg`, so the webservice sets this variable on start up (`src/service/api/index.ts`, l. 20), see:
-
-> Ffmpeg().setFfmpegPath("/opt/ffmpeg/bin/ffmpeg")
 
 ### Usage
 
