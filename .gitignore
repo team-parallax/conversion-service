@@ -12,6 +12,8 @@ node_modules
 # IDE files
 .idea
 .vscode
+# eslint cach
+.eslintcache
 # log files
 yarn-error.log
 yarn-debug.log
