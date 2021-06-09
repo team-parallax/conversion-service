@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3-1](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.3-0...v0.1.3-1) (2021-06-09)
+
+
+### CI
+
+* **ci-configuration:** add built-in branch-pipeline template and custom before_script for release ([9d7a128](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/9d7a1287e360d1014910a05596082fae5cd24bb1))
+
 ### [0.1.3-0](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.2...v0.1.3-0) (2021-06-09)
 
 
