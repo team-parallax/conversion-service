@@ -47,6 +47,8 @@ lint_code:
   stage: prepare
   script:
     - yarn lint
+  rules:
+    - if: $CI_COMMIT_BRANCH || $CI_MERGE_REQUEST_IID
 
 
 test_all:
@@ -60,6 +62,8 @@ test_all:
     untracked: false
     reports:
       junit: junit.xml
+  rules:
+    - if: $CI_COMMIT_BRANCH || $CI_MERGE_REQUEST_IID
 
 # The steps below originally come from here, but the release_job step
 # should wait for the docker build before creating a release
