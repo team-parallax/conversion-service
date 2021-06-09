@@ -15,9 +15,11 @@ stages:
 # Workflow rules for MR-Pipelines taken from gitlab.com
 workflow:
   rules:
-    - if: $CI_COMMIT_BRANCH
-    - if: $CI_MERGE_REQUEST_IID
     - if: $CI_COMMIT_TAG
+
+include:
+  - template: 'Workflows/MergeRequest-Pipelines.gitlab-ci.yml'
+  - template: 'Workflows/Branch-Pipelines.gitlab-ci.yml'
 
 
 before_script:
@@ -47,8 +49,6 @@ lint_code:
   stage: prepare
   script:
     - yarn lint
-  rules:
-    - if: $CI_COMMIT_BRANCH || $CI_MERGE_REQUEST_IID
 
 
 test_all:
@@ -62,8 +62,6 @@ test_all:
     untracked: false
     reports:
       junit: junit.xml
-  rules:
-    - if: $CI_COMMIT_BRANCH || $CI_MERGE_REQUEST_IID
 
 # The steps below originally come from here, but the release_job step
 # should wait for the docker build before creating a release
@@ -87,6 +85,7 @@ prepare_release:
 
 release_job:
   image: registry.gitlab.com/gitlab-org/release-cli:latest
+  before_script: []
   needs:
     - job: build_docker
     - job: prepare_release
