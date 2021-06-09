@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3-1](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.3-0...v0.1.3-1) (2021-06-09)
+
+
+### CI
+
+* **ci-configuration:** add built-in branch-pipeline template and custom before_script for release ([9d7a128](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/9d7a1287e360d1014910a05596082fae5cd24bb1))
+
+### [0.1.3-0](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.2...v0.1.3-0) (2021-06-09)
+
+
+### Bug Fixes
+
+* **ci-configuration:** add missing stages to pipeline definition ([c474716](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/c4747167f857c0fab1def3a8886afbf3dcb7ca05))
+
+
+### Others
+
+* **ci-configuration:** add prevention rule to avoid duplicate pipeline on MR ([62ed716](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/62ed716e081377ee50c8d6c6978ea7d2011d54db))
+
+
+### CI
+
+* **.gitlab-ci.yml:** change pipeline creation rules to prevent duplicate pipelines ([e752217](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/e752217c2509590861ff893e3983caffd558f33d))
+* **ci - release:** add automatic release creation to pipeline ([2e9eb3c](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/2e9eb3c90ed94299afa9400246ba91740352b0ff)), closes [#4](https://gitlab.internal.team-parallax.com/belwue/conversion-service/issues/4)
+
 ### [0.1.2](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.1...v0.1.2) (2021-06-08)
 
 
