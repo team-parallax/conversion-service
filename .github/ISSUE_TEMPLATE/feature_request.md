@@ -1,3 +1,10 @@
+---
+name: Feature Request
+about: Use this template to propose new features.
+title: "[DATE]: [feature name]"
+labels: feature request
+---
+
 ## What type of Feature do you propose?
 
 <!--

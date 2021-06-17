@@ -1,3 +1,10 @@
+---
+name: Bug
+about: Use this template to track bugs.
+title: "[DATE]: [Bug short description]"
+labels: bug
+---
+
 ## What kind of bug are you reporting?
 <!--
 Select from below. To avoid confusion delete unnecessary fields 
