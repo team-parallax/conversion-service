@@ -94,11 +94,6 @@ describe("It should pass all tests for initialization", () => {
 					for (const key of testKeys) {
 						delete process.env[key]
 					}
-					// eslint-disable-next-line no-console
-					console.debug(
-						"max tries: ", process.env.MAX_CONVERSION_TRIES,
-						"\nmax time: ", process.env.MAX_CONVERSION_TIME
-					)
 					/* Act */
 					const getMaximaConfiguration = jest.fn(createMaximaConfiguration)
 					/* Assert */

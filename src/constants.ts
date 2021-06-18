@@ -1,3 +1,4 @@
+import { getMaxAllowedConversionValues } from "./util"
 import path from "path"
 export enum EHttpResponseCodes {
     ok = 200,
@@ -11,12 +12,40 @@ export enum EHttpResponseCodes {
     internalServerError = 500,
     unavailable = 503
 }
+export enum EMaxValue {
+	conversionTime = "MAX_CONVERSION_TIME",
+	tries = "MAX_CONVERSION_TRIES"
+}
 export const basePath: string = path.join(__dirname, "../")
+export const maxAllowedConversionTimeFallback: number = 120000
+export const maxAllowedConversionTime: number = getMaxAllowedConversionValues(
+	EMaxValue.conversionTime
+)
+export const maxAllowedConversionTriesFallback: number = 5
+export const maxAllowedConversionTries: number = getMaxAllowedConversionValues(
+	EMaxValue.tries
+)
+export class CommandNotFoundError extends Error {
+	readonly name: string
+	constructor(message: string) {
+		super(message)
+		this.name = "CommandNotFoundError"
+	}
+}
 export class ConversionError extends Error {
 	readonly name: string
 	constructor(message: string) {
 		super(message)
 		this.name = "ConversionError"
+	}
+}
+export class ConversionTimeoutError extends ConversionError {
+	readonly conversionProcessId: number
+	readonly name: string
+	constructor(message: string, convPid?: number) {
+		super(message)
+		this.name = "ConversionTimeoutError"
+		this.conversionProcessId = convPid ?? -1
 	}
 }
 export class DifferentOriginalFormatsDetectedError extends Error {
