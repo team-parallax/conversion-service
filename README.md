@@ -9,11 +9,12 @@ This project provides a webservice with a REST-API for file-conversions using `f
 ## Prerequisites
 
 1. FFmpeg needs to be installed on your local machine if you are not running the webservice in a docker. In order to get everything working read these documents as it requires a little more attention to configure everything properly:
-    - [ffmpeg](docs/ffmpeg) docs
-    - [imageMagick](docs/imageMagick) docs
-    - [unoconv](docs/unoconv) docs
+    - [ffmpeg](docs/ffmpeg.md) docs
+    - [imageMagick](docs/imageMagick.md) docs
+    - [unoconv](docs/unoconv.md#unoconv-wrapper-docs) docs
 
 2. Docker installation (required to build and run docker containers)
+3. Environment variables [setup](docs/env-vars.md)
 
 ### Usage
 

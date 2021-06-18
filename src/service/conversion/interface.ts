@@ -81,7 +81,7 @@ export interface IConversionQueueStatus {
 export interface IConversionRequestBody {
 	file: Buffer,
 	filename: string,
-	originalFormat: string,
+	originalFormat?: string,
 	targetFormat: string
 }
 export interface IConversionRequest {

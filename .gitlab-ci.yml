@@ -10,16 +10,18 @@ stages:
   - prepare
   - test
   - build
+  - quality
   - release
 
-# Workflow rules for MR-Pipelines taken from gitlab.com
+
+# Workflow rules for MR-Pipelines taken from docs at docs.gitlab.com:
+# https://docs.gitlab.com/ee/ci/yaml/#switch-between-branch-pipelines-and-merge-request-pipelines
 workflow:
   rules:
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS && $CI_PIPELINE_SOURCE == "push"
+      when: never
     - if: $CI_COMMIT_TAG
-
-include:
-  - template: 'Workflows/MergeRequest-Pipelines.gitlab-ci.yml'
-  - template: 'Workflows/Branch-Pipelines.gitlab-ci.yml'
+    - if: $CI_COMMIT_BRANCH || $CI_COMMIT_TAG
 
 
 before_script:
@@ -45,23 +47,67 @@ build_docker:
   rules:
     - if: $CI_COMMIT_TAG
 
-lint_code:
-  stage: prepare
+test_lint_code:
+  stage: test
   script:
     - yarn lint
+  rules:
+    - changes:
+        - src/**/*.ts
+      when: always
 
-
-test_all:
+test_code:
   stage: test
   script:
     - yarn test:all:ci
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   artifacts:
-    when: always
     expire_in: 30 days
-    untracked: false
+    paths:
+      - junit.xml
     reports:
       junit: junit.xml
+    untracked: false
+    when: always
+  rules:
+    - changes:
+        - src/**/*.ts
+      when: always
+
+test_quality:
+  allow_failure: true
+  image: docker:stable
+  services:
+    - docker:stable-dind
+  stage: quality
+  needs:
+    - job: test_lint_code
+    - job: test_code
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://localhost:2375
+    REPORT_FORMAT: json
+    SOURCE_CODE: src/
+  before_script: []
+  script:
+    - echo "Generate Gitlab Code Quality Report"
+    - |
+      docker run \
+        --env SOURCE_CODE="$PWD" \
+        --volume "$PWD":/code \
+        --volume /var/run/docker.sock:/var/run/docker.sock \
+        "registry.gitlab.com/gitlab-org/ci-cd/codequality:0.85.24" /code
+  artifacts:
+    paths:
+      - gl-code-quality-report.json
+    reports:
+      codequality: gl-code-quality-report.json
+  rules:
+    - if: '$CODE_QUALITY_DISABLED'
+      when: never
+    - changes:
+        - src/**/*.ts
+      when: always
 
 # The steps below originally come from here, but the release_job step
 # should wait for the docker build before creating a release
@@ -98,4 +144,3 @@ release_job:
     description: "./latestChanges.md"
   rules:
     - if: $CI_COMMIT_TAG
-
