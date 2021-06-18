@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.2...v0.1.3) (2021-06-18)
+
+
+### Features
+
+* **init.ts:** add initializer, contributing-guide, tests ([7760765](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/77607654654c51e970ed45267344fcaa6db3bbaf)), closes [#16](https://gitlab.internal.team-parallax.com/belwue/conversion-service/issues/16) [#20](https://gitlab.internal.team-parallax.com/belwue/conversion-service/issues/20)
+
+
+### CI
+
+* **ci - release:** add automatic release creation to pipeline ([702b74d](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/702b74d2624cebad6f519d6292279865ac0c2c50)), closes [#4](https://gitlab.internal.team-parallax.com/belwue/conversion-service/issues/4)
+
+
+### Others
+
+* **ci-configuration:** add prevention rule to avoid duplicate pipeline on MR ([62ed716](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/62ed716e081377ee50c8d6c6978ea7d2011d54db))
+* **issue-templates:** add issue-templates for bug-reports and feature requests ([64c23a9](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/64c23a9e1b9b881cbf8bbe7653a00baddce56510)), closes [#19](https://gitlab.internal.team-parallax.com/belwue/conversion-service/issues/19)
+* **issue-templates:** update github issue template to contain frontmatter ([c14b461](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/c14b4618154989eea27c06c4fe78629ebbbafca0)), closes [#22](https://gitlab.internal.team-parallax.com/belwue/conversion-service/issues/22) [#19](https://gitlab.internal.team-parallax.com/belwue/conversion-service/issues/19)
+
 ### [0.1.3-1](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.3-0...v0.1.3-1) (2021-06-09)
 
 
