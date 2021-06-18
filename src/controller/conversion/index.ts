@@ -147,11 +147,9 @@ export class ConversionController extends Controller {
 					originalFormat,
 					targetFormat
 				} = request?.body
-				console.log(request?.body)
 				const {
 					file
 				} = request
-				console.log(request?.file)
 				const fileExtension = extname(file.originalname)
 				if (fileExtension !== originalFormat) {
 					reject(new DifferentOriginalFormatsDetectedError(

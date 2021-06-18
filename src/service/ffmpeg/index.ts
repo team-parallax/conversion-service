@@ -28,9 +28,6 @@ export class FFmpegWrapper {
 				const inputFile = path.join(basePath, inputFilePath)
 				const outPath = path.join(basePath, "output")
 				const outputFile = `${outPath}/${outputName}.${targetFormat}`
-				this.logger.log(
-					`IN: ${inputFile}\nOUT: ${outputFile}`
-				)
 				const ffmpegCommand: FfmpegCommand = Ffmpeg(inputFile)
 					.format(targetFormat)
 				if (options?.filter) {

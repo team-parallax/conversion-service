@@ -1,9 +1,9 @@
-import { EHttpResponseCodes } from "../../constants"
+import { EHttpResponseCodes } from "../../../constants"
 import { Inject } from "typescript-ioc"
-import { Logger } from "../logger"
-import { RegisterRoutes } from "../../routes/routes"
+import { Logger } from "../../logger"
+import { RegisterRoutes } from "../../../routes/routes"
 import { ValidateError } from "tsoa"
-import { createDirectoryIfNotPresent } from "../file-io"
+import { createDirectoryIfNotPresent } from "../../file-io"
 import { generateHTML, serve } from "swagger-ui-express"
 import Ffmpeg from "fluent-ffmpeg"
 import cors from "cors"
@@ -17,7 +17,7 @@ import express, {
 	urlencoded
 } from "express"
 import path from "path"
-import swaggerDocument from "../../../swagger.json"
+import swaggerDocument from "../../../../swagger.json"
 export class Api {
 	@Inject
 	private readonly logger!: Logger
@@ -57,7 +57,7 @@ export class Api {
 		})
 		this.app.use("/docs", serve, async (req: Request, res: Response) => {
 			return res.send(
-				generateHTML(await import("../../../swagger.json"))
+				generateHTML(await import("../../../../swagger.json"))
 			)
 		})
 		RegisterRoutes(this.app as Express)
