@@ -1,32 +1,38 @@
 {
 	"name": "Existing Dockerfile",
-
 	// Sets the run context to one level up instead of the .devcontainer folder.
 	"context": "..",
-
 	// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
 	"dockerFile": "../Dockerfile",
-
 	// Set *default* container specific settings.json values on container create.
 	"settings": {
 		"terminal.integrated.defaultProfile.linux": "bash"
 	},
-
 	// Add the IDs of extensions you want installed when the container is created.
-	"extensions": [],
-
+	"extensions": [
+		"ms-azuretools.vscode-docker",
+		"p1c2u.docker-compose",
+		"editorconfig.editorconfig",
+		"dbaeumer.vscode-eslint",
+		"henriiik.docker-linter",
+		"eamodio.gitlens",
+		"firsttris.vscode-jest-runner",
+		"davidanson.vscode-markdownlint",
+		"christian-kohler.npm-intellisense",
+		"redhat.vscode-yaml",
+		"tomoki1207.pdf",
+		"gruntfuggly.todo-tree",
+		"msjsdiag.debugger-for-chrome",
+		"firefox-devtools.vscode-firefox-debug"
+	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [3000],
-
 	// Uncomment the next line to run commands after the container is created - for example installing curl.
-	// "postCreateCommand": "apt-get update && apt-get install -y curl",
-
+	"postCreateCommand": "apk add --no-cache git, curl, bash, jq, yq"
 	// Uncomment when using a ptrace-based debugger like C++, Go, and Rust
 	// "runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
-
 	// Uncomment to use the Docker CLI from inside the container. See https://aka.ms/vscode-remote/samples/docker-from-docker.
 	// "mounts": [ "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind" ],
-
 	// Uncomment to connect as a non-root user if you've added one. See https://aka.ms/vscode-remote/containers/non-root.
 	// "remoteUser": "vscode"
 }
