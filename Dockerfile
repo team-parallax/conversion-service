@@ -1,4 +1,4 @@
-FROM teamparallax/conversion-service-base-image:v0.1.0
+FROM teamparallax/conversion-service-base-image:v0.2.0
 
 # Build/Environment arguments
 ARG host=localhost:3000
