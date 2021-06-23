@@ -1,8 +1,8 @@
 import "lodash"
-import {
-	ConversionError, ConversionTimeoutError, maxAllowedConversionTime
-} from "../../constants"
+import { BaseConverter } from "../../abstract/converter"
+import { ConversionError, ConversionTimeoutError } from "../../constants"
 import { IFileFormat, IFormatList } from "./interface"
+import { createMaximaConfiguration } from "../../config/index"
 import { execFile, spawn } from "child_process"
 import { executeShellCommand } from "../../util"
 import { getType } from "mime"
@@ -11,7 +11,7 @@ interface IUnoconvOptions {
 	unoconvBinaryPath?: string
 }
 export type TUnoconvOptions = IUnoconvOptions
-export class Unoconv {
+export class Unoconv extends BaseConverter {
 	public static readonly defaultBin = "unoconv"
 	public static addOptions(
 		options?: TUnoconvOptions,
@@ -43,16 +43,23 @@ export class Unoconv {
 		const conversionProcessPromise = new Promise<Buffer>((resolve, reject) => {
 			unoconvProcess.on("exit", () => {
 				if (stderr.length > 0) {
-					reject(new ConversionError(Buffer.concat(stderr).toString()))
+					reject(
+						new ConversionError(
+							Buffer.concat(stderr).toString()
+						)
+					)
 				}
 				resolve(Buffer.concat(stdout))
 			})
 		})
 		const timeoutPromise = new Promise<Buffer>((resolve, reject) => {
-			const maxTime = maxAllowedConversionTime
+			// Const maxTime = maxAllowedConversionTime
+			const {
+				conversionTime: maxConversionTime
+			} = createMaximaConfiguration()
 			setTimeout(
 				reject,
-				maxTime,
+				maxConversionTime,
 				new ConversionTimeoutError("Conversion timeout exceeded!", unoconvProcess.pid)
 			)
 		})

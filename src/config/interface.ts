@@ -1,12 +1,16 @@
-import { EConversionWrapper } from "./enum"
+import { EConversionRuleType, EConversionWrapper } from "../enum"
 export interface IConfig {
 	conversionMaximaConfiguration: IConversionMaximaConfig,
 	conversionWrapperConfiguration: IConversionWrapperConfig,
-	rules?: IConversionRulesConfig
+	rules?: IConversionRulesConfig,
+	webservicePort: number
 }
 export interface IConversionRulesConfig {
-	/* TODO: maybe this could also be resolved with an enum or mapped type */
-	[key: string]: string | string[]
+	[key: string]: IConversionRule[]
+}
+export interface IConversionRule {
+	rule: string,
+	ruleType: EConversionRuleType
 }
 export interface IConversionWrapperConfig {
 	availableWrappers: IConversionWrapper[],

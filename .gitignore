@@ -12,7 +12,7 @@ node_modules
 # IDE files
 .idea
 .vscode
-# eslint cach
+# eslint cache
 .eslintcache
 # log files
 yarn-error.log
@@ -21,4 +21,3 @@ yarn-debug.log
 package-lock.json
 # coverage
 coverage
-junit.xml

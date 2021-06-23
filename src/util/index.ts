@@ -1,9 +1,4 @@
-import {
-	CommandNotFoundError,
-	EMaxValue,
-	maxAllowedConversionTimeFallback,
-	maxAllowedConversionTriesFallback
-} from "../constants"
+import { CommandNotFoundError } from "../constants"
 import { exec } from "child_process"
 export const executeShellCommand = async (command: string): Promise<string> => {
 	return await new Promise((resolve, reject) => {
@@ -20,23 +15,4 @@ export const executeShellCommand = async (command: string): Promise<string> => {
 			resolve(stdout)
 		})
 	})
-}
-export const getMaxAllowedConversionValues = (value: EMaxValue): number => {
-	const maxValueString = process.env[value]
-	const maxValue = Number(maxValueString)
-	// Happens if maxValueString is undefined
-	if (isNaN(maxValue)) {
-		switch (value) {
-			case EMaxValue.conversionTime:
-				return maxAllowedConversionTimeFallback
-			case EMaxValue.tries:
-			default:
-				// TODO: refactor this according to new config loading
-				// Throw new MissingConfigurationValueError(`Unknown error with input: ${value}`)
-				return maxAllowedConversionTriesFallback
-		}
-	}
-	else {
-		return maxValue
-	}
 }

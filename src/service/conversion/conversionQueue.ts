@@ -30,7 +30,10 @@ export class ConversionQueueService {
 		this.isConverting = false
 		return this
 	}
-	public addToConversionQueue(requestObject: IConversionRequest): IConversionProcessingResponse {
+	public addToConversionQueue(
+		requestObject: IConversionRequest,
+		retries: number = 1
+	): IConversionProcessingResponse {
 		this.conversion.push(requestObject)
 		this.convLog.set(requestObject.conversionId, {
 			status: EConversionStatus.inQueue

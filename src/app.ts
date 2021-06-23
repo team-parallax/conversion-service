@@ -1,2 +1,2 @@
-import { Api } from "Service/api/rest"
+import { Api } from "./service/api"
 const server = new Api()

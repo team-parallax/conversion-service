@@ -19,7 +19,12 @@ module.exports = {
 		"^Services(.*)$": "<rootDir>/src/services$1",
 		"~/": "<rootDir>/src/"
 	},
-	testRegex: "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+	setupFilesAfterEnv: [
+		"./jest.setup.ts"
+	],
+	testRegex: [
+		"(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$"
+	],
 	transform: {
 		".ts$": "ts-jest"
 	},

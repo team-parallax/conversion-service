@@ -13,7 +13,7 @@ beforeAll(async () => {
 describe("FFmpegWrapper should pass all tests", () => {
 	const ffmpeg: FFmpegWrapper = new FFmpegWrapper()
 	it("should convert .mp3 to .mp4", async () => {
-		const conversion = await ffmpeg.convertToTargetFormat(
+		const conversion = await ffmpeg.convertToTarget(
 			"./sample-input/aWholesomeLesson.mp3",
 			"ffmConverted",
 			"mp3",
@@ -22,7 +22,7 @@ describe("FFmpegWrapper should pass all tests", () => {
 		expect(conversion).toBeDefined()
 	})
 	it("should convert .mp3 to .mp4 with different path", async () => {
-		const conversion = await ffmpeg.convertToTargetFormat(
+		const conversion = await ffmpeg.convertToTarget(
 			"sample-input/aWholesomeLesson.mp3",
 			"ffmConvertedToo",
 			"mp3",

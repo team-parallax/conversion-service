@@ -1,9 +1,9 @@
-import { EConfigurationKey } from "./enum"
+import { EConfigurationKey } from "../enum"
 export class ConfigurationCreationError extends Error {
 	readonly name: string
 	constructor(message?: string, origin?: string) {
 		super(
-			`origin of error: ${origin ?? "unknown"}\n${message}`
+			`\nOrigin of error:\n${origin ?? "unknown"}\n\n\t${message}`
 			?? "Error during config creation"
 		)
 		this.name = "ConfigurationCreationError"
@@ -24,10 +24,12 @@ export class MissingWrapperDefinitionError extends Error {
 	}
 }
 export class MissingConfigurationValueError extends Error {
+	readonly missingField: EConfigurationKey
 	readonly name: string
 	constructor(missingConfigurationField: EConfigurationKey) {
 		const message = `Missing value for ${missingConfigurationField} in your configuration file`
 		super(message)
+		this.missingField = missingConfigurationField
 		this.name = "MissingConfigurationValueError"
 	}
 }

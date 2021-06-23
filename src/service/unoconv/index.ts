@@ -1,31 +1,40 @@
+import { BaseConverter } from "../../abstract/converter"
 import {
 	ConversionError,
 	NoPathForConversionError,
 	NoTargetFormatSpecifiedError
 } from "../../constants"
 import {
-	IConversionParams,
-	IConvertedFile,
-	IFormatList
-} from "./interface"
+	IConversionFile, IConversionRequest, IFormat
+} from "../../abstract/converter/interface"
+import { IFileFormat } from "./interface"
 import { Logger } from "../logger"
 import { Unoconv as unoconv } from "./unoconv"
 import { writeToFile } from "../file-io"
-export class UnoconvService {
+export class UnoconvWrapper extends BaseConverter {
 	private static readonly logger: Logger = new Logger()
+	public static async canConvert({
+		fromFormat: inputFormat,
+		targetFormat: outputFormat
+	}: IConversionRequest): Promise<boolean> {
+		const supportedFormats = await this.getSupportedConversionFormats()
+		const canConvertInputFormat = Boolean(supportedFormats.find(
+			format => format.extension === inputFormat
+		))
+		const canConvertOutputFormat = Boolean(supportedFormats.find(
+			format => format.extension === outputFormat
+		))
+		return canConvertInputFormat && canConvertOutputFormat
+	}
 	public static async convertToTarget(
-		conversionRequest: IConversionParams
-	): Promise<IConvertedFile> {
+		conversionRequest: IConversionFile
+	): Promise<IConversionFile> {
 		const {
 			conversionId,
-			filePath,
-			outputFilename,
+			path: filePath,
 			targetFormat
 		} = conversionRequest
-		let filename: string = `${outputFilename}-converted`
-		if (!outputFilename?.length) {
-			filename = conversionId
-		}
+		const outputFilename: string = conversionId
 		if (!filePath?.length) {
 			throw new NoPathForConversionError("No Path for file to convert provided.")
 		}
@@ -37,17 +46,42 @@ export class UnoconvService {
 			const path = `./out/${conversionId}.${targetFormat}`
 			this.logger.log(`Successfully converted file. Saving to disk`)
 			await writeToFile(path, conversion)
-			const result: Omit<IConvertedFile, "resultFile"> = {
-				outputFilename: `${filename}.${targetFormat}`,
+			return {
+				...conversionRequest,
 				path
 			}
-			return result
 		}
 		catch (err) {
 			throw new ConversionError(err.message)
 		}
 	}
-	public static async showAvailableFormats(): Promise<IFormatList> {
-		return await unoconv.detectSupportedFormats()
+	public static async getSupportedConversionFormats(): Promise<IFormat[]> {
+		const {
+			document,
+			graphics,
+			presentation,
+			spreadsheet
+		} = await unoconv.detectSupportedFormats()
+		return [
+			...document,
+			...graphics,
+			...presentation,
+			...spreadsheet
+		].map(
+			unoconvSupportedFormat => {
+				return this.transformUnoconvFormatToIFormat(unoconvSupportedFormat)
+			}
+		)
+	}
+	private static transformUnoconvFormatToIFormat(
+		unoconvSupportedFormat: IFileFormat
+	): IFormat {
+		const {
+			description, extension
+		} = unoconvSupportedFormat
+		return {
+			description,
+			extension
+		}
 	}
 }

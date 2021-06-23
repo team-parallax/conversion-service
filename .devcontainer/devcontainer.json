@@ -23,7 +23,8 @@
 		"tomoki1207.pdf",
 		"gruntfuggly.todo-tree",
 		"msjsdiag.debugger-for-chrome",
-		"firefox-devtools.vscode-firefox-debug"
+		"firefox-devtools.vscode-firefox-debug",
+		"donjayamanne.githistory"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [3000],

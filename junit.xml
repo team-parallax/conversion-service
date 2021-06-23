@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="58" failures="0" errors="0" time="12.197">
+  <testsuite name="It should pass all tests for initialization" errors="0" failures="0" skipped="0" timestamp="2021-06-21T10:18:47" time="5.073" tests="9">
+    <testcase classname="It should pass all tests for initialization should return undefined for unset/unknown variables and the value if set" name="It should pass all tests for initialization should return undefined for unset/unknown variables and the value if set" time="0.009">
+    </testcase>
+    <testcase classname="It should pass all tests for initialization It should load configuration parts correctly and handle errors accordingly It should throw errors because of missing environment variables createMaximaConfiguration should throw errors should throw MissingConfigurationValueErrors because of both missing env-vars and defaults" name="It should pass all tests for initialization It should load configuration parts correctly and handle errors accordingly It should throw errors because of missing environment variables createMaximaConfiguration should throw errors should throw MissingConfigurationValueErrors because of both missing env-vars and defaults" time="0.018">
+    </testcase>
+    <testcase classname="It should pass all tests for initialization It should load configuration parts correctly and handle errors accordingly It should throw errors because of missing environment variables createMaximaConfiguration should throw errors should throw MissingConfigurationValueErrors because of missing conversion-time env-var and default" name="It should pass all tests for initialization It should load configuration parts correctly and handle errors accordingly It should throw errors because of missing environment variables createMaximaConfiguration should throw errors should throw MissingConfigurationValueErrors because of missing conversion-time env-var and default" time="0.004">
+    </testcase>
+    <testcase classname="It should pass all tests for initialization It should load configuration parts correctly and handle errors accordingly It should throw errors because of missing environment variables createMaximaConfiguration should throw errors should throw MissingConfigurationValueErrors because of missing conversion-tries env-var and default" name="It should pass all tests for initialization It should load configuration parts correctly and handle errors accordingly It should throw errors because of missing environment variables createMaximaConfiguration should throw errors should throw MissingConfigurationValueErrors because of missing conversion-tries env-var and default" time="0.004">
+    </testcase>
+    <testcase classname="It should pass all tests for initialization It should load configuration parts correctly and handle errors accordingly It should throw errors because of missing environment variables createConversionPrecedenceOrder should throw MissingWrapperDefinitionError because of missing env-vars" name="It should pass all tests for initialization It should load configuration parts correctly and handle errors accordingly It should throw errors because of missing environment variables createConversionPrecedenceOrder should throw MissingWrapperDefinitionError because of missing env-vars" time="0.005">
+    </testcase>
+    <testcase classname="It should pass all tests for initialization It should load configuration parts correctly and handle errors accordingly It should throw errors because of missing environment variables createWrapperConfiguration should throw ConfigurationCreationError" name="It should pass all tests for initialization It should load configuration parts correctly and handle errors accordingly It should throw errors because of missing environment variables createWrapperConfiguration should throw ConfigurationCreationError" time="0.004">
+    </testcase>
+    <testcase classname="It should pass all tests for initialization It should load configuration parts correctly and handle errors accordingly It should throw errors because of missing environment variables createWrapperConfiguration should throw MissingConfigurationValueError because no unoconv path is set" name="It should pass all tests for initialization It should load configuration parts correctly and handle errors accordingly It should throw errors because of missing environment variables createWrapperConfiguration should throw MissingConfigurationValueError because no unoconv path is set" time="0.005">
+    </testcase>
+    <testcase classname="It should pass all tests for initialization It should load configuration parts correctly and handle errors accordingly It should throw errors because of missing environment variables transformEnumToIWrapper should trow MissingConfigurationValueError" name="It should pass all tests for initialization It should load configuration parts correctly and handle errors accordingly It should throw errors because of missing environment variables transformEnumToIWrapper should trow MissingConfigurationValueError" time="0">
+    </testcase>
+    <testcase classname="It should pass all tests for initialization It should load configuration parts correctly and handle errors accordingly It should throw errors because of missing environment variables transformEnumToIWrapper should return IWrapper object" name="It should pass all tests for initialization It should load configuration parts correctly and handle errors accordingly It should throw errors because of missing environment variables transformEnumToIWrapper should return IWrapper object" time="0">
+    </testcase>
+    <testcase classname="It should pass all tests for initialization It should load configuration parts correctly and handle errors accordingly It should handle wrapper configuration assembly correctly transformStringToWrapperCollection should return EConversionWrapper[]" name="It should pass all tests for initialization It should load configuration parts correctly and handle errors accordingly It should handle wrapper configuration assembly correctly transformStringToWrapperCollection should return EConversionWrapper[]" time="0.003">
+    </testcase>
+    <testcase classname="It should pass all tests for initialization It should load configuration parts correctly and handle errors accordingly It should handle wrapper configuration assembly correctly transformStringToWrapperCollection should throw UnknownConversionWrapperError" name="It should pass all tests for initialization It should load configuration parts correctly and handle errors accordingly It should handle wrapper configuration assembly correctly transformStringToWrapperCollection should throw UnknownConversionWrapperError" time="0.005">
+    </testcase>
+  </testsuite>
+  <testsuite name="CapabilityService should pass all tests" errors="0" failures="0" skipped="0" timestamp="2021-06-21T10:18:47" time="6.578" tests="21">
+    <testcase classname="CapabilityService should pass all tests It should name capabilities correctly should convert ffmpeg codec output in correct named format" name="CapabilityService should pass all tests It should name capabilities correctly should convert ffmpeg codec output in correct named format" time="0.081">
+    </testcase>
+    <testcase classname="CapabilityService should pass all tests It should name capabilities correctly should convert ffmpeg encoders output in correct named format" name="CapabilityService should pass all tests It should name capabilities correctly should convert ffmpeg encoders output in correct named format" time="0.041">
+    </testcase>
+    <testcase classname="CapabilityService should pass all tests It should name capabilities correctly should convert ffmpeg filters output in correct named format" name="CapabilityService should pass all tests It should name capabilities correctly should convert ffmpeg filters output in correct named format" time="0.044">
+    </testcase>
+    <testcase classname="CapabilityService should pass all tests It should name capabilities correctly should convert ffmpeg formats output in correct named format" name="CapabilityService should pass all tests It should name capabilities correctly should convert ffmpeg formats output in correct named format" time="0.104">
+    </testcase>
+    <testcase classname="CapabilityService should pass all tests It should return if conversion formats are supported It should return true for: mp3" name="CapabilityService should pass all tests It should return if conversion formats are supported It should return true for: mp3" time="0.002">
+    </testcase>
+    <testcase classname="CapabilityService should pass all tests It should return if conversion formats are supported It should return true for: mp4" name="CapabilityService should pass all tests It should return if conversion formats are supported It should return true for: mp4" time="0.001">
+    </testcase>
+    <testcase classname="CapabilityService should pass all tests It should return if conversion formats are supported It should return true for: m4a" name="CapabilityService should pass all tests It should return if conversion formats are supported It should return true for: m4a" time="0.001">
+    </testcase>
+    <testcase classname="CapabilityService should pass all tests It should return if conversion formats are supported It should return true for: webm" name="CapabilityService should pass all tests It should return if conversion formats are supported It should return true for: webm" time="0.001">
+    </testcase>
+    <testcase classname="CapabilityService should pass all tests It should return if conversion formats are supported It should return true for: ogg" name="CapabilityService should pass all tests It should return if conversion formats are supported It should return true for: ogg" time="0.001">
+    </testcase>
+    <testcase classname="CapabilityService should pass all tests It should return if conversion formats are supported It should return true for: dvd" name="CapabilityService should pass all tests It should return if conversion formats are supported It should return true for: dvd" time="0.002">
+    </testcase>
+    <testcase classname="CapabilityService should pass all tests It should return if conversion formats are supported It should return false for: php" name="CapabilityService should pass all tests It should return if conversion formats are supported It should return false for: php" time="0.001">
+    </testcase>
+    <testcase classname="CapabilityService should pass all tests It should return if conversion formats are supported It should return false for: jpg" name="CapabilityService should pass all tests It should return if conversion formats are supported It should return false for: jpg" time="0.001">
+    </testcase>
+    <testcase classname="CapabilityService should pass all tests It should return if conversion formats are supported It should return false for: &lt;empty&gt;" name="CapabilityService should pass all tests It should return if conversion formats are supported It should return false for: &lt;empty&gt;" time="0.001">
+    </testcase>
+    <testcase classname="CapabilityService should pass all tests It should return if conversion between two given formats is possible It should be able to convert FROM mp3 TO mp4" name="CapabilityService should pass all tests It should return if conversion between two given formats is possible It should be able to convert FROM mp3 TO mp4" time="0.001">
+    </testcase>
+    <testcase classname="CapabilityService should pass all tests It should return if conversion between two given formats is possible It should be able to convert FROM wav TO mp4" name="CapabilityService should pass all tests It should return if conversion between two given formats is possible It should be able to convert FROM wav TO mp4" time="0.001">
+    </testcase>
+    <testcase classname="CapabilityService should pass all tests It should return if conversion between two given formats is possible It should be able to convert FROM avi TO mp4" name="CapabilityService should pass all tests It should return if conversion between two given formats is possible It should be able to convert FROM avi TO mp4" time="0.001">
+    </testcase>
+    <testcase classname="CapabilityService should pass all tests It should return if conversion between two given formats is possible It should be able to convert FROM dvd TO mp4" name="CapabilityService should pass all tests It should return if conversion between two given formats is possible It should be able to convert FROM dvd TO mp4" time="0.001">
+    </testcase>
+    <testcase classname="CapabilityService should pass all tests It should return if conversion between two given formats is possible It should not be able to convert FROM dvd TO &lt;empty&gt;" name="CapabilityService should pass all tests It should return if conversion between two given formats is possible It should not be able to convert FROM dvd TO &lt;empty&gt;" time="0.002">
+    </testcase>
+    <testcase classname="CapabilityService should pass all tests It should return if conversion between two given formats is possible It should not be able to convert FROM &lt;empty&gt; TO &lt;empty&gt;" name="CapabilityService should pass all tests It should return if conversion between two given formats is possible It should not be able to convert FROM &lt;empty&gt; TO &lt;empty&gt;" time="0.001">
+    </testcase>
+    <testcase classname="CapabilityService should pass all tests It should return if conversion between two given formats is possible It should not be able to convert FROM jpg TO mp3" name="CapabilityService should pass all tests It should return if conversion between two given formats is possible It should not be able to convert FROM jpg TO mp3" time="0.001">
+    </testcase>
+    <testcase classname="CapabilityService should pass all tests It should return if conversion between two given formats is possible It should not be able to convert FROM jpg TO mp4" name="CapabilityService should pass all tests It should return if conversion between two given formats is possible It should not be able to convert FROM jpg TO mp4" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="ConversionQueueService should pass all tests" errors="0" failures="0" skipped="0" timestamp="2021-06-21T10:18:47" time="7.784" tests="3">
+    <testcase classname="ConversionQueueService should pass all tests Should throw an NoSuchConversionIdError When trying to retrieve non-existent status" name="ConversionQueueService should pass all tests Should throw an NoSuchConversionIdError When trying to retrieve non-existent status" time="0.017">
+    </testcase>
+    <testcase classname="ConversionQueueService should pass all tests Should throw an NoSuchConversionIdError When trying to change convLog entry of non-existent element" name="ConversionQueueService should pass all tests Should throw an NoSuchConversionIdError When trying to change convLog entry of non-existent element" time="0.002">
+    </testcase>
+    <testcase classname="ConversionQueueService should pass all tests Should execute all operations without incidents Add Items to the ConversionQueue correctly" name="ConversionQueueService should pass all tests Should execute all operations without incidents Add Items to the ConversionQueue correctly" time="0.233">
+    </testcase>
+  </testsuite>
+  <testsuite name="Unoconv-Wrapper should pass all tests" errors="0" failures="0" skipped="0" timestamp="2021-06-21T10:18:47" time="9.558" tests="23">
+    <testcase classname="Unoconv-Wrapper should pass all tests It should return the correct value for binary should return the default binary value, because no options argument is passed" name="Unoconv-Wrapper should pass all tests It should return the correct value for binary should return the default binary value, because no options argument is passed" time="0.006">
+    </testcase>
+    <testcase classname="Unoconv-Wrapper should pass all tests It should return the correct value for binary should return the default binary value, because no unoconv path is given in options" name="Unoconv-Wrapper should pass all tests It should return the correct value for binary should return the default binary value, because no unoconv path is given in options" time="0.001">
+    </testcase>
+    <testcase classname="Unoconv-Wrapper should pass all tests It should return the correct value for binary should return the binary value from passed options" name="Unoconv-Wrapper should pass all tests It should return the correct value for binary should return the binary value from passed options" time="0.001">
+    </testcase>
+    <testcase classname="Unoconv-Wrapper should pass all tests It should return the correct value for binary should return the binary value from passed sophisticated options" name="Unoconv-Wrapper should pass all tests It should return the correct value for binary should return the binary value from passed sophisticated options" time="0.001">
+    </testcase>
+    <testcase classname="Unoconv-Wrapper should pass all tests It should handle all unoconv output lines correctly should return a Partial&lt;T&gt; with all properties set to undefined, because of empty line." name="Unoconv-Wrapper should pass all tests It should handle all unoconv output lines correctly should return a Partial&lt;T&gt; with all properties set to undefined, because of empty line." time="0.003">
+    </testcase>
+    <testcase classname="Unoconv-Wrapper should pass all tests It should handle all unoconv output lines correctly should return a Partial&lt;T&gt; with all properties set correctly (sdc)." name="Unoconv-Wrapper should pass all tests It should handle all unoconv output lines correctly should return a Partial&lt;T&gt; with all properties set correctly (sdc)." time="0.002">
+    </testcase>
+    <testcase classname="Unoconv-Wrapper should pass all tests It should handle all unoconv output lines correctly should return a Partial&lt;T&gt; with all properties set correctly (xhtml)." name="Unoconv-Wrapper should pass all tests It should handle all unoconv output lines correctly should return a Partial&lt;T&gt; with all properties set correctly (xhtml)." time="0.001">
+    </testcase>
+    <testcase classname="Unoconv-Wrapper should pass all tests It should handle all unoconv output lines correctly should return a Partial&lt;T&gt; with all properties set correctly (ppt)." name="Unoconv-Wrapper should pass all tests It should handle all unoconv output lines correctly should return a Partial&lt;T&gt; with all properties set correctly (ppt)." time="0.001">
+    </testcase>
+    <testcase classname="Unoconv-Wrapper should pass all tests It should handle all unoconv output lines correctly should return a Partial&lt;T&gt; with all properties set correctly (docx)." name="Unoconv-Wrapper should pass all tests It should handle all unoconv output lines correctly should return a Partial&lt;T&gt; with all properties set correctly (docx)." time="0.001">
+    </testcase>
+    <testcase classname="Unoconv-Wrapper should pass all tests It should handle all unoconv output lines correctly should return a Partial&lt;T&gt; with particalur properties set" name="Unoconv-Wrapper should pass all tests It should handle all unoconv output lines correctly should return a Partial&lt;T&gt; with particalur properties set" time="0.001">
+    </testcase>
+    <testcase classname="Unoconv-Wrapper should pass all tests It should handle all unoconv output lines correctly should return a Partial&lt;T&gt; with only extension property set" name="Unoconv-Wrapper should pass all tests It should handle all unoconv output lines correctly should return a Partial&lt;T&gt; with only extension property set" time="0.001">
+    </testcase>
+    <testcase classname="Unoconv-Wrapper should pass all tests It should handle all unoconv output lines correctly should return a Partial&lt;T&gt; with only extension property unset" name="Unoconv-Wrapper should pass all tests It should handle all unoconv output lines correctly should return a Partial&lt;T&gt; with only extension property unset" time="0.001">
+    </testcase>
+    <testcase classname="Unoconv-Wrapper should pass all tests It should handle all unoconv output lines correctly should return a Partial&lt;T&gt; with extension property unset" name="Unoconv-Wrapper should pass all tests It should handle all unoconv output lines correctly should return a Partial&lt;T&gt; with extension property unset" time="0.001">
+    </testcase>
+    <testcase classname="Unoconv-Wrapper should pass all tests It should add options correctly Argument list equals initial state because no options are passed" name="Unoconv-Wrapper should pass all tests It should add options correctly Argument list equals initial state because no options are passed" time="0.001">
+    </testcase>
+    <testcase classname="Unoconv-Wrapper should pass all tests It should add options correctly Argument list equals initial state because options do not include port" name="Unoconv-Wrapper should pass all tests It should add options correctly Argument list equals initial state because options do not include port" time="0.001">
+    </testcase>
+    <testcase classname="Unoconv-Wrapper should pass all tests It should add options correctly Updated argument list should only include port" name="Unoconv-Wrapper should pass all tests It should add options correctly Updated argument list should only include port" time="0.001">
+    </testcase>
+    <testcase classname="Unoconv-Wrapper should pass all tests It should add options correctly Updated argument list should include port and given previous arguments" name="Unoconv-Wrapper should pass all tests It should add options correctly Updated argument list should include port and given previous arguments" time="0.001">
+    </testcase>
+    <testcase classname="Unoconv-Wrapper should pass all tests It should add options correctly Updated argument list should on contain port option, given no arguments" name="Unoconv-Wrapper should pass all tests It should add options correctly Updated argument list should on contain port option, given no arguments" time="0.001">
+    </testcase>
+    <testcase classname="Unoconv-Wrapper should pass all tests It should check if format detection works correctly no formats detected" name="Unoconv-Wrapper should pass all tests It should check if format detection works correctly no formats detected" time="0.001">
+    </testcase>
+    <testcase classname="Unoconv-Wrapper should pass all tests It should check if format detection works correctly formats detected with documents" name="Unoconv-Wrapper should pass all tests It should check if format detection works correctly formats detected with documents" time="0">
+    </testcase>
+    <testcase classname="Unoconv-Wrapper should pass all tests It should perform all asynchronous tasks correctly should return all supported formats" name="Unoconv-Wrapper should pass all tests It should perform all asynchronous tasks correctly should return all supported formats" time="0.185">
+    </testcase>
+    <testcase classname="Unoconv-Wrapper should pass all tests It should perform all asynchronous tasks correctly should return a buffer with converted file" name="Unoconv-Wrapper should pass all tests It should perform all asynchronous tasks correctly should return a buffer with converted file" time="1.526">
+    </testcase>
+    <testcase classname="Unoconv-Wrapper should pass all tests It should perform all asynchronous tasks correctly should throw a conversion error for a malicious document" name="Unoconv-Wrapper should pass all tests It should perform all asynchronous tasks correctly should throw a conversion error for a malicious document" time="2.316">
+    </testcase>
+  </testsuite>
+  <testsuite name="FFmpegWrapper should pass all tests" errors="0" failures="0" skipped="0" timestamp="2021-06-21T10:18:47" time="10.202" tests="2">
+    <testcase classname="FFmpegWrapper should pass all tests should convert .mp3 to .mp4" name="FFmpegWrapper should pass all tests should convert .mp3 to .mp4" time="2.012">
+    </testcase>
+    <testcase classname="FFmpegWrapper should pass all tests should convert .mp3 to .mp4 with different path" name="FFmpegWrapper should pass all tests should convert .mp3 to .mp4 with different path" time="2.029">
+    </testcase>
+  </testsuite>
+</testsuites>
