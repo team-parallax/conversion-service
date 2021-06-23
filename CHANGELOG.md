@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.3...v0.1.4) (2021-06-23)
+
+
+### Features
+
+* **abstract-converter:** add abstract converter ([5921fde](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/5921fdedb50ca844c418d788359e4a7e8daae1e5))
+* **ts-unoconv:** include ts-unoconv as binary-wrapper for unoconv conversions ([5bc8a79](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/5bc8a796aa605b289ad9fb4dd379562d709f0833)), closes [#1](https://gitlab.internal.team-parallax.com/belwue/conversion-service/issues/1)
+
+
+### Others
+
+* **dockerfile:** add imagemagick to dockerfile ([d6c957d](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/d6c957d6e2c3d463b7a89b822af5cebf3c5443d4)), closes [#17](https://gitlab.internal.team-parallax.com/belwue/conversion-service/issues/17)
+
 ### [0.1.3](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.2...v0.1.3) (2021-06-18)
 
 
