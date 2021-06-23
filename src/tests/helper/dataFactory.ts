@@ -21,3 +21,6 @@ const createConversionRequestDummy = (): IConversionRequest => {
 		targetFormat
 	}
 }
+export const getRandomNumber = (maximum: number): number => {
+	return faker.datatype.number(maximum)
+}

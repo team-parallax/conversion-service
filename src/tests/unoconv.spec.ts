@@ -3,6 +3,12 @@ import { IFileFormat, IFormatList } from "../service/unoconv/interface"
 import { TUnoconvOptions } from "../service/unoconv/unoconv"
 import { getType } from "mime"
 import { Unoconv as unoconv } from "../service/unoconv/unoconv"
+beforeAll(() => {
+	/* Prepare testing environment and set necessary variables */
+	process.env.MAX_CONVERSION_TIME = "90000"
+	process.env.MAX_CONVERSION_TRIES = "5"
+	process.env.UNOCONV_PATH = "/usr/local/bin/unoconv"
+})
 describe("Unoconv-Wrapper should pass all tests", () => {
 	describe("It should return the correct value for binary", () => {
 		it("should return the default binary value, because no options argument is passed", () => {
@@ -273,6 +279,8 @@ describe("Unoconv-Wrapper should pass all tests", () => {
 		})
 	})
 	describe("It should perform all asynchronous tasks correctly", () => {
+		const maxTime = 30000
+		jest.setTimeout(maxTime)
 		it("should return all supported formats", async () => {
 			/* Arrange */
 			const formats = unoconv.detectSupportedFormats()
@@ -290,7 +298,7 @@ describe("Unoconv-Wrapper should pass all tests", () => {
 			await expect(formats).resolves.toBeDefined()
 			expect(isIformatList(formatListCandidate)).toBe(true)
 		})
-		it("should return a buffer with converted file", async () => {
+		it("should return a buffer with converted file", async done => {
 			/* Arrange */
 			const filePath = "./sample-input/documents/sample.rtf"
 			const targetFormat = "pdf"
@@ -299,6 +307,7 @@ describe("Unoconv-Wrapper should pass all tests", () => {
 			/* Assert */
 			await expect(res).resolves.toBeDefined()
 			await expect(res).resolves.toBeInstanceOf(Buffer)
+			done()
 		})
 		it("should throw a conversion error for a malicious document", async () => {
 			/* Arrange */

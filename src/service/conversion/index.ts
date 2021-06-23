@@ -52,7 +52,7 @@ export class ConversionService {
 			this.queueService.changeConvLogEntry(conversionId, EConversionStatus.processing)
 			try {
 				const conversionResponse: IConversionResult = await this.ffmpeg
-					.convertToTargetFormat(path, conversionId, sourceFormat, targetFormat)
+					.convertToTarget(path, conversionId, sourceFormat, targetFormat)
 				/* Delete input file. */
 				await deleteFile(path)
 				this.conversionQueueService.addToConvertedQueue(
@@ -103,7 +103,8 @@ export class ConversionService {
 		originalFormat,
 		targetFormat
 	}: IConversionRequestBody): Promise<IConversionProcessingResponse> {
-		const origin = originalFormat.replace(/\./, "")
+		// TODO: Get origin from filename (#25)
+		const origin = originalFormat?.replace(/\./, "") ?? ""
 		const target = targetFormat.replace(/\./, "")
 		const supports = await this.supportsConversion(origin, target)
 		if (!supports) {

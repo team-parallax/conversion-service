@@ -1,9 +1,12 @@
-import { EHttpResponseCodes } from "../../../constants"
+import { EConversionWrapper } from "../../enum"
+import { EHttpResponseCodes } from "../../constants"
+import { IConversionWrapperConfig } from "~/config/interface"
 import { Inject } from "typescript-ioc"
-import { Logger } from "../../logger"
-import { RegisterRoutes } from "../../../routes/routes"
+import { Logger } from "../logger"
+import { RegisterRoutes } from "../../routes/routes"
 import { ValidateError } from "tsoa"
-import { createDirectoryIfNotPresent } from "../../file-io"
+import { createConfiguration } from "../../config"
+import { createDirectoryIfNotPresent } from "../file-io"
 import { generateHTML, serve } from "swagger-ui-express"
 import Ffmpeg from "fluent-ffmpeg"
 import cors from "cors"
@@ -17,24 +20,26 @@ import express, {
 	urlencoded
 } from "express"
 import path from "path"
-import swaggerDocument from "../../../../swagger.json"
+import swaggerDocument from "../../../swagger.json"
 export class Api {
 	@Inject
 	private readonly logger!: Logger
-	/* TODO: This will move to initializing function with issue #16 */
 	private readonly _port: number
 	private readonly app: Application
-	/* TODO: This will move to initializing function with issue #16 */
-	private readonly defaultPort: number = 3000
 	private readonly startUpDelay: number = 1500
 	constructor(port?: number) {
+		const config = createConfiguration()
+		const {
+			webservicePort
+		} = config
 		this.app = express()
-		/* TODO: Extract from config object after issue #16 is done */
-		this._port = port ?? this.defaultPort
+		this._port = webservicePort
 		this.configureServer()
 		this.addApi()
-		/* TODO: This will move to initializing function with issue #16 */
-		Ffmpeg().setFfmpegPath("/opt/ffmpeg/bin/ffmpeg")
+		this.setWrapperPath(
+			EConversionWrapper.ffmpeg,
+			config.conversionWrapperConfiguration
+		)
 		this.createApplicationDirectiories(["input", "output"])
 		setTimeout(
 			() => this.listen(),
@@ -57,7 +62,7 @@ export class Api {
 		})
 		this.app.use("/docs", serve, async (req: Request, res: Response) => {
 			return res.send(
-				generateHTML(await import("../../../../swagger.json"))
+				generateHTML(await import("../../../swagger.json"))
 			)
 		})
 		RegisterRoutes(this.app as Express)
@@ -115,6 +120,27 @@ export class Api {
 		Promise.all(promises)
 			.then(res => this.logger.log(res))
 			.catch(console.error)
+	}
+	private setWrapperPath(
+		wrapper: EConversionWrapper,
+		{
+			availableWrappers
+		}: IConversionWrapperConfig
+	): void {
+		const wrapperPath = availableWrappers.filter(
+			wrapperConf => wrapperConf.binary === wrapper
+		)?.[0]?.path
+		if (!wrapperPath) {
+			this.logger.error(`Wrapperpath is undefined for ${wrapper}. No path will be set`)
+			return
+		}
+		switch (wrapper) {
+			case EConversionWrapper.ffmpeg:
+				Ffmpeg().setFfmpegPath(`${wrapperPath}`)
+				break
+			default:
+				break
+		}
 	}
 	get port(): number {
 		return this._port

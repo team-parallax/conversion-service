@@ -2,7 +2,7 @@ import { ConversionQueueService } from "../service/conversion/conversionQueue"
 import { EConversionStatus } from "../service/conversion/enum"
 import { IConversionStatusResponse } from "../service/conversion/interface"
 import { NoSuchConversionIdError } from "../constants"
-import { createConversionRequests } from "./dataFactory"
+import { createConversionRequests } from "./helper/dataFactory"
 import { v4 as uuid } from "uuid"
 describe("ConversionQueueService should pass all tests", () => {
 	const conversionQueueService = new ConversionQueueService()

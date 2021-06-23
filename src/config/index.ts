@@ -1,10 +1,13 @@
+import { BaseConverter } from "../abstract/converter"
 import {
 	ConfigurationCreationError,
 	MissingConfigurationValueError,
 	MissingWrapperDefinitionError,
 	UnknownConversionWrapperError
 } from "./exception"
-import { EConfigurationKey, EConversionWrapper } from "./enum"
+// Import { ConverterService } from "../abstract/converter/service"
+import { EConfigurationKey, EConversionWrapper } from "../enum"
+import { FFmpegWrapper } from "../service/ffmpeg"
 import {
 	IConfig,
 	IConversionMaximaConfig,
@@ -12,16 +15,39 @@ import {
 	IConversionWrapper,
 	IConversionWrapperConfig
 } from "./interface"
+import { UnoconvWrapper } from "../service/unoconv"
 import { config } from "dotenv"
 config()
+export const initializeConversionWrapperMap = (
+	availableWrappers: EConversionWrapper[]
+): Map<EConversionWrapper, BaseConverter> => {
+	const converterMap = new Map<EConversionWrapper, BaseConverter>()
+	for (const wrapperName of availableWrappers) {
+		switch (wrapperName) {
+			case EConversionWrapper.ffmpeg:
+				converterMap.set(wrapperName, FFmpegWrapper as BaseConverter)
+				break
+			case EConversionWrapper.unoconv:
+				converterMap.set(wrapperName, UnoconvWrapper as BaseConverter)
+				break
+			default:
+				if (wrapperName === EConversionWrapper.imagemagick) {
+					throw new UnknownConversionWrapperError(`${wrapperName} is not yet implemented`)
+				}
+				throw new UnknownConversionWrapperError(wrapperName)
+		}
+	}
+	return converterMap
+}
 export const createConfiguration = (): IConfig => {
-	// TODO: Add more tests
 	try {
 		const conversionMaximaConfiguration = createMaximaConfiguration()
 		const conversionWrapperConfiguration = createWrapperConfiguration()
+		const webservicePort = getPortConfigValue()
 		return {
 			conversionMaximaConfiguration,
-			conversionWrapperConfiguration
+			conversionWrapperConfiguration,
+			webservicePort
 		}
 	}
 	catch (error) {
@@ -33,20 +59,21 @@ export const createConfiguration = (): IConfig => {
 			/**
 			 * TODO: Handle errors thrown: check if error source is critical
 			 * or if thrown error could be handled otherwise
-			 * TODO: Eventually throw ConfigurationCreationError here.
+			 * Eventually throw ConfigurationCreationError here.
 			 */
 			if (error instanceof MissingConfigurationValueError) {
 				throw new ConfigurationCreationError(
 					error.message,
-					"createConfiguration"
+					`createConfiguration has caught: ${error.name}`
 				)
 			}
-			throw Error("Unknown Error")
+			else {
+				throw Error(error.message)
+			}
 		}
 	}
 }
 export const createConversionPrecedenceOrderConfig = (): IConversionPrecedenceOrder => {
-	/* TODO: Add test-cases for this function */
 	try {
 		const documentPrecedenceOrderString = loadValueFromEnv(
 			EConfigurationKey.converterDocumentPriority
@@ -84,12 +111,15 @@ export const createConversionPrecedenceOrderConfig = (): IConversionPrecedenceOr
 	}
 }
 export const createMaximaConfiguration = (): IConversionMaximaConfig => {
-	/* TODO: Add test-cases for this function */
-	const maxConversionTime = loadValueFromEnv(EConfigurationKey.maxConversionTime)
+	const maxConversionTime = loadValueFromEnv(
+		EConfigurationKey.maxConversionTime
+	) ?? loadValueFromEnv(`${EConfigurationKey.maxConversionTime}_DEFAULT`)
 	if (!maxConversionTime) {
 		throw new MissingConfigurationValueError(EConfigurationKey.maxConversionTime)
 	}
-	const maxConversionTries = loadValueFromEnv(EConfigurationKey.maxConversionTries)
+	const maxConversionTries = loadValueFromEnv(
+		EConfigurationKey.maxConversionTries
+	) ?? loadValueFromEnv(`${EConfigurationKey.maxConversionTries}_DEFAULT`)
 	if (!maxConversionTries) {
 		throw new MissingConfigurationValueError(EConfigurationKey.maxConversionTries)
 	}
@@ -97,9 +127,6 @@ export const createMaximaConfiguration = (): IConversionMaximaConfig => {
 		conversionTime: Number(maxConversionTime),
 		conversionTries: Number(maxConversionTries)
 	}
-}
-export const loadValueFromEnv = (variableKey: string): string | undefined => {
-	return process.env?.[variableKey]
 }
 export const createWrapperConfiguration = (): IConversionWrapperConfig => {
 	try {
@@ -110,11 +137,35 @@ export const createWrapperConfiguration = (): IConversionWrapperConfig => {
 				...precedenceOrder.media
 			])
 		]
-		const availableWrappers: IConversionWrapper[] = availableWrappersAsEnum.map(
-			conversionWrapperEnumValue => transformEnumToIWrapper(
-				conversionWrapperEnumValue
-			)
-		)
+		const errors: Error[] = []
+		const availableWrappers: IConversionWrapper[] = []
+		for (const wrapper of availableWrappersAsEnum) {
+			try {
+				const transformedWrapper = transformEnumToIWrapper(wrapper)
+				availableWrappers.push(transformedWrapper)
+			}
+			catch (error) {
+				if (error instanceof MissingConfigurationValueError) {
+					errors.push(error)
+				}
+			}
+		}
+		if (errors.length > 0) {
+			if (errors.length === availableWrappersAsEnum.length) {
+				throw new ConfigurationCreationError(
+					"Unable to create a configuration for available wrappers:\n\n"
+					+ "Either no data was provided or it could not be parsed correctly",
+					`Origin of error:\n\n\tcreateWrapperConfiguration`
+				)
+			}
+			else if (availableWrappers === []) {
+				throw new ConfigurationCreationError(
+					"Unable to create a configuration for available wrappers:\n\n"
+					+ "Either no data was provided or it could not be parsed correctly",
+					`Origin of error:\n\n\tcreateWrapperConfiguration`
+				)
+			}
+		}
 		return {
 			availableWrappers,
 			precedenceOrder
@@ -134,10 +185,27 @@ export const createWrapperConfiguration = (): IConversionWrapperConfig => {
 		}
 	}
 }
+export const getPortConfigValue = (): number => {
+	const webservicePort = loadValueFromEnv(EConfigurationKey.webservicePort)
+	const webservicePortDefault = loadValueFromEnv(
+		`${EConfigurationKey.webservicePort}_DEFAULT`
+	)
+	if (!webservicePort) {
+		if (!webservicePortDefault) {
+			throw new MissingConfigurationValueError(
+				EConfigurationKey.webservicePort
+			)
+		}
+		return Number(webservicePortDefault)
+	}
+	return Number(webservicePort)
+}
+export const loadValueFromEnv = (variableKey: string): string | undefined => {
+	return process.env?.[variableKey]
+}
 export const transformEnumToIWrapper = (
 	wrapperEnumValue: EConversionWrapper
 ): IConversionWrapper => {
-	// TODO: add tests
 	const wrapperPathConfigKey: EConfigurationKey = getWrapperPathConfigKeyFromEnum(
 		wrapperEnumValue
 	)
@@ -157,7 +225,7 @@ const getWrapperPathConfigKeyFromEnum = (
 		case EConversionWrapper.ffmpeg:
 			return EConfigurationKey.ffmpegPath
 		case EConversionWrapper.imagemagick:
-			return EConfigurationKey.imageMagick
+			return EConfigurationKey.imageMagickPath
 		case EConversionWrapper.unoconv:
 		default:
 			return EConfigurationKey.unoconvPath

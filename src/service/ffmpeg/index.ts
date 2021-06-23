@@ -15,7 +15,7 @@ import path from "path"
 export class FFmpegWrapper {
 	@Inject
 	private readonly logger!: Logger
-	async convertToTargetFormat(
+	async convertToTarget(
 		inputFilePath: string,
 		outputName: string,
 		sourceFormat: string,
