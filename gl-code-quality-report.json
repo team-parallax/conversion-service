@@ -525,5 +525,185 @@
 		},
 		"type": "issue",
 		"severity": "minor"
+	},
+	{
+		"engine_name": "fixme",
+		"fingerprint": "c3b9ab38879b533d73ee300c6ea964f4",
+		"categories": [
+			"Bug Risk"
+		],
+		"check_name": "TODO",
+		"description": "TODO found",
+		"location": {
+			"lines": {
+				"begin": 445,
+				"end": 445
+			},
+			"path": "gl-code-quality-report.json"
+		},
+		"type": "issue",
+		"severity": "minor"
+	},
+	{
+		"engine_name": "fixme",
+		"fingerprint": "9b02718e77c403eeb1ebef3c9ec44c94",
+		"categories": [
+			"Bug Risk"
+		],
+		"check_name": "TODO",
+		"description": "TODO found",
+		"location": {
+			"lines": {
+				"begin": 446,
+				"end": 446
+			},
+			"path": "gl-code-quality-report.json"
+		},
+		"type": "issue",
+		"severity": "minor"
+	},
+	{
+		"engine_name": "fixme",
+		"fingerprint": "c3b9ab38879b533d73ee300c6ea964f4",
+		"categories": [
+			"Bug Risk"
+		],
+		"check_name": "TODO",
+		"description": "TODO found",
+		"location": {
+			"lines": {
+				"begin": 463,
+				"end": 463
+			},
+			"path": "gl-code-quality-report.json"
+		},
+		"type": "issue",
+		"severity": "minor"
+	},
+	{
+		"engine_name": "fixme",
+		"fingerprint": "9b02718e77c403eeb1ebef3c9ec44c94",
+		"categories": [
+			"Bug Risk"
+		],
+		"check_name": "TODO",
+		"description": "TODO found",
+		"location": {
+			"lines": {
+				"begin": 464,
+				"end": 464
+			},
+			"path": "gl-code-quality-report.json"
+		},
+		"type": "issue",
+		"severity": "minor"
+	},
+	{
+		"engine_name": "fixme",
+		"fingerprint": "c3b9ab38879b533d73ee300c6ea964f4",
+		"categories": [
+			"Bug Risk"
+		],
+		"check_name": "TODO",
+		"description": "TODO found",
+		"location": {
+			"lines": {
+				"begin": 481,
+				"end": 481
+			},
+			"path": "gl-code-quality-report.json"
+		},
+		"type": "issue",
+		"severity": "minor"
+	},
+	{
+		"engine_name": "fixme",
+		"fingerprint": "9b02718e77c403eeb1ebef3c9ec44c94",
+		"categories": [
+			"Bug Risk"
+		],
+		"check_name": "TODO",
+		"description": "TODO found",
+		"location": {
+			"lines": {
+				"begin": 482,
+				"end": 482
+			},
+			"path": "gl-code-quality-report.json"
+		},
+		"type": "issue",
+		"severity": "minor"
+	},
+	{
+		"engine_name": "fixme",
+		"fingerprint": "c3b9ab38879b533d73ee300c6ea964f4",
+		"categories": [
+			"Bug Risk"
+		],
+		"check_name": "TODO",
+		"description": "TODO found",
+		"location": {
+			"lines": {
+				"begin": 499,
+				"end": 499
+			},
+			"path": "gl-code-quality-report.json"
+		},
+		"type": "issue",
+		"severity": "minor"
+	},
+	{
+		"engine_name": "fixme",
+		"fingerprint": "9b02718e77c403eeb1ebef3c9ec44c94",
+		"categories": [
+			"Bug Risk"
+		],
+		"check_name": "TODO",
+		"description": "TODO found",
+		"location": {
+			"lines": {
+				"begin": 500,
+				"end": 500
+			},
+			"path": "gl-code-quality-report.json"
+		},
+		"type": "issue",
+		"severity": "minor"
+	},
+	{
+		"engine_name": "fixme",
+		"fingerprint": "c3b9ab38879b533d73ee300c6ea964f4",
+		"categories": [
+			"Bug Risk"
+		],
+		"check_name": "TODO",
+		"description": "TODO found",
+		"location": {
+			"lines": {
+				"begin": 517,
+				"end": 517
+			},
+			"path": "gl-code-quality-report.json"
+		},
+		"type": "issue",
+		"severity": "minor"
+	},
+	{
+		"engine_name": "fixme",
+		"fingerprint": "9b02718e77c403eeb1ebef3c9ec44c94",
+		"categories": [
+			"Bug Risk"
+		],
+		"check_name": "TODO",
+		"description": "TODO found",
+		"location": {
+			"lines": {
+				"begin": 518,
+				"end": 518
+			},
+			"path": "gl-code-quality-report.json"
+		},
+		"type": "issue",
+		"severity": "minor"
 	}
 ]
