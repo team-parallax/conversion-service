@@ -14,9 +14,9 @@ import { writeToFile } from "../file-io"
 export class UnoconvWrapper extends BaseConverter {
 	private static readonly logger: Logger = new Logger()
 	public static async canConvert({
-		fromFormat: inputFormat,
+		sourceFormat: inputFormat,
 		targetFormat: outputFormat
-	}: IConversionRequest): Promise<boolean> {
+	}: Pick<IConversionRequest, "sourceFormat" | "targetFormat">): Promise<boolean> {
 		const supportedFormats = await this.getSupportedConversionFormats()
 		const canConvertInputFormat = Boolean(supportedFormats.find(
 			format => format.extension === inputFormat

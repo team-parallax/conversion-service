@@ -1,46 +1,65 @@
+import { BaseConverter } from "../../abstract/converter"
+import { CapabilityService } from "../capabilities"
 import {
 	ICodecData,
-	IConversionResult,
 	IEncoderData,
 	IFFmpegCapabilitiesObject,
 	IFilterData,
-	IFormatData,
-	IOptions
+	IFormatData
 } from "./interface"
+import {
+	IConversionFile, IConversionRequest, IFormat
+} from "../../abstract/converter/interface"
 import { Inject } from "typescript-ioc"
 import { Logger } from "../logger"
+import { TConversionOptions } from "../../abstract/converter/types"
 import { basePath } from "../../constants"
+import { join } from "path"
 import Ffmpeg, { FfmpegCommand } from "fluent-ffmpeg"
-import path from "path"
-export class FFmpegWrapper {
+export class FFmpegWrapper extends BaseConverter {
 	@Inject
 	private readonly logger!: Logger
-	async convertToTarget(
-		inputFilePath: string,
-		outputName: string,
-		sourceFormat: string,
-		targetFormat: string,
-		options?: IOptions
-	): Promise<IConversionResult> {
+	public static canConvert = async (
+		{
+			sourceFormat,
+			targetFormat
+		}: Pick<IConversionRequest, "sourceFormat" | "targetFormat">
+	): Promise<boolean> => {
+		return await new CapabilityService().supportsConversion(sourceFormat, targetFormat)
+	}
+	public static convertToTarget = async (
+		{
+			path,
+			sourceFormat,
+			targetFormat,
+			retries,
+			conversionId
+		}: IConversionFile,
+		conversionOptions?: TConversionOptions
+	): Promise<IConversionFile> => {
 		return await new Promise((resolve, reject) => {
 			try {
 				const delay = 2000
-				const inputFile = path.join(basePath, inputFilePath)
-				const outPath = path.join(basePath, "output")
-				const outputFile = `${outPath}/${outputName}.${targetFormat}`
+				const inputFile = join(basePath, path)
+				const outPath = join(basePath, "output")
+				const outputFile = `${outPath}/${conversionId}.${targetFormat}`
 				const ffmpegCommand: FfmpegCommand = Ffmpeg(inputFile)
 					.format(targetFormat)
-				if (options?.filter) {
-					ffmpegCommand.addOptions(options?.filter as string[])
+				if (conversionOptions?.filter) {
+					ffmpegCommand.addOptions(conversionOptions?.filter as string[])
 				}
-				if (options?.encoder) {
-					ffmpegCommand.addOptions(options?.encoder as string[])
+				if (conversionOptions?.encoder) {
+					ffmpegCommand.addOptions(conversionOptions?.encoder as string[])
 				}
 				ffmpegCommand.save(outputFile).run()
 				setTimeout(
 					() =>
 						resolve({
-							outputFilepath: outputFile
+							conversionId,
+							path: outputFile,
+							retries,
+							sourceFormat,
+							targetFormat
 						}),
 					delay
 				)
@@ -49,6 +68,13 @@ export class FFmpegWrapper {
 				reject(`FROM WITHIN CONVERSION${err}`)
 			}
 		})
+	}
+	public static getSupportedConversionFormats = async (): Promise<IFormat[]> => {
+		const formats = await new CapabilityService().getAvailableFormats()
+		return formats.map(ffmpegFormat => ({
+			description: ffmpegFormat.description,
+			extension: ffmpegFormat.name
+		}))
 	}
 	async getAvailableCodecs(): Promise<IFFmpegCapabilitiesObject<ICodecData>> {
 		return await new Promise((resolve, reject) => {

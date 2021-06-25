@@ -1,17 +1,19 @@
 import { EConversionStatus } from "Service/conversion/enum"
+import { TConversionOptions } from "./types"
 export interface IApiConversionRequest {
 	file: Buffer,
-	targetFormat: string
-}
-export interface IConversionRequest extends IConversionBase {
-	fromFormat: string,
+	options?: TConversionOptions,
+	originalFormat?: string,
 	targetFormat: string
 }
 export interface IConversionBase {
 	conversionId: string
 }
+export interface IConversionRequest extends IConversionBase {
+	sourceFormat: string,
+	targetFormat: string
+}
 export interface IConversionFile extends IConversionRequest {
-	failures: number,
 	path: string,
 	retries: number
 }

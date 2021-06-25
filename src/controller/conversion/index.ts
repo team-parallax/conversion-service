@@ -19,9 +19,10 @@ import {
 	IConversionProcessingResponse,
 	IConversionQueueStatus,
 	IConversionRequestBody,
-	IConversionStatus,
+	// IConversionStatus,
 	IUnsupportedConversionFormatError
 } from "../../service/conversion/interface"
+import { IConversionStatus } from "../../abstract/converter/interface"
 import { Inject } from "typescript-ioc"
 import { Logger } from "../../service/logger"
 import { extname } from "path"
@@ -84,10 +85,11 @@ export class ConversionController extends Controller {
 		}
 		catch (err) {
 			this.setStatus(EHttpResponseCodes.notFound)
+			// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 			return {
 				conversionId,
 				status: err.message
-			}
+			} as IConversionStatus
 		}
 	}
 	/**

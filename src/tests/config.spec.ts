@@ -1,15 +1,23 @@
 import {
 	ConfigurationCreationError,
+	InvalidConfigurationSpecError,
 	MissingConfigurationValueError, MissingWrapperDefinitionError,
+	UnknownConversionRuleFormatError,
 	UnknownConversionWrapperError
 } from "../config/exception"
-import { EConfigurationKey, EConversionWrapper } from "../enum"
+import {
+	EConfigurationKey, EConversionRuleType, EConversionWrapper
+} from "../enum"
+import { IConversionWrapper } from "~/config/interface"
 import { ITestCaseInput, ITestCaseResult } from "./helper/interface"
 import {
 	createConversionPrecedenceOrderConfig,
+	createConversionRule,
 	createMaximaConfiguration, createWrapperConfiguration,
 	getPortConfigValue,
-	loadValueFromEnv, transformStringToWrapperCollection
+	getRuleShape,
+	getWrapperPathConfigKeyFromEnum,
+	loadValueFromEnv, transformEnumToIWrapper, transformStringToWrapperCollection
 } from "../config"
 import { deleteEnvVarAndDefaultCollection } from "./helper/util"
 import { getRandomNumber } from "./helper/dataFactory"
@@ -20,6 +28,8 @@ describe("It should pass all tests for initialization", () => {
 		process.env = {
 			...initEnv
 		}
+		process.env.MAX_CONVERSION_TRIES = "3"
+		process.env.MAX_CONVERSION_TIME = "10"
 	})
 	afterAll(() => {
 		process.env = initEnv
@@ -38,8 +48,6 @@ describe("It should pass all tests for initialization", () => {
 						const testKeys: EConfigurationKey[] = [
 							maxConversionTime, maxConversionTries
 						]
-						process.env.MAX_CONVERSION_TRIES = "1"
-						process.env.MAX_CONVERSION_TIME = "10"
 						deleteEnvVarAndDefaultCollection(testKeys)
 						/* Act */
 						const getMaximaConfiguration = jest.fn(createMaximaConfiguration)
@@ -138,8 +146,51 @@ describe("It should pass all tests for initialization", () => {
 				/* Assert */
 				expect(getWrapperConfiguration).toThrow(ConfigurationCreationError)
 			})
-			it.todo("transformEnumToIWrapper should trow MissingConfigurationValueError")
-			it.todo("transformEnumToIWrapper should return IWrapper object")
+			it("transformEnumToIWrapper should trow MissingConfigurationValueError", () => {
+				/* Arrange */
+				const wrapper = EConversionWrapper.imagemagick
+				const envVar = EConfigurationKey[`${wrapper}Path`]
+				/* Act */
+				delete process.env[envVar]
+				const getIWrapperFromEnum = jest.fn(
+					(wrapperKey: EConversionWrapper) => transformEnumToIWrapper(wrapperKey)
+				)
+				/* Assert */
+				expect(
+					getIWrapperFromEnum.bind(null, wrapper)
+				).toThrow(MissingConfigurationValueError)
+			})
+			it("transformEnumToIWrapper should return IWrapper object", () => {
+				/* Arrange */
+				const testEnumKeys: EConversionWrapper[] = [
+					...Object.keys(EConversionWrapper).map(
+						wrapper => EConversionWrapper[wrapper]
+					)
+				]
+				const expectedWrappers: IConversionWrapper[] = []
+				/* Act */
+				for (const wrapperEnum of testEnumKeys) {
+					/* Set necessary env variables */
+					const configKey = getWrapperPathConfigKeyFromEnum(wrapperEnum)
+					const wrapperPath = `/usr/bin/${wrapperEnum}`
+					process.env[configKey] = wrapperPath
+					expectedWrappers.push({
+						binary: wrapperEnum,
+						path: wrapperPath
+					})
+				}
+				const isEqualBinaryValue = jest.fn(
+					(
+						wrapper: EConversionWrapper
+					) => transformEnumToIWrapper(
+						wrapper
+					).binary === wrapper
+				)
+				/* Assert */
+				for (const wrapper of testEnumKeys) {
+					expect(isEqualBinaryValue(wrapper)).toBe(true)
+				}
+			})
 		})
 		describe("It should handle wrapper configuration assembly correctly", () => {
 			it("transformStringToWrapperCollection should return EConversionWrapper[]", () => {
@@ -172,10 +223,9 @@ describe("It should pass all tests for initialization", () => {
 				for (const wrapperCollectionTestResult of testResults) {
 					expect(
 						wrapperCollectionTestResult.testResult
+					).toEqual(
+						wrapperCollectionTestResult.expectedResult
 					)
-						.toEqual(
-							wrapperCollectionTestResult.expectedResult
-						)
 				}
 			})
 			it("transformStringToWrapperCollection should throw UnknownConversionWrapperError", () => {
@@ -291,6 +341,114 @@ describe("It should pass all tests for initialization", () => {
 				expect(actualResult)
 					.toEqual(expectedResult)
 			}
+		})
+		describe("It should handle rule config reading and initialization correct", () => {
+			it("createConversionRule should throw InvalidConfigurationSpecError if no value is provided for rule", () => {
+				/* Arrange */
+				const emptyRule = ""
+				/* Act */
+				const getRule = jest.fn(createConversionRule)
+				/* Assert */
+				expect(getRule.bind(null, emptyRule)).toThrowError(InvalidConfigurationSpecError)
+			})
+			it("createConversionRule should return undefined for unknown rule schema", () => {
+				/* Arrange */
+				const unknownRuleSchema = "Some-random_Format"
+				/* Act */
+				const getRule = jest.fn(createConversionRule)
+				/* Assert */
+				expect(getRule(unknownRuleSchema)).toBe(undefined)
+			})
+			it("createConversionRule should return an type 'mono' IConversionRule for valid input", () => {
+				/* Arrange */
+				const monoRuleStrings = [
+					"CONVERT_TO_PDF_WITH",
+					"CONVERT_TO_PNG_WITH"
+				]
+				/* Act */
+				const getRule = jest.fn(createConversionRule)
+				/* Assert */
+				for (const monoRuleString of monoRuleStrings) {
+					process.env[monoRuleString] = "unoconv"
+					const expectedValue = loadValueFromEnv(monoRuleString)
+					expect(getRule(monoRuleString)).toEqual({
+						rule: expectedValue,
+						ruleType: EConversionRuleType.mono
+					})
+				}
+			})
+			it("createConversionRule should return an type 'multi' IConversionRule for valid input", () => {
+				/* Arrange */
+				const multiRuleStrings = [
+					"CONVERT_FROM_PNG_TO_PDF_WITH",
+					"CONVERT_FROM_JPG_TO_PDF_WITH",
+					"CONVERT_FROM_TXT_TO_HTML_WITH",
+					"CONVERT_FROM_DOCX_TO_PDF_WITH",
+					"CONVERT_FROM_A_TO_PNG_WITH"
+				]
+				/* Act */
+				const getRule = jest.fn(createConversionRule)
+				/* Assert */
+				for (const multiRuleString of multiRuleStrings) {
+					process.env[multiRuleString] = "imagemagick"
+					const expectedValue = loadValueFromEnv(multiRuleString)
+					expect(getRule(multiRuleString)).toEqual({
+						rule: expectedValue,
+						ruleType: EConversionRuleType.multi
+					})
+				}
+			})
+			it("getRuleShape should throw UnknownConversionRuleFormatError because of malformed input", () => {
+				/* Arrange */
+				const conversionRules: string[] = [
+					"SOME_WRONG_THING",
+					"AnotherWrongFormat",
+					"CONVert_TO_format_WITH",
+					"jpg"
+				]
+				/* Act */
+				const getTestResultShape = (rule: string): EConversionRuleType => getRuleShape(rule)
+				/* Assert */
+				for (const rule of conversionRules) {
+					expect(
+						getTestResultShape.bind(null, rule)
+					).toThrow(UnknownConversionRuleFormatError)
+				}
+			})
+			it("getRuleShape should return EConversionRuleType.mono", () => {
+				/* Arrange */
+				const conversionRules: string[] = [
+					// "CONVERT_FROM_WINE_TO_WATER",
+					"CONVERT_TO_FILE_WITH",
+					"CONVERT_TO_X_WITH",
+					"CONVERT_TO_PNG_WITH"
+				]
+				/* Act */
+				const getTestResultShape = (rule: string): EConversionRuleType => getRuleShape(rule)
+				/* Assert */
+				for (const rule of conversionRules) {
+					expect(
+						getTestResultShape(rule)
+					).toEqual(EConversionRuleType.mono)
+				}
+			})
+			it("getRuleShape should return EConversionRuleType.multi", () => {
+				/* Arrange */
+				const conversionRules: string[] = [
+					"CONVERT_FROM_WINE_TO_WATER_WITH",
+					"CONVERT_FROM_X_TO_FILE_WITH",
+					"CONVERT_FROM_TEST_TO_X_WITH",
+					"CONVERT_FROM_ANOTHER_TO_PNG_WITH"
+				]
+				/* Act */
+				const getTestResultShape = (rule: string): EConversionRuleType => getRuleShape(rule)
+				/* Assert */
+				for (const rule of conversionRules) {
+					expect(
+						getTestResultShape(rule)
+					).toEqual(EConversionRuleType.multi)
+				}
+			})
 		})
 	})
 })

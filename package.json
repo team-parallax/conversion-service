@@ -17,7 +17,7 @@
 		"start:docker:dev": "yarn run build:docker && yarn run start:docker",
 		"test": "yarn jest --config ./jest.config.js --detectOpenHandles",
 		"test:all": "yarn test",
-		"test:all:ci": "yarn test:coverage --ci",
+		"test:all:ci": "yarn test:coverage --ci --runInBand",
 		"test:coverage": "yarn test --coverage --reporters=default --reporters=jest-junit",
 		"tsoa:create:host": "tsoa spec --host $HOST && tsoa routes",
 		"tsoa:create:local": "tsoa spec --host 'localhost:3000' && tsoa routes",

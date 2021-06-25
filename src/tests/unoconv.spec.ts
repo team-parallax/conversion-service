@@ -1,14 +1,9 @@
 import { ConversionError } from "../constants"
+import { EConfigurationKey } from "../enum"
 import { IFileFormat, IFormatList } from "../service/unoconv/interface"
 import { TUnoconvOptions } from "../service/unoconv/unoconv"
 import { getType } from "mime"
 import { Unoconv as unoconv } from "../service/unoconv/unoconv"
-beforeAll(() => {
-	/* Prepare testing environment and set necessary variables */
-	process.env.MAX_CONVERSION_TIME = "90000"
-	process.env.MAX_CONVERSION_TRIES = "5"
-	process.env.UNOCONV_PATH = "/usr/local/bin/unoconv"
-})
 describe("Unoconv-Wrapper should pass all tests", () => {
 	describe("It should return the correct value for binary", () => {
 		it("should return the default binary value, because no options argument is passed", () => {
@@ -281,8 +276,13 @@ describe("Unoconv-Wrapper should pass all tests", () => {
 	describe("It should perform all asynchronous tasks correctly", () => {
 		const maxTime = 30000
 		jest.setTimeout(maxTime)
+		const setEnvVars = (): void => {
+			process.env[`${EConfigurationKey.maxConversionTime}`] = "90000"
+			process.env[`${EConfigurationKey.maxConversionTries}`] = "5"
+		}
 		it("should return all supported formats", async () => {
 			/* Arrange */
+			setEnvVars()
 			const formats = unoconv.detectSupportedFormats()
 			const isIformatList = (object: unknown): object is IFormatList => {
 				const {
@@ -314,6 +314,7 @@ describe("Unoconv-Wrapper should pass all tests", () => {
 			const filePath = "./sample-input/documents/freezingDoc.docx"
 			const targetFormat = "pdf"
 			/* Act */
+			setEnvVars()
 			const res = unoconv.convert(filePath, targetFormat)
 			/* Assert */
 			await expect(res).rejects.toBeInstanceOf(ConversionError)

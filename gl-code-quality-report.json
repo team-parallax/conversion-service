@@ -1,1 +1,529 @@
-[]
+[
+	{
+		"engine_name": "structure",
+		"fingerprint": "3b2b11a62c1db9c510ad06e9bf72c4f7",
+		"categories": [
+			"Complexity"
+		],
+		"check_name": "method_complexity",
+		"content": {
+			"body": "# Cognitive Complexity\nCognitive Complexity is a measure of how difficult a unit of code is to intuitively understand. Unlike Cyclomatic Complexity, which determines how difficult your code will be to test, Cognitive Complexity tells you how difficult your code will be to read and comprehend.\n\n### A method's cognitive complexity is based on a few simple rules:\n* Code is not considered more complex when it uses shorthand that the language provides for collapsing multiple statements into one\n* Code is considered more complex for each \"break in the linear flow of the code\"\n* Code is considered more complex when \"flow breaking structures are nested\"\n\n### Further reading\n* [Cognitive Complexity docs](https://docs.codeclimate.com/v1.0/docs/cognitive-complexity)\n* [Cognitive Complexity: A new way of measuring understandability](https://www.sonarsource.com/docs/CognitiveComplexity.pdf)\n"
+		},
+		"description": "Function `executeShellCommand` has a Cognitive Complexity of 8 (exceeds 5 allowed). Consider refactoring.",
+		"location": {
+			"path": "src/util/index.ts",
+			"lines": {
+				"begin": 3,
+				"end": 18
+			}
+		},
+		"other_locations": [],
+		"remediation_points": 450000,
+		"severity": "minor",
+		"type": "issue"
+	},
+	{
+		"engine_name": "structure",
+		"fingerprint": "53be9b465e05b2ce7050cc41fa1d92c5",
+		"categories": [
+			"Complexity"
+		],
+		"check_name": "method_lines",
+		"content": {
+			"body": ""
+		},
+		"description": "Function `getConvertedFileDownload` has 27 lines of code (exceeds 25 allowed). Consider refactoring.",
+		"location": {
+			"path": "src/controller/conversion/index.ts",
+			"lines": {
+				"begin": 101,
+				"end": 135
+			}
+		},
+		"other_locations": [],
+		"remediation_points": 648000,
+		"severity": "minor",
+		"type": "issue"
+	},
+	{
+		"engine_name": "structure",
+		"fingerprint": "97c5e6b6b44cdfafbe90f39b3f224502",
+		"categories": [
+			"Complexity"
+		],
+		"check_name": "method_lines",
+		"content": {
+			"body": ""
+		},
+		"description": "Function `handleMultipartFormData` has 27 lines of code (exceeds 25 allowed). Consider refactoring.",
+		"location": {
+			"path": "src/controller/conversion/index.ts",
+			"lines": {
+				"begin": 139,
+				"end": 169
+			}
+		},
+		"other_locations": [],
+		"remediation_points": 648000,
+		"severity": "minor",
+		"type": "issue"
+	},
+	{
+		"engine_name": "structure",
+		"fingerprint": "db95979431d77d385e5be3d71734b45c",
+		"categories": [
+			"Complexity"
+		],
+		"check_name": "method_complexity",
+		"content": {
+			"body": "# Cognitive Complexity\nCognitive Complexity is a measure of how difficult a unit of code is to intuitively understand. Unlike Cyclomatic Complexity, which determines how difficult your code will be to test, Cognitive Complexity tells you how difficult your code will be to read and comprehend.\n\n### A method's cognitive complexity is based on a few simple rules:\n* Code is not considered more complex when it uses shorthand that the language provides for collapsing multiple statements into one\n* Code is considered more complex for each \"break in the linear flow of the code\"\n* Code is considered more complex when \"flow breaking structures are nested\"\n\n### Further reading\n* [Cognitive Complexity docs](https://docs.codeclimate.com/v1.0/docs/cognitive-complexity)\n* [Cognitive Complexity: A new way of measuring understandability](https://www.sonarsource.com/docs/CognitiveComplexity.pdf)\n"
+		},
+		"description": "Function `convert` has a Cognitive Complexity of 10 (exceeds 5 allowed). Consider refactoring.",
+		"location": {
+			"path": "src/service/unoconv/unoconv.ts",
+			"lines": {
+				"begin": 25,
+				"end": 83
+			}
+		},
+		"other_locations": [],
+		"remediation_points": 650000,
+		"severity": "minor",
+		"type": "issue"
+	},
+	{
+		"engine_name": "structure",
+		"fingerprint": "87584de0a8c87374818fe60a2d6b1e5e",
+		"categories": [
+			"Complexity"
+		],
+		"check_name": "method_lines",
+		"content": {
+			"body": ""
+		},
+		"description": "Function `convert` has 52 lines of code (exceeds 25 allowed). Consider refactoring.",
+		"location": {
+			"path": "src/service/unoconv/unoconv.ts",
+			"lines": {
+				"begin": 25,
+				"end": 83
+			}
+		},
+		"other_locations": [],
+		"remediation_points": 1248000,
+		"severity": "major",
+		"type": "issue"
+	},
+	{
+		"engine_name": "structure",
+		"fingerprint": "d8ea8afcd3bae7b0b847effa0237e9ef",
+		"categories": [
+			"Complexity"
+		],
+		"check_name": "method_lines",
+		"content": {
+			"body": ""
+		},
+		"description": "Function `detectSupportedFormats` has 50 lines of code (exceeds 25 allowed). Consider refactoring.",
+		"location": {
+			"path": "src/service/unoconv/unoconv.ts",
+			"lines": {
+				"begin": 84,
+				"end": 138
+			}
+		},
+		"other_locations": [],
+		"remediation_points": 1200000,
+		"severity": "minor",
+		"type": "issue"
+	},
+	{
+		"engine_name": "structure",
+		"fingerprint": "41c288565196eae8436cce26f3107b8a",
+		"categories": [
+			"Complexity"
+		],
+		"check_name": "method_lines",
+		"content": {
+			"body": ""
+		},
+		"description": "Function `convertFile` has 29 lines of code (exceeds 25 allowed). Consider refactoring.",
+		"location": {
+			"path": "src/service/conversion/index.ts",
+			"lines": {
+				"begin": 43,
+				"end": 74
+			}
+		},
+		"other_locations": [],
+		"remediation_points": 696000,
+		"severity": "minor",
+		"type": "issue"
+	},
+	{
+		"engine_name": "structure",
+		"fingerprint": "6b8ea3e2357f1b345bfe2af267226a0d",
+		"categories": [
+			"Complexity"
+		],
+		"check_name": "method_complexity",
+		"content": {
+			"body": "# Cognitive Complexity\nCognitive Complexity is a measure of how difficult a unit of code is to intuitively understand. Unlike Cyclomatic Complexity, which determines how difficult your code will be to test, Cognitive Complexity tells you how difficult your code will be to read and comprehend.\n\n### A method's cognitive complexity is based on a few simple rules:\n* Code is not considered more complex when it uses shorthand that the language provides for collapsing multiple statements into one\n* Code is considered more complex for each \"break in the linear flow of the code\"\n* Code is considered more complex when \"flow breaking structures are nested\"\n\n### Further reading\n* [Cognitive Complexity docs](https://docs.codeclimate.com/v1.0/docs/cognitive-complexity)\n* [Cognitive Complexity: A new way of measuring understandability](https://www.sonarsource.com/docs/CognitiveComplexity.pdf)\n"
+		},
+		"description": "Function `changeConvLogEntry` has a Cognitive Complexity of 7 (exceeds 5 allowed). Consider refactoring.",
+		"location": {
+			"path": "src/service/conversion/queue/index.ts",
+			"lines": {
+				"begin": 40,
+				"end": 59
+			}
+		},
+		"other_locations": [],
+		"remediation_points": 350000,
+		"severity": "minor",
+		"type": "issue"
+	},
+	{
+		"engine_name": "structure",
+		"fingerprint": "ddbd9d94a6b802ed0db83287363eb302",
+		"categories": [
+			"Complexity"
+		],
+		"check_name": "file_lines",
+		"content": {
+			"body": ""
+		},
+		"description": "File `index.ts` has 299 lines of code (exceeds 250 allowed). Consider refactoring.",
+		"location": {
+			"path": "src/config/index.ts",
+			"lines": {
+				"begin": 1,
+				"end": 308
+			}
+		},
+		"other_locations": [],
+		"remediation_points": 1905600,
+		"severity": "minor",
+		"type": "issue"
+	},
+	{
+		"engine_name": "structure",
+		"fingerprint": "bba9a7c17717e579ecd9481fec4de6ad",
+		"categories": [
+			"Complexity"
+		],
+		"check_name": "method_complexity",
+		"content": {
+			"body": "# Cognitive Complexity\nCognitive Complexity is a measure of how difficult a unit of code is to intuitively understand. Unlike Cyclomatic Complexity, which determines how difficult your code will be to test, Cognitive Complexity tells you how difficult your code will be to read and comprehend.\n\n### A method's cognitive complexity is based on a few simple rules:\n* Code is not considered more complex when it uses shorthand that the language provides for collapsing multiple statements into one\n* Code is considered more complex for each \"break in the linear flow of the code\"\n* Code is considered more complex when \"flow breaking structures are nested\"\n\n### Further reading\n* [Cognitive Complexity docs](https://docs.codeclimate.com/v1.0/docs/cognitive-complexity)\n* [Cognitive Complexity: A new way of measuring understandability](https://www.sonarsource.com/docs/CognitiveComplexity.pdf)\n"
+		},
+		"description": "Function `initializeConversionWrapperMap` has a Cognitive Complexity of 6 (exceeds 5 allowed). Consider refactoring.",
+		"location": {
+			"path": "src/config/index.ts",
+			"lines": {
+				"begin": 26,
+				"end": 46
+			}
+		},
+		"other_locations": [],
+		"remediation_points": 250000,
+		"severity": "minor",
+		"type": "issue"
+	},
+	{
+		"engine_name": "structure",
+		"fingerprint": "f0bfc0c3d47e20536caec9c2812e92c1",
+		"categories": [
+			"Complexity"
+		],
+		"check_name": "method_complexity",
+		"content": {
+			"body": "# Cognitive Complexity\nCognitive Complexity is a measure of how difficult a unit of code is to intuitively understand. Unlike Cyclomatic Complexity, which determines how difficult your code will be to test, Cognitive Complexity tells you how difficult your code will be to read and comprehend.\n\n### A method's cognitive complexity is based on a few simple rules:\n* Code is not considered more complex when it uses shorthand that the language provides for collapsing multiple statements into one\n* Code is considered more complex for each \"break in the linear flow of the code\"\n* Code is considered more complex when \"flow breaking structures are nested\"\n\n### Further reading\n* [Cognitive Complexity docs](https://docs.codeclimate.com/v1.0/docs/cognitive-complexity)\n* [Cognitive Complexity: A new way of measuring understandability](https://www.sonarsource.com/docs/CognitiveComplexity.pdf)\n"
+		},
+		"description": "Function `createConfiguration` has a Cognitive Complexity of 8 (exceeds 5 allowed). Consider refactoring.",
+		"location": {
+			"path": "src/config/index.ts",
+			"lines": {
+				"begin": 47,
+				"end": 85
+			}
+		},
+		"other_locations": [],
+		"remediation_points": 450000,
+		"severity": "minor",
+		"type": "issue"
+	},
+	{
+		"engine_name": "structure",
+		"fingerprint": "c8a11f2a4e1fad77c410e339dad631d3",
+		"categories": [
+			"Complexity"
+		],
+		"check_name": "method_complexity",
+		"content": {
+			"body": "# Cognitive Complexity\nCognitive Complexity is a measure of how difficult a unit of code is to intuitively understand. Unlike Cyclomatic Complexity, which determines how difficult your code will be to test, Cognitive Complexity tells you how difficult your code will be to read and comprehend.\n\n### A method's cognitive complexity is based on a few simple rules:\n* Code is not considered more complex when it uses shorthand that the language provides for collapsing multiple statements into one\n* Code is considered more complex for each \"break in the linear flow of the code\"\n* Code is considered more complex when \"flow breaking structures are nested\"\n\n### Further reading\n* [Cognitive Complexity docs](https://docs.codeclimate.com/v1.0/docs/cognitive-complexity)\n* [Cognitive Complexity: A new way of measuring understandability](https://www.sonarsource.com/docs/CognitiveComplexity.pdf)\n"
+		},
+		"description": "Function `createConversionPrecedenceOrderConfig` has a Cognitive Complexity of 7 (exceeds 5 allowed). Consider refactoring.",
+		"location": {
+			"path": "src/config/index.ts",
+			"lines": {
+				"begin": 86,
+				"end": 122
+			}
+		},
+		"other_locations": [],
+		"remediation_points": 350000,
+		"severity": "minor",
+		"type": "issue"
+	},
+	{
+		"engine_name": "structure",
+		"fingerprint": "c020eccd2fa86fcf3aa636ca9aa97c81",
+		"categories": [
+			"Complexity"
+		],
+		"check_name": "method_complexity",
+		"content": {
+			"body": "# Cognitive Complexity\nCognitive Complexity is a measure of how difficult a unit of code is to intuitively understand. Unlike Cyclomatic Complexity, which determines how difficult your code will be to test, Cognitive Complexity tells you how difficult your code will be to read and comprehend.\n\n### A method's cognitive complexity is based on a few simple rules:\n* Code is not considered more complex when it uses shorthand that the language provides for collapsing multiple statements into one\n* Code is considered more complex for each \"break in the linear flow of the code\"\n* Code is considered more complex when \"flow breaking structures are nested\"\n\n### Further reading\n* [Cognitive Complexity docs](https://docs.codeclimate.com/v1.0/docs/cognitive-complexity)\n* [Cognitive Complexity: A new way of measuring understandability](https://www.sonarsource.com/docs/CognitiveComplexity.pdf)\n"
+		},
+		"description": "Function `createWrapperConfiguration` has a Cognitive Complexity of 14 (exceeds 5 allowed). Consider refactoring.",
+		"location": {
+			"path": "src/config/index.ts",
+			"lines": {
+				"begin": 180,
+				"end": 238
+			}
+		},
+		"other_locations": [],
+		"remediation_points": 1050000,
+		"severity": "minor",
+		"type": "issue"
+	},
+	{
+		"engine_name": "structure",
+		"fingerprint": "07a8250009a6f84818da436596a04e8c",
+		"categories": [
+			"Complexity"
+		],
+		"check_name": "method_lines",
+		"content": {
+			"body": ""
+		},
+		"description": "Function `createConfiguration` has 31 lines of code (exceeds 25 allowed). Consider refactoring.",
+		"location": {
+			"path": "src/config/index.ts",
+			"lines": {
+				"begin": 47,
+				"end": 85
+			}
+		},
+		"other_locations": [],
+		"remediation_points": 744000,
+		"severity": "minor",
+		"type": "issue"
+	},
+	{
+		"engine_name": "structure",
+		"fingerprint": "543e1ba83d14df588e7028d81f80370c",
+		"categories": [
+			"Complexity"
+		],
+		"check_name": "method_lines",
+		"content": {
+			"body": ""
+		},
+		"description": "Function `createConversionPrecedenceOrderConfig` has 34 lines of code (exceeds 25 allowed). Consider refactoring.",
+		"location": {
+			"path": "src/config/index.ts",
+			"lines": {
+				"begin": 86,
+				"end": 122
+			}
+		},
+		"other_locations": [],
+		"remediation_points": 816000,
+		"severity": "minor",
+		"type": "issue"
+	},
+	{
+		"engine_name": "structure",
+		"fingerprint": "0f3f2aebf61aafa6795f66a194e7f19c",
+		"categories": [
+			"Complexity"
+		],
+		"check_name": "method_lines",
+		"content": {
+			"body": ""
+		},
+		"description": "Function `createWrapperConfiguration` has 57 lines of code (exceeds 25 allowed). Consider refactoring.",
+		"location": {
+			"path": "src/config/index.ts",
+			"lines": {
+				"begin": 180,
+				"end": 238
+			}
+		},
+		"other_locations": [],
+		"remediation_points": 1368000,
+		"severity": "major",
+		"type": "issue"
+	},
+	{
+		"engine_name": "structure",
+		"fingerprint": "4e1939b4140509744d31fff4b9e165a1",
+		"categories": [
+			"Complexity"
+		],
+		"check_name": "file_lines",
+		"content": {
+			"body": ""
+		},
+		"description": "File `routes.ts` has 314 lines of code (exceeds 250 allowed). Consider refactoring.",
+		"location": {
+			"path": "src/routes/routes.ts",
+			"lines": {
+				"begin": 1,
+				"end": 435
+			}
+		},
+		"other_locations": [],
+		"remediation_points": 2121600,
+		"severity": "minor",
+		"type": "issue"
+	},
+	{
+		"engine_name": "structure",
+		"fingerprint": "407cd46c049818c5fe51a78beed8e724",
+		"categories": [
+			"Complexity"
+		],
+		"check_name": "method_complexity",
+		"content": {
+			"body": "# Cognitive Complexity\nCognitive Complexity is a measure of how difficult a unit of code is to intuitively understand. Unlike Cyclomatic Complexity, which determines how difficult your code will be to test, Cognitive Complexity tells you how difficult your code will be to read and comprehend.\n\n### A method's cognitive complexity is based on a few simple rules:\n* Code is not considered more complex when it uses shorthand that the language provides for collapsing multiple statements into one\n* Code is considered more complex for each \"break in the linear flow of the code\"\n* Code is considered more complex when \"flow breaking structures are nested\"\n\n### Further reading\n* [Cognitive Complexity docs](https://docs.codeclimate.com/v1.0/docs/cognitive-complexity)\n* [Cognitive Complexity: A new way of measuring understandability](https://www.sonarsource.com/docs/CognitiveComplexity.pdf)\n"
+		},
+		"description": "Function `RegisterRoutes` has a Cognitive Complexity of 12 (exceeds 5 allowed). Consider refactoring.",
+		"location": {
+			"path": "src/routes/routes.ts",
+			"lines": {
+				"begin": 132,
+				"end": 432
+			}
+		},
+		"other_locations": [],
+		"remediation_points": 850000,
+		"severity": "minor",
+		"type": "issue"
+	},
+	{
+		"engine_name": "structure",
+		"fingerprint": "e00326ecfa20035780aa6cd72890f23e",
+		"categories": [
+			"Complexity"
+		],
+		"check_name": "method_lines",
+		"content": {
+			"body": ""
+		},
+		"description": "Function `RegisterRoutes` has 203 lines of code (exceeds 25 allowed). Consider refactoring.",
+		"location": {
+			"path": "src/routes/routes.ts",
+			"lines": {
+				"begin": 132,
+				"end": 432
+			}
+		},
+		"other_locations": [],
+		"remediation_points": 4872000,
+		"severity": "major",
+		"type": "issue"
+	},
+	{
+		"engine_name": "fixme",
+		"fingerprint": "9cd6907d91be6355e231be7d36e6fe57",
+		"categories": [
+			"Bug Risk"
+		],
+		"check_name": "TODO",
+		"description": "TODO found",
+		"location": {
+			"lines": {
+				"begin": 3,
+				"end": 3
+			},
+			"path": "src/service/ffmpeg/interface.ts"
+		},
+		"type": "issue",
+		"severity": "minor"
+	},
+	{
+		"engine_name": "fixme",
+		"fingerprint": "9cd6907d91be6355e231be7d36e6fe57",
+		"categories": [
+			"Bug Risk"
+		],
+		"check_name": "TODO",
+		"description": "TODO found",
+		"location": {
+			"lines": {
+				"begin": 11,
+				"end": 11
+			},
+			"path": "src/service/ffmpeg/interface.ts"
+		},
+		"type": "issue",
+		"severity": "minor"
+	},
+	{
+		"engine_name": "fixme",
+		"fingerprint": "ad79a61fe8a393e8031307231de3b490",
+		"categories": [
+			"Bug Risk"
+		],
+		"check_name": "TODO",
+		"description": "TODO found",
+		"location": {
+			"lines": {
+				"begin": 103,
+				"end": 103
+			},
+			"path": "src/service/conversion/index.ts"
+		},
+		"type": "issue",
+		"severity": "minor"
+	},
+	{
+		"engine_name": "fixme",
+		"fingerprint": "089eb5ec172445ec138ce113cb93a1f4",
+		"categories": [
+			"Bug Risk"
+		],
+		"check_name": "TODO",
+		"description": "TODO found",
+		"location": {
+			"lines": {
+				"begin": 52,
+				"end": 52
+			},
+			"path": "src/service/conversion/queue/index.ts"
+		},
+		"type": "issue",
+		"severity": "minor"
+	},
+	{
+		"engine_name": "fixme",
+		"fingerprint": "bc1caa2844e9bdd866211262ad855981",
+		"categories": [
+			"Bug Risk"
+		],
+		"check_name": "TODO",
+		"description": "TODO found",
+		"location": {
+			"lines": {
+				"begin": 70,
+				"end": 70
+			},
+			"path": "src/config/index.ts"
+		},
+		"type": "issue",
+		"severity": "minor"
+	}
+]

@@ -4,12 +4,14 @@ import {
 	IEncoder,
 	IFFmpegCapabilities,
 	IFFmpegCapabilitiesObject,
-	IFilter,
-	IFormat,
-	TCapabilities,
-	TCapabilitiesData
+	IFfmpegFormat,
+	IFilter
 } from "../ffmpeg/interface"
 import { Inject } from "typescript-ioc"
+import {
+	TCapabilities,
+	TCapabilitiesData
+} from "../ffmpeg/types"
 export class CapabilityService {
 	@Inject
 	private readonly ffmpegWrapper!: FFmpegWrapper
@@ -42,9 +44,9 @@ export class CapabilityService {
 		const data = await this.ffmpegWrapper.getAvailableFilters()
 		return this.nameCapability<IFilter>(data)
 	}
-	async getAvailableFormats(): Promise<IFormat[]> {
+	async getAvailableFormats(): Promise<IFfmpegFormat[]> {
 		const data = await this.ffmpegWrapper.getAvailableFormats()
-		return this.nameCapability<IFormat>(data)
+		return this.nameCapability<IFfmpegFormat>(data)
 	}
 	public nameCapability<T extends TCapabilities>(
 		data: IFFmpegCapabilitiesObject<TCapabilitiesData>
@@ -60,12 +62,12 @@ export class CapabilityService {
 				namedData.push(namedElement)
 			}
 		}
-		return namedData
+		return namedData as unknown as T[]
 	}
 	async supportsConversion(from: string, to: string): Promise<boolean> {
 		const formats = await this.getAvailableFormats()
-		const supportsFrom = this.containsCapability<IFormat>(formats, from)
-		const supportsTo = this.containsCapability<IFormat>(formats, to)
+		const supportsFrom = this.containsCapability<IFfmpegFormat>(formats, from)
+		const supportsTo = this.containsCapability<IFfmpegFormat>(formats, to)
 		return supportsFrom && supportsTo
 	}
 }

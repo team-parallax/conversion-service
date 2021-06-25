@@ -1,7 +1,7 @@
 import { CapabilityService } from "../service/capabilities"
 import { FFmpegWrapper } from "../service/ffmpeg"
 import {
-	ICodec, IEncoder, IFilter, IFormat
+	ICodec, IEncoder, IFfmpegFormat, IFilter
 } from "../service/ffmpeg/interface"
 describe("CapabilityService should pass all tests", () => {
 	const capabilityService = new CapabilityService()
@@ -37,7 +37,7 @@ describe("CapabilityService should pass all tests", () => {
 		it("should convert ffmpeg formats output in correct named format", async (done: jest.DoneCallback) => {
 			/* Arrange */
 			const unnamedFormats = await ffmpeg.getAvailableFormats()
-			const namedFormats = capabilityService.nameCapability<IFormat>(unnamedFormats)
+			const namedFormats = capabilityService.nameCapability<IFfmpegFormat>(unnamedFormats)
 			const formats = await capabilityService.getAvailableFormats()
 			/* Assert */
 			expect(formats).toMatchObject(namedFormats)

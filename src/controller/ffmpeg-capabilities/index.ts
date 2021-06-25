@@ -9,8 +9,8 @@ import {
 	ICodec,
 	IEncoder,
 	IFFmpegCapabilities,
-	IFilter,
-	IFormat
+	IFfmpegFormat,
+	IFilter
 } from "../../service/ffmpeg/interface"
 import { Inject } from "typescript-ioc"
 import { Logger } from "../../service/logger"
@@ -55,7 +55,7 @@ export class CapabilityController extends Controller {
 	 * Returns all available formats that can be converted with FFmpeg.
 	 */
 	@Get("/formats")
-	public async getAvailableFormats(): Promise<IFormat[]> {
+	public async getAvailableFormats(): Promise<IFfmpegFormat[]> {
 		this.logger.log(`Ffmpeg-Formats requested`)
 		return await this.capabilityService.getAvailableFormats()
 	}

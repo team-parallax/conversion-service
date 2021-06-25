@@ -21,3 +21,4 @@ yarn-debug.log
 package-lock.json
 # coverage
 coverage
+junit.xml

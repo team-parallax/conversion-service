@@ -1,13 +1,10 @@
-import { EConversionStatus } from "./enum"
+import { IConversionStatus } from "../../abstract/converter/interface"
 export interface IError {
 	message: string
 }
 export interface IUnsupportedConversionFormatError extends IError {}
 export interface IConvertable {
 	conversionId: string
-}
-export interface IConversionStatus extends IConvertable {
-	status: EConversionStatus
 }
 export interface IConversionInQueue extends IConversionStatus {
 	queuePosition: number
@@ -84,14 +81,14 @@ export interface IConversionRequestBody {
 	originalFormat?: string,
 	targetFormat: string
 }
-export interface IConversionRequest {
-	conversionId: string,
-	isConverted: boolean,
-	name: string,
-	path: string,
-	sourceFormat: string,
-	targetFormat: string
-}
+// Export interface IConversionRequest {
+// 	ConversionId: string,
+// 	IsConverted: boolean,
+// 	Name: string,
+// 	Path: string,
+// 	SourceFormat: string,
+// 	TargetFormat: string
+// }
 /**
  * @tsoaModel
  * @example
