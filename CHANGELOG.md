@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.4...v0.1.5) (2021-06-25)
+
+
+### Docs
+
+* **env-variables:** add webservice port and default information ([1397f0a](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/1397f0a40cfc452e4e93287107aefce9cb69a95e))
+
+### [0.1.6](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.4...v0.1.6) (2021-06-25)
+
+
+### Docs
+
+* **env-variables:** add webservice port and default information ([1397f0a](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/1397f0a40cfc452e4e93287107aefce9cb69a95e))
+
+### [0.1.5](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.4...v0.1.5) (2021-06-25)
+
+
+### Docs
+
+* **env-variables:** add webservice port and default information ([1397f0a](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/1397f0a40cfc452e4e93287107aefce9cb69a95e))
+
 ### [0.1.4](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.3...v0.1.4) (2021-06-23)
 
 
