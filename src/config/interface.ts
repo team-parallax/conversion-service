@@ -1,12 +1,10 @@
 import { EConversionRuleType, EConversionWrapper } from "../enum"
+import { TConversionRulesConfig } from "./type"
 export interface IConfig {
 	conversionMaximaConfiguration: IConversionMaximaConfig,
 	conversionWrapperConfiguration: IConversionWrapperConfig,
-	rules?: IConversionRulesConfig,
+	rules?: TConversionRulesConfig,
 	webservicePort: number
-}
-export interface IConversionRulesConfig {
-	[key: string]: IConversionRule[]
 }
 export interface IConversionRule {
 	rule: string,

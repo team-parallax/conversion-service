@@ -1,6 +1,6 @@
 import { BaseConverter } from "."
 import { ConversionError } from "../../constants"
-import { ConversionQueueService } from "../../service/conversion/conversionQueue"
+import { ConversionQueue } from "../../service/conversion/queue"
 import { EConversionWrapper } from "../../enum"
 import {
 	IConversionFile,
@@ -8,13 +8,12 @@ import {
 	IConversionStatus
 } from "../../abstract/converter/interface"
 import { Inject } from "typescript-ioc"
-import { initializeConversionWrapperMap } from "../../config"
 export class ConverterService {
 	@Inject
-	private readonly queueService!: ConversionQueueService
-	private readonly converterMap: Map<EConversionWrapper, BaseConverter>
+	protected readonly conversionQueue!: ConversionQueue
+	protected readonly converterMap: Map<EConversionWrapper, BaseConverter>
 	constructor() {
-		this.converterMap = initializeConversionWrapperMap([])
+		this.converterMap = new Map()
 	}
 	public async convert(
 		converter: EConversionWrapper,
@@ -22,7 +21,10 @@ export class ConverterService {
 	): Promise<IConversionStatus> {
 		return await this.converterMap[converter].convertToTarget(file)
 	}
-	public determineConverter(conversionRequest: IConversionRequest): EConversionWrapper {
+	public determineConverter({
+		sourceFormat: fromFormat,
+		targetFormat
+	}: IConversionRequest): EConversionWrapper {
 		return EConversionWrapper.unoconv
 	}
 	private async wrapConversion(
@@ -33,7 +35,6 @@ export class ConverterService {
 			return await this.convert(converter, conversionRequest)
 		}
 		catch (error) {
-			/* TODO log error */
 			/* Throw error inside enqueue if max retries are reached */
 			const {
 				retries

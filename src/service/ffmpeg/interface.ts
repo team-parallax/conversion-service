@@ -4,7 +4,7 @@ export interface IConvertedFile extends IConversionResult {
 	outputFilename: string,
 	resultFile?: Buffer
 }
-export interface IConversionResult{
+export interface IConversionResult {
 	outputFilepath: string
 }
 export interface IConversionParams {
@@ -14,7 +14,7 @@ export interface IConversionParams {
 	outputFilename?: string,
 	targetFormat: string
 }
-export interface IOptions {
+export interface IFfmpegOptions {
 	encoder: unknown[],
 	filter: unknown[]
 }
@@ -25,7 +25,7 @@ export interface IFFmpegCapabilities {
 	codecs: ICodec[],
 	encoders: IEncoder[],
 	filters: IFilter[],
-	formats: IFormat[]
+	formats: IFfmpegFormat[]
 }
 /**
  * Returns all available codecs that can be used with FFmpeg.
@@ -56,7 +56,7 @@ export interface IFFmpegCapabilitiesObject<T> {
 	[key: string]: T
 }
 /* FFmpeg interfaces for internal data structures */
-export interface IFormat extends IFormatData {
+export interface IFfmpegFormat extends IFormatData {
 	name: string
 }
 export interface IFormatData {
@@ -64,8 +64,6 @@ export interface IFormatData {
 	canMux: boolean,
 	description: string
 }
-export type TCapabilities = ICodec | IFilter | IFormat | IEncoder
-export type TCapabilitiesData = ICodecData | IFilterData | IFormatData | IEncoderData
 /**
  * @tsoaModel
  * @example

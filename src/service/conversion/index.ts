@@ -1,33 +1,36 @@
 /* eslint-disable no-void */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { CapabilityService } from "../capabilities"
-import { ConversionQueueService } from "./conversionQueue"
+import { ConversionQueue } from "./queue"
+import { ConverterService } from "../../abstract/converter/service"
 import { EConversionStatus } from "./enum"
 import { FFmpegWrapper } from "../ffmpeg"
+import { IConversionFile, IConversionStatus } from "../../abstract/converter/interface"
 import {
 	IConversionInQueue,
 	IConversionProcessingResponse,
 	IConversionQueueStatus,
-	IConversionRequest,
-	IConversionRequestBody,
-	IConversionStatus
+	IConversionRequestBody
 } from "./interface"
-import {
-	IConversionResult, IFormat, TCapabilities
-} from "../ffmpeg/interface"
+import { IFfmpegFormat } from "../ffmpeg/interface"
 import { Inject } from "typescript-ioc"
 import { Logger } from "../logger"
+import { TCapabilities } from "../ffmpeg/types"
+import { UnoconvWrapper } from "../unoconv"
 import { UnsupportedConversionFormatError } from "../../constants"
 import { deleteFile, writeToFile } from "../file-io"
 import { v4 as uuidV4 } from "uuid"
-export class ConversionService {
-	@Inject
-	private readonly conversionQueueService!: ConversionQueueService
+export class ConversionService extends ConverterService {
 	@Inject
 	private readonly ffmpeg!: FFmpegWrapper
 	@Inject
 	private readonly logger!: Logger
-	public addToConversionQueue(requestObject: IConversionRequest): IConversionProcessingResponse {
+	@Inject
+	private readonly unoconv!: UnoconvWrapper
+	constructor() {
+		super()
+	}
+	public addToConversionQueue(requestObject: IConversionFile): IConversionProcessingResponse {
 		const {
 			conversionId
 		} = this.queueService.addToConversionQueue(requestObject)
@@ -42,27 +45,21 @@ export class ConversionService {
 		if (fileToProcess) {
 			const {
 				conversionId,
-				name,
-				path,
-				sourceFormat,
-				targetFormat
+				path
 			} = fileToProcess
 			this.queueService.isCurrentlyConverting = true
 			this.queueService.currentlyConvertingFile = fileToProcess
 			this.queueService.changeConvLogEntry(conversionId, EConversionStatus.processing)
 			try {
-				const conversionResponse: IConversionResult = await this.ffmpeg
-					.convertToTarget(path, conversionId, sourceFormat, targetFormat)
+				const conversionResponse: IConversionFile = await this.ffmpeg
+					.convertToTarget(fileToProcess)
 				/* Delete input file. */
 				await deleteFile(path)
-				this.conversionQueueService.addToConvertedQueue(
+				this.queueService.changeConvLogEntry(
 					conversionId,
-					{
-						outputFilename: name,
-						outputFilepath: conversionResponse.outputFilepath
-					}
+					EConversionStatus.converted,
+					conversionResponse.path
 				)
-				this.queueService.changeConvLogEntry(conversionId, EConversionStatus.converted)
 			}
 			catch (err) {
 				this.logger.error(`Re-add the file conversion request due to error before: ${err}`)
@@ -113,21 +110,20 @@ export class ConversionService {
 		const conversionId = uuidV4()
 		const inPath = `input/${conversionId}.${origin}`
 		await writeToFile(inPath, file)
-		const request: IConversionRequest = {
+		const conversionRequest: IConversionFile = {
 			conversionId,
-			isConverted: false,
-			name: filename,
 			path: inPath,
+			retries: 0,
 			sourceFormat: origin,
 			targetFormat: target
 		}
-		return this.addToConversionQueue(request)
+		return this.addToConversionQueue(conversionRequest)
 	}
 	async supportsConversion(from: string, to: string): Promise<boolean> {
 		const capabilityService: CapabilityService = new CapabilityService()
 		const formats = await capabilityService.getAvailableFormats()
-		const supportsFrom = this.containsCapability<IFormat>(formats, from)
-		const supportsTo = this.containsCapability<IFormat>(formats, to)
+		const supportsFrom = this.containsCapability<IFfmpegFormat>(formats, from)
+		const supportsTo = this.containsCapability<IFfmpegFormat>(formats, to)
 		return supportsFrom && supportsTo
 	}
 	private containsCapability<T extends TCapabilities>(
@@ -155,8 +151,8 @@ export class ConversionService {
 	set isCurrentlyConverting(isConverting: boolean) {
 		this.queueService.isCurrentlyConverting = isConverting
 	}
-	get queueService(): ConversionQueueService {
-		return this.conversionQueueService
+	get queueService(): ConversionQueue {
+		return this.conversionQueue
 	}
 	get queueLength(): number {
 		return this.queueService.conversionQueue.length

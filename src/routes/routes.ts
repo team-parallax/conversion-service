@@ -38,6 +38,10 @@ const models: TsoaRoute.Models = {
 		"dataType": "refObject",
 		"properties": {
 			"conversionId": { "dataType": "string", "required": true },
+			"sourceFormat": { "dataType": "string", "required": true },
+			"targetFormat": { "dataType": "string", "required": true },
+			"path": { "dataType": "string", "required": true },
+			"retries": { "dataType": "double", "required": true },
 			"status": { "ref": "EConversionStatus", "required": true },
 		},
 		"additionalProperties": false,
@@ -98,7 +102,7 @@ const models: TsoaRoute.Models = {
 		"additionalProperties": false,
 	},
 	// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-	"IFormat": {
+	"IFfmpegFormat": {
 		"dataType": "refObject",
 		"properties": {
 			"canDemux": { "dataType": "boolean", "required": true },
@@ -115,7 +119,7 @@ const models: TsoaRoute.Models = {
 			"codecs": { "dataType": "array", "array": { "ref": "ICodec" }, "required": true },
 			"encoders": { "dataType": "array", "array": { "ref": "IEncoder" }, "required": true },
 			"filters": { "dataType": "array", "array": { "ref": "IFilter" }, "required": true },
-			"formats": { "dataType": "array", "array": { "ref": "IFormat" }, "required": true },
+			"formats": { "dataType": "array", "array": { "ref": "IFfmpegFormat" }, "required": true },
 		},
 		"additionalProperties": false,
 	},

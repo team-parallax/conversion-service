@@ -1,22 +1,22 @@
-import { ConversionQueueService } from "../service/conversion/conversionQueue"
+// Import { ConversionQueueService as ConversionQueue } from "../service/conversion/conversionQueue"
+import { ConversionQueue } from "../service/conversion/queue"
 import { EConversionStatus } from "../service/conversion/enum"
 import { IConversionStatusResponse } from "../service/conversion/interface"
 import { NoSuchConversionIdError } from "../constants"
 import { createConversionRequests } from "./helper/dataFactory"
 import { v4 as uuid } from "uuid"
 describe("ConversionQueueService should pass all tests", () => {
-	const conversionQueueService = new ConversionQueueService()
+	const conversionQueue = new ConversionQueue()
 	beforeEach(() => {
-		conversionQueueService.conversionLog = new Map()
-		conversionQueueService.conversionQueue = []
-		conversionQueueService.convertedQueue = []
+		conversionQueue.conversionLog = new Map()
+		conversionQueue.conversionQueue = []
 	})
 	describe("Should throw an NoSuchConversionIdError", () => {
 		const nonAvailableConversionId = uuid()
 		it("When trying to retrieve non-existent status", () => {
 			/* Act */
 			const getStatus = jest.fn((): IConversionStatusResponse => {
-				return conversionQueueService.getStatusById(nonAvailableConversionId)
+				return conversionQueue.getStatusById(nonAvailableConversionId)
 			})
 			/* Assert */
 			expect(
@@ -27,7 +27,7 @@ describe("ConversionQueueService should pass all tests", () => {
 			/* Arrange */
 			const status = EConversionStatus[0]
 			const changeEntryMock = jest.fn(() => {
-				return conversionQueueService.changeConvLogEntry(nonAvailableConversionId, status)
+				return conversionQueue.changeConvLogEntry(nonAvailableConversionId, status)
 			})
 			/* Assert */
 			expect(changeEntryMock).toThrowError(NoSuchConversionIdError)
@@ -42,14 +42,14 @@ describe("ConversionQueueService should pass all tests", () => {
 			for (const request of conversionRequests) {
 				const {
 					conversionId
-				} = conversionQueueService.addToConversionQueue(request)
+				} = conversionQueue.addToConversionQueue(request)
 				conversionIds.push(conversionId)
 			}
 			/* Assert */
 			for (const convId of conversionIds) {
-				const convLogElement = conversionQueueService.conversionLog.get(convId)
+				const convLogElement = conversionQueue.conversionLog.get(convId)
 				if (convLogElement) {
-					const isInConversionQueue = conversionQueueService.conversionQueue.find(
+					const isInConversionQueue = conversionQueue.conversionQueue.find(
 						item => item.conversionId === convId
 					)
 					expect(convLogElement).not.toBeNull()

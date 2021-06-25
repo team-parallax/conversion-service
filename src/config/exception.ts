@@ -16,6 +16,13 @@ export class InvalidConfigurationError extends Error {
 		this.name = "InvalidConfigurationError"
 	}
 }
+export class InvalidConfigurationSpecError extends Error {
+	readonly name: string
+	constructor(message?: string) {
+		super(message)
+		this.name = "InvalidConfigurationSpecError"
+	}
+}
 export class MissingWrapperDefinitionError extends Error {
 	readonly name: string
 	constructor(message?: string) {
@@ -31,6 +38,13 @@ export class MissingConfigurationValueError extends Error {
 		super(message)
 		this.missingField = missingConfigurationField
 		this.name = "MissingConfigurationValueError"
+	}
+}
+export class UnknownConversionRuleFormatError extends Error {
+	constructor(conversionRule: string) {
+		const message = `The provided rule '${conversionRule}' is unknown.\nIgnored in the following`
+		super(message)
+		this.name = "UnknownConversionRuleFormatError"
 	}
 }
 export class UnknownConversionWrapperError extends Error {

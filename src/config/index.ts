@@ -1,23 +1,28 @@
 import { BaseConverter } from "../abstract/converter"
 import {
 	ConfigurationCreationError,
+	InvalidConfigurationSpecError,
 	MissingConfigurationValueError,
 	MissingWrapperDefinitionError,
+	UnknownConversionRuleFormatError,
 	UnknownConversionWrapperError
 } from "./exception"
-// Import { ConverterService } from "../abstract/converter/service"
-import { EConfigurationKey, EConversionWrapper } from "../enum"
+import {
+	EConfigurationKey, EConversionRuleType, EConversionWrapper
+} from "../enum"
 import { FFmpegWrapper } from "../service/ffmpeg"
 import {
 	IConfig,
 	IConversionMaximaConfig,
 	IConversionPrecedenceOrder,
+	IConversionRule,
 	IConversionWrapper,
 	IConversionWrapperConfig
 } from "./interface"
+import { TConversionRulesConfig } from "./type"
 import { UnoconvWrapper } from "../service/unoconv"
-import { config } from "dotenv"
-config()
+import { config as envConfig } from "dotenv"
+envConfig()
 export const initializeConversionWrapperMap = (
 	availableWrappers: EConversionWrapper[]
 ): Map<EConversionWrapper, BaseConverter> => {
@@ -43,10 +48,15 @@ export const createConfiguration = (): IConfig => {
 	try {
 		const conversionMaximaConfiguration = createMaximaConfiguration()
 		const conversionWrapperConfiguration = createWrapperConfiguration()
+		const conversionRules = {
+			mono: [],
+			multi: []
+		}
 		const webservicePort = getPortConfigValue()
 		return {
 			conversionMaximaConfiguration,
 			conversionWrapperConfiguration,
+			rules: conversionRules,
 			webservicePort
 		}
 	}
@@ -110,6 +120,45 @@ export const createConversionPrecedenceOrderConfig = (): IConversionPrecedenceOr
 		}
 	}
 }
+export const createConversionRulesConfiguration = (): TConversionRulesConfig => {
+	return {
+		mono: [],
+		multi: []
+	}
+}
+export const createConversionRule = (ruleKey: string): IConversionRule | undefined => {
+	try {
+		if (ruleKey === "") {
+			throw new InvalidConfigurationSpecError("<empty-key>")
+		}
+		const ruleType: EConversionRuleType = getRuleShape(ruleKey)
+		const rule: string | undefined = loadValueFromEnv(ruleKey)
+		if (!rule) {
+			throw new InvalidConfigurationSpecError("<empty-value>")
+		}
+		return {
+			rule,
+			ruleType
+		}
+	}
+	catch (error) {
+		if (error instanceof UnknownConversionRuleFormatError) {
+			return undefined
+		}
+		throw error
+	}
+}
+export const getRuleShape = (ruleString: string): EConversionRuleType => {
+	const monoPattern: RegExp = /(CONVERT_TO_[A-Za-z0-9]*_WITH)/
+	const multiPattern: RegExp = /(CONVERT_FROM_[A-Za-z0-9]*_TO_[A-Za-z0-9]*_WITH)/
+	if (ruleString.search(multiPattern) !== -1) {
+		return EConversionRuleType.multi
+	}
+	else if (ruleString.search(monoPattern) !== -1) {
+		return EConversionRuleType.mono
+	}
+	throw new UnknownConversionRuleFormatError(ruleString)
+}
 export const createMaximaConfiguration = (): IConversionMaximaConfig => {
 	const maxConversionTime = loadValueFromEnv(
 		EConfigurationKey.maxConversionTime
@@ -147,7 +196,9 @@ export const createWrapperConfiguration = (): IConversionWrapperConfig => {
 			catch (error) {
 				if (error instanceof MissingConfigurationValueError) {
 					errors.push(error)
+					continue
 				}
+				throw error
 			}
 		}
 		if (errors.length > 0) {
@@ -218,7 +269,7 @@ export const transformEnumToIWrapper = (
 		path: wrapperPath
 	}
 }
-const getWrapperPathConfigKeyFromEnum = (
+export const getWrapperPathConfigKeyFromEnum = (
 	wrapperEnumValue: EConversionWrapper
 ): EConfigurationKey => {
 	switch (wrapperEnumValue) {
@@ -252,3 +303,6 @@ export const transformStringToWrapperCollection = (
 			}
 		)
 }
+const config: IConfig = createConfiguration()
+// eslint-disable-next-line import/no-default-export
+export default config

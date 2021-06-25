@@ -4,10 +4,10 @@ export enum EConversionWrapper {
 	unoconv = "unoconv"
 }
 export enum EConversionRuleType {
-	/* Rules that follow the pattern CONVERT_FROM_X_TO_Y_WITH */
-	binary = "binary",
 	/* Rules that follow the pattern CONVERT_FROM_X_WITH */
-	unary = "unary"
+	mono = "mono",
+	/* Rules that follow the pattern CONVERT_FROM_X_TO_Y_WITH */
+	multi = "multi"
 }
 export enum EConfigurationKey {
 	converterDocumentPriority = "CONVERTER_DOCUMENT_PRIORITY",

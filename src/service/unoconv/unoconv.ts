@@ -2,10 +2,10 @@ import "lodash"
 import { BaseConverter } from "../../abstract/converter"
 import { ConversionError, ConversionTimeoutError } from "../../constants"
 import { IFileFormat, IFormatList } from "./interface"
-import { createMaximaConfiguration } from "../../config/index"
 import { execFile, spawn } from "child_process"
 import { executeShellCommand } from "../../util"
 import { getType } from "mime"
+import config from "../../config/index"
 interface IUnoconvOptions {
 	port?: string,
 	unoconvBinaryPath?: string
@@ -53,10 +53,11 @@ export class Unoconv extends BaseConverter {
 			})
 		})
 		const timeoutPromise = new Promise<Buffer>((resolve, reject) => {
-			// Const maxTime = maxAllowedConversionTime
 			const {
-				conversionTime: maxConversionTime
-			} = createMaximaConfiguration()
+				conversionMaximaConfiguration: {
+					conversionTime: maxConversionTime
+				}
+			} = config
 			setTimeout(
 				reject,
 				maxConversionTime,

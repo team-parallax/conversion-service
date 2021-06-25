@@ -14,6 +14,12 @@ In order to avoid unforeseen circumstances you should read [this](#conversion-pr
 
 Below all possible variables are listed with a corresponding description, an indicator if this is a required variable and one or more example usages.
 
+### Application Settings
+
+| Variable | Required | Description | Example |
+| :--- | :---: | --- | --- |
+| `WEBSERVICE_PORT` | X | The port where the application will listen for incoming conversion requests | `3000` |
+
 ### Executable Paths
 
 | Variable | Required | Description | Example |
@@ -38,7 +44,9 @@ Below all possible variables are listed with a corresponding description, an ind
 | `CONVERT_TO_<EXT>_WITH` | | A special rule for the conversion service to determine which conversion wrapper should be used for conversions to the specified format. The value should be the name of the conversion binary/wrapper. *This will influence the default conversion behavior of the service, also see [here](#the-mono-format-conversion-rule)* | `CONVERT_TO_PDF_WITH`=unoconv,<br/>`CONVERT_TO_MP4_WITH`=ffmpeg |
 | `CONVERT_FROM_<I_EXT>_TO_<O_EXT>_WITH` || A special rule format for the conversion service to determine the conversion wrapper used for specified extensions. The value used here should be the name of the conversion binary/wrapper. *This will influence the default conversion behavior of the service, also see [here](#the-multi-format-conversion-rule)* |`CONVERT_FROM_JPG_TO_PDF_WITH`=imagemagick|
 
-> The *-marked variables should **only** be changed when **not** using a docker setup, since the docker already includes the installations and the configuration will default to the install locations within the docker container.
+>The *-marked variables should **only** be changed when **not** using a docker setup, since the docker already includes the installations and the configuration will default to the install locations within the docker container.
+
+***All required environment variables*** will have their respective example value within this file set `default` value. When providing a value for this variable it will overwrite the default.
 
 ### The Mono-format conversion rule
 

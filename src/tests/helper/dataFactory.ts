@@ -1,7 +1,8 @@
-import { IConversionRequest } from "~/service/conversion/interface"
+import { IConversionFile } from "../../abstract/converter/interface"
+import { TConversionFiles } from "../../service/conversion/queue/types"
 import faker from "faker"
-export const createConversionRequests = (sampleSize: number = 1): IConversionRequest[] => {
-	const sample: IConversionRequest[] = []
+export const createConversionRequests = (sampleSize: number = 1): TConversionFiles => {
+	const sample: TConversionFiles = []
 	while (sampleSize > 0) {
 		sample.push(createConversionRequestDummy())
 		// eslint-disable-next-line no-param-reassign
@@ -9,14 +10,14 @@ export const createConversionRequests = (sampleSize: number = 1): IConversionReq
 	}
 	return sample
 }
-const createConversionRequestDummy = (): IConversionRequest => {
+const createConversionRequestDummy = (): IConversionFile => {
+	const maxNumber = 100
 	const sourceFormat = faker.system.fileExt("audio/ogg")
 	const targetFormat = faker.system.fileExt("audio/mp4")
 	return {
 		conversionId: faker.datatype.uuid(),
-		isConverted: false,
-		name: faker.system.fileName(),
 		path: faker.system.filePath(),
+		retries: faker.datatype.number(maxNumber),
 		sourceFormat,
 		targetFormat
 	}
