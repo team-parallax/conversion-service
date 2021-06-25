@@ -9,6 +9,23 @@ All notable changes to this project will be documented in this file. See [standa
 
 * **env-variables:** add webservice port and default information ([1397f0a](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/1397f0a40cfc452e4e93287107aefce9cb69a95e))
 
+
+### Code Refactoring
+
+* **project:** fix permissions on project ([3bbb1b8](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/3bbb1b860d684c1d405a059c3212688b7be3ae13))
+
+
+### Others
+
+* **quality-reports:** update quality report file ([485d00b](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/485d00b8819b4751ed25a77a31915a2fe75c56ba))
+
+### [0.1.5](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.4...v0.1.5) (2021-06-25)
+
+
+### Docs
+
+* **env-variables:** add webservice port and default information ([1397f0a](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/1397f0a40cfc452e4e93287107aefce9cb69a95e))
+
 ### [0.1.6](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.4...v0.1.6) (2021-06-25)
 
 
