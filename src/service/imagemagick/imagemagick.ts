@@ -1,5 +1,7 @@
 import * as gm from "gm"
+import { TConversionFormats } from "~/abstract/converter/types"
 import { TResizeOptions } from "./types"
+import { formats } from "./image-magick-formats.json"
 import { resolve } from "path"
 const imagemagick = gm.subClass({
 	imageMagick: true
@@ -18,6 +20,13 @@ export class ImageMagick {
 		return await ImageMagick.writeOutput(
 			conversion,
 			outPath
+		)
+	}
+	public static getSupportedConversionFormats = async (): Promise<TConversionFormats> => {
+		return await new Promise(
+			(resolve, reject) => {
+				resolve(formats as TConversionFormats)
+			}
 		)
 	}
 	public static writeOutput = async (
