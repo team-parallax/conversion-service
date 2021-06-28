@@ -1,18 +1,21 @@
 import { BaseConverter } from "../../abstract/converter"
-import {
-	IConversionFile,
-	IConversionRequest,
-	IFormat
-} from "../../abstract/converter/interface"
+import { IConversionFile } from "../../abstract/converter/interface"
 import { ImageMagick } from "./imagemagick"
+import { InvalidPathError } from "../../constants"
+import { TConversionFormats, TConversionRequestFormats } from "../../abstract/converter/types"
 export class ImageMagickWrapper extends BaseConverter {
 	canConvert = async (
 		{
 			sourceFormat,
 			targetFormat
-		}: Pick<IConversionRequest, "sourceFormat" | "targetFormat">
+		}: TConversionRequestFormats
 	): Promise<boolean> => {
-		return await new Promise((resolve, reject) => resolve(false))
+		const canConvertSource = await this.isSupportedFormat(sourceFormat)
+		const canConvertTarget = await this.isSupportedFormat(targetFormat)
+		if (canConvertSource && canConvertTarget) {
+			return true
+		}
+		return false
 	}
 	convertToTarget = async (conversionRequest: IConversionFile): Promise<IConversionFile> => {
 		const {
@@ -27,7 +30,21 @@ export class ImageMagickWrapper extends BaseConverter {
 			path: outPath
 		}
 	}
-	getSupportedConversionFormats = async (): Promise<IFormat[]> => {
-		return await new Promise((resolve, reject) => resolve([]))
+	getSupportedConversionFormats = async (): Promise<TConversionFormats> => {
+		const formats = await ImageMagick.getSupportedConversionFormats()
+		return await new Promise((resolve, reject) => {
+			if (!formats) {
+				throw new InvalidPathError(
+					"No formats file detected for image-magick"
+				)
+			}
+			resolve(formats as TConversionFormats)
+		})
+	}
+	isSupportedFormat = async (conversionFormat: string): Promise<boolean> => {
+		const formats = await this.getSupportedConversionFormats()
+		return formats.find(
+			format => format.extension === conversionFormat
+		) !== undefined
 	}
 }

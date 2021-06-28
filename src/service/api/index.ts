@@ -139,6 +139,9 @@ export class Api {
 				Ffmpeg().setFfmpegPath(`${wrapperPath}`)
 				break
 			default:
+				this.logger.log(
+					"No matching wrapper definition. Nothing will be set."
+				)
 				break
 		}
 	}

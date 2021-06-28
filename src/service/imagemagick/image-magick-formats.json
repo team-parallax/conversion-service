@@ -1,0 +1,20 @@
+{
+	"formats": [
+		{
+			"description": "jpg",
+			"extension": "lossy image conversion format (.jpg)"
+		},
+		{
+			"description": "jpeg",
+			"extension": "lossy image conversion format (.jpeg)"
+		},
+		{
+			"description": "png",
+			"extension": "protable network graphic (.png)"
+		},
+		{
+			"description": "pdf",
+			"extension": "portable document format (.pdf)"
+		}
+	]
+}
