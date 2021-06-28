@@ -20,14 +20,14 @@ export const maxConversionTriesFallback = 5
 export const basePath: string = path.join(__dirname, "../")
 export class CommandNotFoundError extends Error {
 	readonly name: string
-	constructor(message: string) {
+	constructor(message?: string) {
 		super(message)
 		this.name = "CommandNotFoundError"
 	}
 }
 export class ConversionError extends Error {
 	readonly name: string
-	constructor(message: string) {
+	constructor(message?: string) {
 		super(message)
 		this.name = "ConversionError"
 	}
@@ -35,7 +35,7 @@ export class ConversionError extends Error {
 export class ConversionTimeoutError extends ConversionError {
 	readonly conversionProcessId: number
 	readonly name: string
-	constructor(message: string, convPid?: number) {
+	constructor(message?: string, convPid?: number) {
 		super(message)
 		this.name = "ConversionTimeoutError"
 		this.conversionProcessId = convPid ?? -1
@@ -43,42 +43,42 @@ export class ConversionTimeoutError extends ConversionError {
 }
 export class DifferentOriginalFormatsDetectedError extends Error {
 	readonly name: string
-	constructor(message: string | undefined) {
+	constructor(message?: string) {
 		super(message)
 		this.name = "DifferentOriginalFormatsDetectedError"
 	}
 }
 export class InvalidPathError extends Error {
 	readonly name: string
-	constructor(message: string | undefined) {
+	constructor(message?: string) {
 		super(message)
 		this.name = "InvalidPathError"
 	}
 }
 export class NoTargetFormatSpecifiedError extends Error {
 	readonly name: string
-	constructor(message: string | undefined) {
+	constructor(message?: string) {
 		super(message)
 		this.name = "NoTargetFormatSpecifiedError"
 	}
 }
 export class NoPathForConversionError extends Error {
 	readonly name: string
-	constructor(message: string | undefined) {
+	constructor(message?: string) {
 		super(message)
 		this.name = "NoPathForConversionError"
 	}
 }
 export class NoSuchConversionIdError extends Error {
 	readonly name: string
-	constructor(message: string | undefined) {
+	constructor(message?: string) {
 		super(message)
 		this.name = "NoSuchConversionIdError"
 	}
 }
 export class UnsupportedConversionFormatError extends Error {
 	readonly name: string
-	constructor(message: string | undefined) {
+	constructor(message?: string) {
 		super(message)
 		this.name = "UnsupportedConversionFormatError"
 	}
