@@ -11,7 +11,6 @@
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"ms-azuretools.vscode-docker",
-		"p1c2u.docker-compose",
 		"editorconfig.editorconfig",
 		"dbaeumer.vscode-eslint",
 		"henriiik.docker-linter",
@@ -21,10 +20,7 @@
 		"christian-kohler.npm-intellisense",
 		"redhat.vscode-yaml",
 		"tomoki1207.pdf",
-		"gruntfuggly.todo-tree",
-		"msjsdiag.debugger-for-chrome",
-		"firefox-devtools.vscode-firefox-debug",
-		"donjayamanne.githistory"
+		"gruntfuggly.todo-tree"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [3000],
