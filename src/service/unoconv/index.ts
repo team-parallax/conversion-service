@@ -1,4 +1,3 @@
-import { BaseConverter } from "../../abstract/converter"
 import {
 	ConversionError,
 	NoPathForConversionError,
@@ -11,7 +10,7 @@ import { IFileFormat } from "./interface"
 import { Logger } from "../logger"
 import { Unoconv as unoconv } from "./unoconv"
 import { writeToFile } from "../file-io"
-export class UnoconvWrapper extends BaseConverter {
+export class UnoconvWrapper {
 	private static readonly logger: Logger = new Logger()
 	public static async canConvert({
 		sourceFormat: inputFormat,
