@@ -1,5 +1,6 @@
 import * as gm from "gm"
 import { TResizeOptions } from "./types"
+import { resolve } from "path"
 const imagemagick = gm.subClass({
 	imageMagick: true
 })
@@ -9,10 +10,14 @@ export class ImageMagick {
 		targetPath: string,
 		resizeOptions?: TResizeOptions
 	): Promise<string> => {
-		const conversion = imagemagick(sourcePath)
+		const inPath = resolve(sourcePath)
+		const outPath = resolve(targetPath)
+		const conversion = imagemagick(
+			inPath
+		)
 		return await ImageMagick.writeOutput(
 			conversion,
-			targetPath
+			outPath
 		)
 	}
 	public static writeOutput = async (
