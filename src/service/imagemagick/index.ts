@@ -2,20 +2,17 @@ import { BaseConverter } from "../../abstract/converter"
 import { IConversionFile } from "../../abstract/converter/interface"
 import { ImageMagick } from "./imagemagick"
 import { InvalidPathError } from "../../constants"
-import { TConversionFormats, TConversionRequestFormats } from "../../abstract/converter/types"
+import { TConversionFormats, TConversionRequestFormatSummary } from "../../abstract/converter/types"
 export class ImageMagickWrapper extends BaseConverter {
 	canConvert = async (
 		{
 			sourceFormat,
 			targetFormat
-		}: TConversionRequestFormats
+		}: TConversionRequestFormatSummary
 	): Promise<boolean> => {
 		const canConvertSource = await this.isSupportedFormat(sourceFormat)
 		const canConvertTarget = await this.isSupportedFormat(targetFormat)
-		if (canConvertSource && canConvertTarget) {
-			return true
-		}
-		return false
+		return canConvertSource && canConvertTarget
 	}
 	convertToTarget = async (conversionRequest: IConversionFile): Promise<IConversionFile> => {
 		const {

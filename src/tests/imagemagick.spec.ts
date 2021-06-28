@@ -1,4 +1,6 @@
 import { ImageMagick } from "../service/imagemagick/imagemagick"
+import { ImageMagickWrapper } from "../service/imagemagick"
+import { TConversionRequestFormatSummary, TConversionRequestFormats } from "~/abstract/converter/types"
 import { basePath } from "../constants"
 import { join } from "path"
 describe("ImageMagick should pass all tests", () => {
@@ -20,5 +22,60 @@ describe("ImageMagick should pass all tests", () => {
 		/* Assert */
 		await expect(convertTestFile).resolves.toEqual(targetPath)
 	})
-	it.todo("should throw an error if parent dir of file-targetPath does not exist")
+	describe("ImageMagickWrapper should pass all tests", () => {
+		const imageMagickWrapper = new ImageMagickWrapper()
+		it("should return false for html as input format", async () => {
+			/* Arrange */
+			const testFormat = "html"
+			/* Act */
+			const isConvertable = async (sourceFormat: string): Promise<boolean> => {
+				return await imageMagickWrapper.isSupportedFormat(sourceFormat)
+			}
+			/* Assert */
+			await expect(isConvertable(testFormat)).resolves.toBe(false)
+		})
+		it("should return true for html as input format", async () => {
+			/* Arrange */
+			const testFormat = "html"
+			/* Act */
+			const isConvertable = async (sourceFormat: string): Promise<boolean> => {
+				return await imageMagickWrapper.isSupportedFormat(sourceFormat)
+			}
+			/* Assert */
+			await expect(isConvertable(testFormat)).resolves.toBe(false)
+		})
+		it("should return true for convertability checks with valid formats", async () => {
+			/* Arrange */
+			const formats: TConversionRequestFormats = [
+				{
+					sourceFormat: "jpg",
+					targetFormat: "png"
+				},
+				{
+					sourceFormat: "jpeg",
+					targetFormat: "png"
+				},
+				{
+					sourceFormat: "jpeg",
+					targetFormat: "pdf"
+				},
+				{
+					sourceFormat: "png",
+					targetFormat: "pdf"
+				}
+			]
+			const testCases: Promise<boolean>[] = []
+			/* Act */
+			const canBeConverted = async (
+				format: TConversionRequestFormatSummary
+			): Promise<boolean> => await imageMagickWrapper.canConvert(format)
+			for (const formatPair of formats) {
+				testCases.push(canBeConverted(formatPair))
+			}
+			const canConvertAllEvaluations = await Promise.all(testCases)
+			const canConvertAll = !canConvertAllEvaluations.includes(false)
+			/* Assert */
+			expect(canConvertAll).toBe(true)
+		})
+	})
 })
