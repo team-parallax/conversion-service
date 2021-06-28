@@ -1,0 +1,8 @@
+{
+	"formats": [
+		{
+			"description": "example description",
+			"extension": ".example"
+		}
+	]
+}
