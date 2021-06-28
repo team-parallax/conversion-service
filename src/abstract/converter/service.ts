@@ -39,7 +39,7 @@ export class ConverterService {
 			const {
 				retries
 			} = conversionRequest
-			// This.queueService.addToConversionQueue(conversionRequest, retries + 1)
+			this.conversionQueue.addToConversionQueue(conversionRequest, retries + 1)
 			throw new ConversionError("Error during conversion")
 		}
 	}

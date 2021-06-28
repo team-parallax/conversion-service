@@ -19,7 +19,6 @@ import {
 	IConversionProcessingResponse,
 	IConversionQueueStatus,
 	IConversionRequestBody,
-	// IConversionStatus,
 	IUnsupportedConversionFormatError
 } from "../../service/conversion/interface"
 import { IConversionStatus } from "../../abstract/converter/interface"

@@ -81,14 +81,6 @@ export interface IConversionRequestBody {
 	originalFormat?: string,
 	targetFormat: string
 }
-// Export interface IConversionRequest {
-// 	ConversionId: string,
-// 	IsConverted: boolean,
-// 	Name: string,
-// 	Path: string,
-// 	SourceFormat: string,
-// 	TargetFormat: string
-// }
 /**
  * @tsoaModel
  * @example

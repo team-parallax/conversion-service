@@ -418,7 +418,6 @@ describe("It should pass all tests for initialization", () => {
 			it("getRuleShape should return EConversionRuleType.mono", () => {
 				/* Arrange */
 				const conversionRules: string[] = [
-					// "CONVERT_FROM_WINE_TO_WATER",
 					"CONVERT_TO_FILE_WITH",
 					"CONVERT_TO_X_WITH",
 					"CONVERT_TO_PNG_WITH"

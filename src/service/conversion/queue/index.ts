@@ -122,12 +122,6 @@ export class ConversionQueue {
 	set conversionQueue(newConversionQueue: IConversionFile[]) {
 		this.conversion = newConversionQueue
 	}
-	// Get convertedQueue(): IConversionResult[] {
-	// 	Return this.converted
-	// }
-	// Set convertedQueue(newConvertedQueue: IConversionResult[]) {
-	// 	This.converted = newConvertedQueue
-	// }
 	get currentlyConvertingFile(): IConversionFile | null {
 		return this.currentlyConverting
 	}
