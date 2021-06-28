@@ -60,7 +60,9 @@ test_lint_code:
 test_code:
   stage: test
   script:
-    - yarn test:all:ci
+    - |
+      mkdir -p ./output/ ./input/
+      yarn test:all:ci
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   artifacts:
     expire_in: 30 days
