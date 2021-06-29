@@ -43,7 +43,7 @@ export class UnoconvWrapper {
 		try {
 			const conversion = await unoconv.convert(filePath, targetFormat)
 			const path = `./out/${conversionId}.${targetFormat}`
-			this.logger.log(`Successfully converted file. Saving to disk`)
+			this.logger.log("Successfully converted file. Saving to disk")
 			await writeToFile(path, conversion)
 			return {
 				...conversionRequest,

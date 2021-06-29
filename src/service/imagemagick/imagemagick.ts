@@ -1,6 +1,6 @@
 import * as gm from "gm"
-import { TConversionFormats } from "~/abstract/converter/types"
-import { TResizeOptions } from "./types"
+import { TConversionFormats } from "../../abstract/converter/types"
+import { TImageResizeOptions } from "./types"
 import { formats } from "./image-magick-formats.json"
 import { resolve } from "path"
 const imagemagick = gm.subClass({
@@ -10,7 +10,7 @@ export class ImageMagick {
 	public static convert = async (
 		sourcePath: string,
 		targetPath: string,
-		resizeOptions?: TResizeOptions
+		resizeOptions?: TImageResizeOptions
 	): Promise<string> => {
 		const inPath = resolve(sourcePath)
 		const outPath = resolve(targetPath)

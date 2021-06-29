@@ -1,2 +1,2 @@
 import { IResizeBaseOptions } from "./interface"
-export type TResizeOptions = IResizeBaseOptions & unknown
+export type TImageResizeOptions = IResizeBaseOptions & unknown
