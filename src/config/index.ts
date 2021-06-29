@@ -19,6 +19,7 @@ import {
 	IConversionWrapper,
 	IConversionWrapperConfig
 } from "./interface"
+import { ImageMagickWrapper } from "../service/imagemagick"
 import { TConversionRulesConfig } from "./type"
 import { UnoconvWrapper } from "../service/unoconv"
 import { config as envConfig } from "dotenv"
@@ -35,10 +36,10 @@ export const initializeConversionWrapperMap = (
 			case EConversionWrapper.unoconv:
 				converterMap.set(wrapperName, UnoconvWrapper as BaseConverter)
 				break
+			case EConversionWrapper.imagemagick:
+				converterMap.set(wrapperName, ImageMagickWrapper as BaseConverter)
+				break
 			default:
-				if (wrapperName === EConversionWrapper.imagemagick) {
-					throw new UnknownConversionWrapperError(`${wrapperName} is not yet implemented`)
-				}
 				throw new UnknownConversionWrapperError(wrapperName)
 		}
 	}

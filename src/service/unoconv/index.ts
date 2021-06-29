@@ -1,8 +1,4 @@
-import {
-	ConversionError,
-	NoPathForConversionError,
-	NoTargetFormatSpecifiedError
-} from "../../constants"
+import { ConversionError } from "../../constants"
 import {
 	IConversionFile, IConversionRequest, IFormat
 } from "../../abstract/converter/interface"
@@ -33,13 +29,6 @@ export class UnoconvWrapper {
 			path: filePath,
 			targetFormat
 		} = conversionRequest
-		const outputFilename: string = conversionId
-		if (!filePath?.length) {
-			throw new NoPathForConversionError("No Path for file to convert provided.")
-		}
-		if (!targetFormat?.length) {
-			throw new NoTargetFormatSpecifiedError("No target format specified.")
-		}
 		try {
 			const conversion = await unoconv.convert(filePath, targetFormat)
 			const path = `./out/${conversionId}.${targetFormat}`
