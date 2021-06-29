@@ -12,7 +12,6 @@ This project provides a webservice with a REST-API for file-conversions using `f
     - [ffmpeg](docs/ffmpeg.md) docs
     - [imageMagick](docs/imageMagick.md) docs
     - [unoconv](docs/unoconv.md#unoconv-wrapper-docs) docs
-
 2. Docker installation (required to build and run docker containers)
 3. Environment variables [setup](docs/env-vars.md)
 
