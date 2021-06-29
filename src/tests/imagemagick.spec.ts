@@ -1,6 +1,10 @@
 import { ImageMagick } from "../service/imagemagick/imagemagick"
 import { ImageMagickWrapper } from "../service/imagemagick"
-import { TConversionRequestFormatSummary, TConversionRequestFormats } from "~/abstract/converter/types"
+import {
+	TConversionFormats,
+	TConversionRequestFormatSummary,
+	TConversionRequestFormats
+} from "../abstract/converter/types"
 import { basePath } from "../constants"
 import { join } from "path"
 describe("ImageMagick should pass all tests", () => {
@@ -76,6 +80,22 @@ describe("ImageMagick should pass all tests", () => {
 			const canConvertAll = !canConvertAllEvaluations.includes(false)
 			/* Assert */
 			expect(canConvertAll).toBe(true)
+		})
+		it("should return a list of Conversion formats that are supported", async () => {
+			/* Arrange */
+			/* Act */
+			const getAllSupportedFormats = async (): Promise<TConversionFormats> => {
+				return await imageMagickWrapper.getSupportedConversionFormats()
+			}
+			/* Asssert */
+			try {
+				const formats = await getAllSupportedFormats()
+				expect(formats.length).toBeGreaterThanOrEqual(0)
+			}
+			catch (error) {
+				expect(false).toBe(true)
+			}
+			await expect(getAllSupportedFormats()).resolves.toBeDefined()
 		})
 	})
 })

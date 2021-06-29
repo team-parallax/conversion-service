@@ -1,7 +1,9 @@
 import { ConversionError } from "../constants"
 import { EConfigurationKey } from "../enum"
 import { IFileFormat, IFormatList } from "../service/unoconv/interface"
+import { TConversionRequestFormatSummary } from "../abstract/converter/types"
 import { TUnoconvOptions } from "../service/unoconv/unoconv"
+import { UnoconvWrapper } from "../service/unoconv"
 import { getType } from "mime"
 import { Unoconv as unoconv } from "../service/unoconv/unoconv"
 describe("Unoconv-Wrapper should pass all tests", () => {
@@ -318,6 +320,37 @@ describe("Unoconv-Wrapper should pass all tests", () => {
 			const res = unoconv.convert(filePath, targetFormat)
 			/* Assert */
 			await expect(res).rejects.toBeInstanceOf(ConversionError)
+		})
+	})
+	describe("It should return true if conversion between formats is possible", () => {
+		it("should return true for html-->pdf conversion", async () => {
+			/* Arrange */
+			const testFormats = [
+				{
+					sourceFormat: "html",
+					targetFormat: "pdf"
+				},
+				{
+					sourceFormat: "docx",
+					targetFormat: "pdf"
+				},
+				{
+					sourceFormat: "pptx",
+					targetFormat: "html"
+				}
+			]
+			const results: Promise<boolean>[] = []
+			/* Act */
+			const isConvertable = jest.fn(async (formats: TConversionRequestFormatSummary) => {
+				return await UnoconvWrapper.canConvert(formats)
+			})
+			for (const formatObject of testFormats) {
+				results.push(isConvertable(formatObject))
+			}
+			const resolvedResults = await Promise.all(results)
+			const canConvertAll = !resolvedResults.includes(false)
+			/* Assert */
+			expect(canConvertAll).toBe(true)
 		})
 	})
 })
