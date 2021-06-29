@@ -2,6 +2,52 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.5...v0.1.6) (2021-06-29)
+
+
+### Features
+
+* **imagemagick.ts:** add imagemagick wrapper and api ([3f96142](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/3f96142f0b72cc45617253a2a8fbe9cedf6693ee))
+
+
+### Bug Fixes
+
+* **.gitlab-ci.yml:** add folder creation for test stage ([1ecdb52](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/1ecdb5296a80dbef4769c8d0e9b69b099050af98))
+
+
+### CI
+
+* **.gitlab-ci.yml:** update ci base image for tests ([2a09310](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/2a09310ea1201709f739cb6f21ef82b46371560c))
+
+
+### Code Refactoring
+
+* **conversion-queue:** add better error if no path is given for a conversionId ([2b22d13](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/2b22d13079f91be578c1fe2defc2b7c89efa045b))
+* **conversion-service:** add type aliases as replacement for interface arrays ([11aa80b](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/11aa80ba1749f3db9ba6a0f109ebf50ef45034ba))
+* **conversion-service:** remove unused code(-comments) ([1ce7bc2](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/1ce7bc2e34d3076d3a49e5edda5026d4c26046a5))
+* **unoconv.ts:** remove redundant inheritance ([b059254](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/b059254bafcb28711a1e7307112e6dae6c36da8f))
+
+
+### Docs
+
+* **readme:** remove blank linke ([6ea3583](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/6ea3583880a9d5366f7af6d1e75d7c57691e5c97))
+
+
+### Tests
+
+* **conversion-service:** add tests for uoconv-wrapper, imagemagick and -wrapper ([84e33eb](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/84e33eba3f7087748a4d31ceaa28bb1b4a3a02b1))
+* **imagemagick.ts:** add test to convert images to pdf with ImageMagick ([0d50bd1](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/0d50bd19834dd0dbd2d94e247acf204694656854)), closes [#2](https://gitlab.internal.team-parallax.com/belwue/conversion-service/issues/2)
+* **imagemagickwrapper:** add tests for imagemagick wrapper ([3198c6e](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/3198c6e61271ca704cb1977e247ab759422fd007))
+
+
+### Others
+
+* **devcontainer.json:** remove unneccesary plugins ([3818a36](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/3818a365499e766f871f9603e547ea6154eb707c))
+* **image-magick-formats.json:** add image-magick-formats.json ([1168e1e](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/1168e1e42b22e42c3ff2da5ef39f9fd02ff364ee))
+* **mr-changes:** apply requested changes to mr ([4437b4b](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/4437b4b78da36697db4ceae7200f1d7fe571881a))
+* **quality-report:** update quality report ([c8f0834](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/c8f0834725fae3954c890541bcc0f56e56a46c92))
+* **quality-report:** update quality report ([02e5e43](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/02e5e43cb292c21684a58a2f189fcf034d550808))
+
 ### [0.1.5](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.4...v0.1.5) (2021-06-25)
 
 
