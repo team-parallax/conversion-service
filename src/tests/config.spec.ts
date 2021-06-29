@@ -1,4 +1,3 @@
-import "lodash.permutations"
 import { BaseConverter } from "../abstract/converter"
 import {
 	ConfigurationCreationError,
