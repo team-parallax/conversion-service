@@ -15,7 +15,7 @@ describe("It should pass all tests for File-IO", () => {
 	const inDirectory = "./testing/input"
 	const outDirectory = "./testing/out"
 	const testDirectory = "./testing/test"
-	beforeAll(() => {
+	beforeAll(async (): Promise<void> => {
 		if (existsSync(inDirectory)) {
 			try {
 				deleteFolderRecursive(inDirectory)
@@ -31,6 +31,9 @@ describe("It should pass all tests for File-IO", () => {
 			catch (error) {
 				console.error(error.message)
 			}
+		}
+		if (!existsSync(testDirectory)) {
+			await createDirectoryIfNotPresent(testDirectory)
 		}
 	})
 	describe("It should determine if given input is a file or directory correctly", () => {
