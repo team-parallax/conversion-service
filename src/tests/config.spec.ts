@@ -8,7 +8,7 @@ import {
 import {
 	EConfigurationKey, EConversionRuleType, EConversionWrapper
 } from "../enum"
-import { IConversionWrapper } from "~/config/interface"
+import { IConversionWrapper } from "../config/interface"
 import { ITestCaseInput, ITestCaseResult } from "./helper/interface"
 import {
 	createConversionPrecedenceOrderConfig,

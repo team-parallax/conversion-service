@@ -5,7 +5,7 @@ import {
 	IConversionStatus
 } from "../../../abstract/converter/interface"
 import { IConversionInQueue } from "../interface"
-import { NoSuchConversionIdError } from "../../../constants"
+import { InvalidPathError, NoSuchConversionIdError } from "../../../constants"
 import { TConversionFiles, TConversionIdToStatusMap } from "./types"
 const initialIdMap: TConversionIdToStatusMap = new Map()
 export class ConversionQueue {
@@ -49,8 +49,7 @@ export class ConversionQueue {
 		else {
 			if (status === EConversionStatus.converted) {
 				if (!convertedFilePath) {
-					/* TODO: throw better error */
-					throw Error()
+					throw new InvalidPathError(`No path given for id: ${conversionId}`)
 				}
 				element.path = convertedFilePath
 			}

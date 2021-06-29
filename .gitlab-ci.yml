@@ -1,5 +1,5 @@
 default:
-  image: teamparallax/conversion-service-base-image:v0.1.0
+  image: teamparallax/conversion-service-base-image:v0.2.2
   interruptible: true
 
 cache:
@@ -60,7 +60,9 @@ test_lint_code:
 test_code:
   stage: test
   script:
-    - yarn test:all:ci
+    - |
+      mkdir -p ./output/ ./input/
+      yarn test:all:ci
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   artifacts:
     expire_in: 30 days
