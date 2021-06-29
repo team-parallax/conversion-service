@@ -141,12 +141,6 @@ describe("It should pass all tests for File-IO", () => {
 				`Given Path does not point to a directory: ${path}`
 			)
 		})
-		it("should delete the directory", () => {
-			/* Arrange */
-			const path = resolvePath(testDirectory)
-			/* Assert */
-			expect(() => deleteFolderRecursive(path)).not.toThrow()
-		})
 	})
 	describe("It should handle file reading correctly", () => {
 		const readFile = (path: string): Buffer => readFromFileSync(path)
