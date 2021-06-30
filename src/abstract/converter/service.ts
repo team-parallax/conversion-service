@@ -8,10 +8,11 @@ import {
 	IConversionStatus
 } from "../../abstract/converter/interface"
 import { Inject } from "typescript-ioc"
+import config from "~/config"
 export class ConverterService {
 	@Inject
 	protected readonly conversionQueue!: ConversionQueue
-	protected readonly converterMap: Map<EConversionWrapper, BaseConverter>
+	protected converterMap: Map<EConversionWrapper, BaseConverter>
 	constructor() {
 		this.converterMap = new Map()
 	}
@@ -22,9 +23,12 @@ export class ConverterService {
 		return await this.converterMap[converter].convertToTarget(file)
 	}
 	public determineConverter({
-		sourceFormat: fromFormat,
+		sourceFormat,
 		targetFormat
 	}: IConversionRequest): EConversionWrapper {
+		const {
+			conversionWrapperConfiguration
+		} = config
 		return EConversionWrapper.unoconv
 	}
 	private async wrapConversion(

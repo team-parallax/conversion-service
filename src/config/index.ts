@@ -49,10 +49,7 @@ export const createConfiguration = (): IConfig => {
 	try {
 		const conversionMaximaConfiguration = createMaximaConfiguration()
 		const conversionWrapperConfiguration = createWrapperConfiguration()
-		const conversionRules = {
-			mono: [],
-			multi: []
-		}
+		const conversionRules = createConversionRulesConfiguration()
 		const webservicePort = getPortConfigValue()
 		return {
 			conversionMaximaConfiguration,
@@ -149,17 +146,6 @@ export const createConversionRule = (ruleKey: string): IConversionRule | undefin
 		throw error
 	}
 }
-export const getRuleShape = (ruleString: string): EConversionRuleType => {
-	const monoPattern: RegExp = /(CONVERT_TO_[A-Za-z0-9]*_WITH)/
-	const multiPattern: RegExp = /(CONVERT_FROM_[A-Za-z0-9]*_TO_[A-Za-z0-9]*_WITH)/
-	if (ruleString.search(multiPattern) !== -1) {
-		return EConversionRuleType.multi
-	}
-	else if (ruleString.search(monoPattern) !== -1) {
-		return EConversionRuleType.mono
-	}
-	throw new UnknownConversionRuleFormatError(ruleString)
-}
 export const createMaximaConfiguration = (): IConversionMaximaConfig => {
 	const maxConversionTime = loadValueFromEnv(
 		EConfigurationKey.maxConversionTime
@@ -252,8 +238,32 @@ export const getPortConfigValue = (): number => {
 	}
 	return Number(webservicePort)
 }
+export const getRuleShape = (ruleString: string): EConversionRuleType => {
+	const monoPattern: RegExp = /(CONVERT_TO_[A-Za-z0-9]*_WITH)/
+	const multiPattern: RegExp = /(CONVERT_FROM_[A-Za-z0-9]*_TO_[A-Za-z0-9]*_WITH)/
+	if (ruleString.search(multiPattern) !== -1) {
+		return EConversionRuleType.multi
+	}
+	else if (ruleString.search(monoPattern) !== -1) {
+		return EConversionRuleType.mono
+	}
+	throw new UnknownConversionRuleFormatError(ruleString)
+}
 export const loadValueFromEnv = (variableKey: string): string | undefined => {
 	return process.env?.[variableKey]
+}
+export const getWrapperPathConfigKeyFromEnum = (
+	wrapperEnumValue: EConversionWrapper
+): EConfigurationKey => {
+	switch (wrapperEnumValue) {
+		case EConversionWrapper.ffmpeg:
+			return EConfigurationKey.ffmpegPath
+		case EConversionWrapper.imagemagick:
+			return EConfigurationKey.imageMagickPath
+		case EConversionWrapper.unoconv:
+		default:
+			return EConfigurationKey.unoconvPath
+	}
 }
 export const transformEnumToIWrapper = (
 	wrapperEnumValue: EConversionWrapper
@@ -268,19 +278,6 @@ export const transformEnumToIWrapper = (
 	return {
 		binary: wrapperEnumValue,
 		path: wrapperPath
-	}
-}
-export const getWrapperPathConfigKeyFromEnum = (
-	wrapperEnumValue: EConversionWrapper
-): EConfigurationKey => {
-	switch (wrapperEnumValue) {
-		case EConversionWrapper.ffmpeg:
-			return EConfigurationKey.ffmpegPath
-		case EConversionWrapper.imagemagick:
-			return EConfigurationKey.imageMagickPath
-		case EConversionWrapper.unoconv:
-		default:
-			return EConfigurationKey.unoconvPath
 	}
 }
 export const transformStringToWrapperCollection = (

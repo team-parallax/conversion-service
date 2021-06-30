@@ -20,6 +20,7 @@ import { UnoconvWrapper } from "../unoconv"
 import { UnsupportedConversionFormatError } from "../../constants"
 import { deleteFile, writeToFile } from "../file-io"
 import { v4 as uuidV4 } from "uuid"
+import config, { initializeConversionWrapperMap } from "~/config"
 export class ConversionService extends ConverterService {
 	@Inject
 	private readonly ffmpeg!: FFmpegWrapper
@@ -29,6 +30,15 @@ export class ConversionService extends ConverterService {
 	private readonly unoconv!: UnoconvWrapper
 	constructor() {
 		super()
+		const {
+			conversionWrapperConfiguration: {
+				availableWrappers: availableWrapperInterfaces
+			}
+		} = config
+		const availableWrappers = availableWrapperInterfaces.map(
+			wrapperInterface => wrapperInterface.binary
+		)
+		this.converterMap = initializeConversionWrapperMap(availableWrappers)
 	}
 	public addToConversionQueue(requestObject: IConversionFile): IConversionProcessingResponse {
 		const {
@@ -51,6 +61,7 @@ export class ConversionService extends ConverterService {
 			this.queueService.currentlyConvertingFile = fileToProcess
 			this.queueService.changeConvLogEntry(conversionId, EConversionStatus.processing)
 			try {
+				/* TODO: Replace with wrapper retrieval function #42 */
 				const conversionResponse: IConversionFile = await this.ffmpeg
 					.convertToTarget(fileToProcess)
 				/* Delete input file. */
