@@ -1,5 +1,5 @@
-import { EConversionRuleType } from "../enum"
-import { IConversionRule } from "./interface"
-export type TConversionRulesConfig = {
-	[key in EConversionRuleType]: IConversionRule[]
-}
+import { EConversionWrapper } from "../enum"
+import { IConversionRule, IConversionWrapper } from "./interface"
+export type TConversionRules = IConversionRule[]
+export type TConversionWrappers = IConversionWrapper[]
+export type TConversionWrapperEnums = EConversionWrapper[]

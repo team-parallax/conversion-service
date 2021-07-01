@@ -1,14 +1,20 @@
 import { BaseConverter } from "."
 import { ConversionError } from "../../constants"
 import { ConversionQueue } from "../../service/conversion/queue"
-import { EConversionWrapper } from "../../enum"
+import { EConversionRuleType, EConversionWrapper } from "../../enum"
 import {
 	IConversionFile,
 	IConversionRequest,
 	IConversionStatus
 } from "../../abstract/converter/interface"
 import { Inject } from "typescript-ioc"
-import config from "~/config"
+import { NoAvailableConversionWrapperError } from "../../config/exception"
+import { isMediaFile } from "./util"
+import config, {
+	getRuleStringFromTemplate,
+	loadValueFromEnv,
+	transformStringToWrapperEnumValue
+} from "../../config"
 export class ConverterService {
 	@Inject
 	protected readonly conversionQueue!: ConversionQueue
@@ -22,14 +28,36 @@ export class ConverterService {
 	): Promise<IConversionStatus> {
 		return await this.converterMap[converter].convertToTarget(file)
 	}
-	public determineConverter({
-		sourceFormat,
-		targetFormat
-	}: IConversionRequest): EConversionWrapper {
+	public determineConverter(conversionFormats: IConversionRequest): EConversionWrapper {
 		const {
-			conversionWrapperConfiguration
+			conversionWrapperConfiguration: {
+				precedenceOrder: {
+					document,
+					media
+				}
+			}
 		} = config
-		return EConversionWrapper.unoconv
+		const isMediaSourceFile = isMediaFile(conversionFormats.sourceFormat)
+		const monoRuleWrapper = loadValueFromEnv(
+			getRuleStringFromTemplate(conversionFormats, EConversionRuleType.mono)
+		)
+		const multiRuleWrapper = loadValueFromEnv(
+			getRuleStringFromTemplate(conversionFormats, EConversionRuleType.multi)
+		)
+		if (!(document.length > 0 && media.length > 0)) {
+			throw new NoAvailableConversionWrapperError("No wrappers found")
+		}
+		if (multiRuleWrapper !== undefined) {
+			return transformStringToWrapperEnumValue(multiRuleWrapper)
+		}
+		else if (monoRuleWrapper !== undefined) {
+			return transformStringToWrapperEnumValue(monoRuleWrapper)
+		}
+		else {
+			return isMediaSourceFile
+				? media[0]
+				: document[0]
+		}
 	}
 	private async wrapConversion(
 		conversionRequest: IConversionFile

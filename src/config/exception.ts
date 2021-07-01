@@ -23,6 +23,15 @@ export class InvalidConfigurationSpecError extends Error {
 		this.name = "InvalidConfigurationSpecError"
 	}
 }
+export class InvalidRuleCheckParameterError extends Error {
+	readonly name: string
+	constructor(message?: string) {
+		super(
+			message ?? "No parameters provided for rule-existence check"
+		)
+		this.name = "InvalidRuleCheckParameterError"
+	}
+}
 export class MissingWrapperDefinitionError extends Error {
 	readonly name: string
 	constructor(message?: string) {
@@ -38,6 +47,13 @@ export class MissingConfigurationValueError extends Error {
 		super(message)
 		this.missingField = missingConfigurationField
 		this.name = "MissingConfigurationValueError"
+	}
+}
+export class NoAvailableConversionWrapperError extends Error {
+	readonly name: string
+	constructor(message?: string) {
+		super(message)
+		this.name = "NoAvailableConversionWrapperError"
 	}
 }
 export class UnknownConversionRuleFormatError extends Error {

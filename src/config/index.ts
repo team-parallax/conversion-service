@@ -2,6 +2,7 @@ import { BaseConverter } from "../abstract/converter"
 import {
 	ConfigurationCreationError,
 	InvalidConfigurationSpecError,
+	InvalidRuleCheckParameterError,
 	MissingConfigurationValueError,
 	MissingWrapperDefinitionError,
 	UnknownConversionRuleFormatError,
@@ -20,9 +21,10 @@ import {
 	IConversionWrapperConfig
 } from "./interface"
 import { ImageMagickWrapper } from "../service/imagemagick"
-import { TConversionRulesConfig } from "./type"
+import { TConversionRequestFormatSummary } from "../abstract/converter/types"
 import { UnoconvWrapper } from "../service/unoconv"
 import { config as envConfig } from "dotenv"
+import { isUndefinedOrEmptyString } from "../util"
 envConfig()
 export const initializeConversionWrapperMap = (
 	availableWrappers: EConversionWrapper[]
@@ -49,12 +51,10 @@ export const createConfiguration = (): IConfig => {
 	try {
 		const conversionMaximaConfiguration = createMaximaConfiguration()
 		const conversionWrapperConfiguration = createWrapperConfiguration()
-		const conversionRules = createConversionRulesConfiguration()
 		const webservicePort = getPortConfigValue()
 		return {
 			conversionMaximaConfiguration,
 			conversionWrapperConfiguration,
-			rules: conversionRules,
 			webservicePort
 		}
 	}
@@ -106,23 +106,66 @@ export const createConversionPrecedenceOrderConfig = (): IConversionPrecedenceOr
 			media: mediaPrecedenceOrder
 		}
 	}
-	catch (error) {
-		if (error instanceof MissingConfigurationValueError) {
+	catch (err) {
+		if (err instanceof MissingConfigurationValueError) {
 			throw new MissingWrapperDefinitionError(
-				`Missing definition for wrapper precedence:\n\n${error?.message ?? "No error-message set"}`
+				`Missing definition for wrapper precedence:\n\n${err?.message ?? "No error-message"}`
 			)
 		}
 		else {
 			/* Just pass the error as is */
-			throw error
+			throw err
 		}
 	}
 }
-export const createConversionRulesConfiguration = (): TConversionRulesConfig => {
-	return {
-		mono: [],
-		multi: []
+export const getRuleStringFromTemplate = (
+	{
+		sourceFormat,
+		targetFormat
+	}: TConversionRequestFormatSummary,
+	ruleType: EConversionRuleType
+): string => {
+	if (
+		isUndefinedOrEmptyString(sourceFormat)
+		&& isUndefinedOrEmptyString(targetFormat)
+	) {
+		throw new InvalidRuleCheckParameterError()
 	}
+	return hydratedRuleString(
+		{
+			sourceFormat,
+			targetFormat
+		},
+		ruleType
+	)
+}
+const hydratedRuleString = (
+	{
+		sourceFormat,
+		targetFormat
+	}: TConversionRequestFormatSummary,
+	ruleType: EConversionRuleType
+): string => {
+	const upperCasedSource = sourceFormat.toUpperCase()
+	const upperCasedTarget = targetFormat.toUpperCase()
+	switch (ruleType) {
+		case EConversionRuleType.mono:
+			return `CONVERT_TO_${upperCasedTarget}_WITH`
+		case EConversionRuleType.multi:
+			return `CONVERT_FROM_${upperCasedSource}_TO_${upperCasedTarget}_WITH`
+		default:
+			throw new UnknownConversionRuleFormatError(
+				"Could not find a rule for the given formats"
+			)
+	}
+}
+export const getCorrectWrapperWithActiveRuleSet = (
+	{
+		sourceFormat,
+		targetFormat
+	}: TConversionRequestFormatSummary
+): EConversionWrapper => {
+	return EConversionWrapper.unoconv
 }
 export const createConversionRule = (ruleKey: string): IConversionRule | undefined => {
 	try {
@@ -288,11 +331,11 @@ export const transformStringToWrapperCollection = (
 		.split(splitDelimiterString)
 		.map(
 			converterCandidate => {
-				// Ignore word-casing
-				const conversionWrapperName = converterCandidate.trim()
+				/* Ignore word-casing */
+				const conversionWrapperName = converterCandidate
+					.trim()
 					.toLowerCase()
-				if (!Object.keys(EConversionWrapper)
-					.includes(conversionWrapperName)) {
+				if (!Object.keys(EConversionWrapper).includes(conversionWrapperName)) {
 					throw new UnknownConversionWrapperError(conversionWrapperName)
 				}
 				return EConversionWrapper[
@@ -301,6 +344,13 @@ export const transformStringToWrapperCollection = (
 			}
 		)
 }
+export const transformStringToWrapperEnumValue = (wrapperString: string): EConversionWrapper => {
+	const wrapper: EConversionWrapper | undefined = EConversionWrapper[wrapperString]
+	if (!wrapper) {
+		throw new UnknownConversionWrapperError(`${wrapper}`)
+	}
+	return wrapper
+}
 const config: IConfig = createConfiguration()
-// eslint-disable-next-line import/no-default-export
+/* eslint-disable-next-line import/no-default-export */
 export default config
