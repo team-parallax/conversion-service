@@ -2,7 +2,10 @@ import { BaseConverter } from "../../abstract/converter"
 import { IConversionFile } from "../../abstract/converter/interface"
 import { ImageMagick } from "./imagemagick"
 import { InvalidPathError } from "../../constants"
-import { TConversionFormats, TConversionRequestFormatSummary } from "../../abstract/converter/types"
+import {
+	TConversionFormats,
+	TConversionRequestFormatSummary
+} from "../../abstract/converter/types"
 export class ImageMagickWrapper extends BaseConverter {
 	public static canConvert = async (
 		{

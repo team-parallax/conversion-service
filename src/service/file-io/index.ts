@@ -1,4 +1,7 @@
-import { InvalidPathError, basePath } from "../../constants"
+import {
+	InvalidPathError,
+	basePath
+} from "../../constants"
 import {
 	ReadStream,
 	createReadStream,

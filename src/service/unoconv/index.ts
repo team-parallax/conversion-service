@@ -1,6 +1,8 @@
 import { ConversionError } from "../../constants"
 import {
-	IConversionFile, IConversionRequest, IFormat
+	IConversionFile,
+	IConversionRequest,
+	IFormat
 } from "../../abstract/converter/interface"
 import { IFileFormat } from "./interface"
 import { Logger } from "../logger"

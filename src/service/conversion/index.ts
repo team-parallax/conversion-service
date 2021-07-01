@@ -4,8 +4,10 @@ import { CapabilityService } from "../capabilities"
 import { ConversionQueue } from "./queue"
 import { ConverterService } from "../../abstract/converter/service"
 import { EConversionStatus } from "./enum"
-import { FFmpegWrapper } from "../ffmpeg"
-import { IConversionFile, IConversionStatus } from "../../abstract/converter/interface"
+import {
+	IConversionFile,
+	IConversionStatus
+} from "../../abstract/converter/interface"
 import {
 	IConversionInQueue,
 	IConversionProcessingResponse,
@@ -16,18 +18,16 @@ import { IFfmpegFormat } from "../ffmpeg/interface"
 import { Inject } from "typescript-ioc"
 import { Logger } from "../logger"
 import { TCapabilities } from "../ffmpeg/types"
-import { UnoconvWrapper } from "../unoconv"
 import { UnsupportedConversionFormatError } from "../../constants"
-import { deleteFile, writeToFile } from "../file-io"
+import {
+	deleteFile,
+	writeToFile
+} from "../file-io"
 import { v4 as uuidV4 } from "uuid"
-import config, { initializeConversionWrapperMap } from "~/config"
+import config, { initializeConversionWrapperMap } from "../../config"
 export class ConversionService extends ConverterService {
 	@Inject
-	private readonly ffmpeg!: FFmpegWrapper
-	@Inject
 	private readonly logger!: Logger
-	@Inject
-	private readonly unoconv!: UnoconvWrapper
 	constructor() {
 		super()
 		const {
@@ -61,9 +61,7 @@ export class ConversionService extends ConverterService {
 			this.queueService.currentlyConvertingFile = fileToProcess
 			this.queueService.changeConvLogEntry(conversionId, EConversionStatus.processing)
 			try {
-				/* TODO: Replace with wrapper retrieval function #42 */
-				const conversionResponse: IConversionFile = await this.ffmpeg
-					.convertToTarget(fileToProcess)
+				const conversionResponse: IConversionFile = await this.wrapConversion(fileToProcess)
 				/* Delete input file. */
 				await deleteFile(path)
 				this.queueService.changeConvLogEntry(

@@ -9,7 +9,9 @@ import {
 	UnknownConversionWrapperError
 } from "./exception"
 import {
-	EConfigurationKey, EConversionRuleType, EConversionWrapper
+	EConfigurationKey,
+	EConversionRuleType,
+	EConversionWrapper
 } from "../enum"
 import { FFmpegWrapper } from "../service/ffmpeg"
 import {

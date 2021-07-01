@@ -5,8 +5,14 @@ import {
 	IConversionStatus
 } from "../../../abstract/converter/interface"
 import { IConversionInQueue } from "../interface"
-import { InvalidPathError, NoSuchConversionIdError } from "../../../constants"
-import { TConversionFiles, TConversionIdToStatusMap } from "./types"
+import {
+	InvalidPathError,
+	NoSuchConversionIdError
+} from "../../../constants"
+import {
+	TConversionFiles,
+	TConversionIdToStatusMap
+} from "./types"
 const initialIdMap: TConversionIdToStatusMap = new Map()
 export class ConversionQueue {
 	private static instance: ConversionQueue

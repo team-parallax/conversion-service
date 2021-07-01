@@ -1,5 +1,7 @@
 import {
-	IConversionFile, IConversionRequest, IFormat
+	IConversionFile,
+	IConversionRequest,
+	IFormat
 } from "./interface"
 import { TConversionOptions } from "./types"
 export abstract class BaseConverter {

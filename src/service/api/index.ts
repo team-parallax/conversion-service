@@ -1,6 +1,6 @@
 import { EConversionWrapper } from "../../enum"
 import { EHttpResponseCodes } from "../../constants"
-import { IConversionWrapperConfig } from "~/config/interface"
+import { IConversionWrapperConfig } from "../../config/interface"
 import { Inject } from "typescript-ioc"
 import { Logger } from "../logger"
 import { RegisterRoutes } from "../../routes/routes"

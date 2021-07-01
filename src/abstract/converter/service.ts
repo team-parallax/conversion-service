@@ -1,7 +1,10 @@
 import { BaseConverter } from "."
 import { ConversionError } from "../../constants"
 import { ConversionQueue } from "../../service/conversion/queue"
-import { EConversionRuleType, EConversionWrapper } from "../../enum"
+import {
+	EConversionRuleType,
+	EConversionWrapper
+} from "../../enum"
 import {
 	IConversionFile,
 	IConversionRequest,
@@ -59,7 +62,7 @@ export class ConverterService {
 				: document[0]
 		}
 	}
-	private async wrapConversion(
+	protected async wrapConversion(
 		conversionRequest: IConversionFile
 	): Promise<IConversionFile> {
 		try {
