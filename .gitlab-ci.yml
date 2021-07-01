@@ -77,6 +77,15 @@ test_code:
         - src/**/*.ts
       when: always
 
+test_types:
+  stage: test
+  script:
+    - yarn test:types
+  rules:
+    - changes:
+        - src/**/*.ts
+      when: always
+
 test_quality:
   allow_failure: true
   image: docker:stable
@@ -85,6 +94,7 @@ test_quality:
   stage: quality
   needs:
     - job: test_lint_code
+    - job: test_types
   variables:
     DOCKER_TLS_CERTDIR: ""
     DOCKER_HOST: tcp://localhost:2375
