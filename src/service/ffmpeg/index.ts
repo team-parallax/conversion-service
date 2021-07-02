@@ -25,7 +25,14 @@ export class FFmpegWrapper extends BaseConverter {
 			targetFormat
 		}: Pick<IConversionRequest, "sourceFormat" | "targetFormat">
 	): Promise<boolean> => {
-		return await new CapabilityService().supportsConversion(sourceFormat, targetFormat)
+		const supportedFormats = await FFmpegWrapper.getSupportedConversionFormats()
+		const canConvertSource = supportedFormats.find(
+			format => format.extension === sourceFormat
+		) !== undefined
+		const canConvertTarget = supportedFormats.find(
+			format => format.extension === targetFormat
+		) !== undefined
+		return canConvertSource && canConvertTarget
 	}
 	public static convertToTarget = async (
 		{
@@ -43,8 +50,7 @@ export class FFmpegWrapper extends BaseConverter {
 				const inputFile = join(basePath, path)
 				const outPath = join(basePath, "output")
 				const outputFile = `${outPath}/${conversionId}.${targetFormat}`
-				const ffmpegCommand: FfmpegCommand = Ffmpeg(inputFile)
-					.format(targetFormat)
+				const ffmpegCommand: FfmpegCommand = Ffmpeg(inputFile).format(targetFormat)
 				if (conversionOptions?.filter) {
 					ffmpegCommand.addOptions(conversionOptions?.filter as string[])
 				}

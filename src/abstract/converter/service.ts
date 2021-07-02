@@ -5,13 +5,11 @@ import {
 	EConversionRuleType,
 	EConversionWrapper
 } from "../../enum"
-import {
-	IConversionFile,
-	IConversionRequest,
-	IConversionStatus
-} from "../../abstract/converter/interface"
+import { IConversionFile } from "../../abstract/converter/interface"
 import { Inject } from "typescript-ioc"
+import { Logger } from "../../service/logger"
 import { NoAvailableConversionWrapperError } from "../../config/exception"
+import { TConversionRequestFormatSummary, TConverterMap } from "./types"
 import { isMediaFile } from "./util"
 import config, {
 	getRuleStringFromTemplate,
@@ -21,17 +19,23 @@ import config, {
 export class ConverterService {
 	@Inject
 	protected readonly conversionQueue!: ConversionQueue
-	protected converterMap: Map<EConversionWrapper, BaseConverter>
+	@Inject
+	protected readonly logger!: Logger
+	protected converterMap: TConverterMap
 	constructor() {
 		this.converterMap = new Map()
 	}
 	public async convert(
 		converter: EConversionWrapper,
 		file: IConversionFile
-	): Promise<IConversionStatus> {
-		return await this.converterMap[converter].convertToTarget(file)
+	): Promise<IConversionFile> {
+		const conversionWrapper: BaseConverter = this.converterMap[converter]
+		return await conversionWrapper.convertToTarget(file)
 	}
-	public determineConverter(conversionFormats: IConversionRequest): EConversionWrapper {
+	public determineConverter(
+		conversionFormats: TConversionRequestFormatSummary
+	): EConversionWrapper {
+		this.logger.log(`Determine Wrapper for conversion`)
 		const {
 			conversionWrapperConfiguration: {
 				precedenceOrder: {

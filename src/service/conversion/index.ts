@@ -1,9 +1,9 @@
 /* eslint-disable no-void */
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import { CapabilityService } from "../capabilities"
 import { ConversionQueue } from "./queue"
 import { ConverterService } from "../../abstract/converter/service"
 import { EConversionStatus } from "./enum"
+import { FFmpegWrapper } from "../ffmpeg"
 import {
 	IConversionFile,
 	IConversionStatus
@@ -14,10 +14,8 @@ import {
 	IConversionQueueStatus,
 	IConversionRequestBody
 } from "./interface"
-import { IFfmpegFormat } from "../ffmpeg/interface"
-import { Inject } from "typescript-ioc"
-import { Logger } from "../logger"
-import { TCapabilities } from "../ffmpeg/types"
+import { ImageMagickWrapper } from "../imagemagick"
+import { UnoconvWrapper } from "../unoconv"
 import { UnsupportedConversionFormatError } from "../../constants"
 import {
 	deleteFile,
@@ -26,8 +24,6 @@ import {
 import { v4 as uuidV4 } from "uuid"
 import config, { initializeConversionWrapperMap } from "../../config"
 export class ConversionService extends ConverterService {
-	@Inject
-	private readonly logger!: Logger
 	constructor() {
 		super()
 		const {
@@ -128,17 +124,20 @@ export class ConversionService extends ConverterService {
 		}
 		return this.addToConversionQueue(conversionRequest)
 	}
-	async supportsConversion(from: string, to: string): Promise<boolean> {
-		const capabilityService: CapabilityService = new CapabilityService()
-		const formats = await capabilityService.getAvailableFormats()
-		const supportsFrom = this.containsCapability<IFfmpegFormat>(formats, from)
-		const supportsTo = this.containsCapability<IFfmpegFormat>(formats, to)
-		return supportsFrom && supportsTo
-	}
-	private containsCapability<T extends TCapabilities>(
-		capabilities: T[], capability: string
-	): boolean {
-		return capabilities.find(cap => cap.name === capability) !== undefined
+	async supportsConversion(sourceFormat: string, targetFormat: string): Promise<boolean> {
+		const isFfmpegConvertable = await FFmpegWrapper.canConvert({
+			sourceFormat,
+			targetFormat
+		})
+		const isUnoconvConvertable = await UnoconvWrapper.canConvert({
+			sourceFormat,
+			targetFormat
+		})
+		const isImageMagickConvertable = await ImageMagickWrapper.canConvert({
+			sourceFormat,
+			targetFormat
+		})
+		return isFfmpegConvertable || isImageMagickConvertable || isUnoconvConvertable
 	}
 	private async update(): Promise<void> {
 		if (!this.isCurrentlyConverting) {

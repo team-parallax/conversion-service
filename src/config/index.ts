@@ -23,28 +23,38 @@ import {
 	IConversionWrapperConfig
 } from "./interface"
 import { ImageMagickWrapper } from "../service/imagemagick"
+import { Logger } from "../service/logger"
 import { TConversionRequestFormatSummary } from "../abstract/converter/types"
 import { UnoconvWrapper } from "../service/unoconv"
 import { config as envConfig } from "dotenv"
 import { isUndefinedOrEmptyString } from "../util"
 envConfig()
+const logger = new Logger()
 export const initializeConversionWrapperMap = (
 	availableWrappers: EConversionWrapper[]
 ): Map<EConversionWrapper, BaseConverter> => {
 	const converterMap = new Map<EConversionWrapper, BaseConverter>()
 	for (const wrapperName of availableWrappers) {
-		switch (wrapperName) {
-			case EConversionWrapper.ffmpeg:
-				converterMap.set(wrapperName, FFmpegWrapper as BaseConverter)
-				break
-			case EConversionWrapper.unoconv:
-				converterMap.set(wrapperName, UnoconvWrapper as BaseConverter)
-				break
-			case EConversionWrapper.imagemagick:
-				converterMap.set(wrapperName, ImageMagickWrapper as BaseConverter)
-				break
-			default:
-				throw new UnknownConversionWrapperError(wrapperName)
+		try {
+			switch (wrapperName) {
+				case EConversionWrapper.ffmpeg:
+					converterMap.set(wrapperName, FFmpegWrapper as BaseConverter)
+					break
+				case EConversionWrapper.unoconv:
+					converterMap.set(wrapperName, UnoconvWrapper as BaseConverter)
+					break
+				case EConversionWrapper.imagemagick:
+					converterMap.set(wrapperName, ImageMagickWrapper as BaseConverter)
+					break
+				default:
+					throw new UnknownConversionWrapperError(wrapperName)
+			}
+		}
+		catch (err) {
+			if (err instanceof UnknownConversionWrapperError) {
+				logger.log(`Caught error when trying to add ${wrapperName} as binary wrapper`)
+				continue
+			}
 		}
 	}
 	return converterMap

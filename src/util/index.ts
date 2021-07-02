@@ -18,7 +18,7 @@ export const executeShellCommand = async (command: string): Promise<string> => {
 }
 export const isUndefinedOrEmptyString = (checkString?: string): boolean => {
 	if (!checkString) {
-		return false
+		return true
 	}
-	return checkString.length > 0
+	return checkString.length === 0
 }

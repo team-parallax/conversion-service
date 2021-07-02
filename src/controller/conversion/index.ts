@@ -114,8 +114,10 @@ export class ConversionController extends Controller {
 				const stats: fs.Stats = await fs.promises.stat(filePath)
 				this.setHeader("Content-Type", `${getType(filePath)}`)
 				this.setHeader("Content-Length", stats.size.toString())
-				// Removing this line will cause to not launch the download
-				// Just serves the file as it is
+				/*
+				* Removing this line will cause to not launch the download
+				* Just serves the file as it is
+				*/
 				this.setHeader("Content-Disposition", `attachment; filename=${fileName}`)
 				return fs.createReadStream(filePath)
 			}
