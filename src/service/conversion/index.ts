@@ -24,7 +24,7 @@ import {
 	deleteFile,
 	writeToFile
 } from "../file-io"
-import { v4 as uuidV4 } from "uuid"
+import { transformRequestBodyToConversionFile } from "./util"
 import config, { initializeConversionWrapperMap } from "../../config"
 export class ConversionService extends ConverterService {
 	constructor() {
@@ -106,12 +106,14 @@ export class ConversionService extends ConverterService {
 	public getConvertedFile(fileId: string): IConversionStatus {
 		return this.queueService.getStatusById(fileId)
 	}
-	public async processConversionRequest({
-		file,
-		filename,
-		originalFormat,
-		targetFormat
-	}: IConversionRequestBody): Promise<IConversionProcessingResponse> {
+	public async processConversionRequest(
+		conversionRequestBody: IConversionRequestBody
+	): Promise<IConversionProcessingResponse> {
+		const {
+			file,
+			originalFormat,
+			targetFormat
+		} = conversionRequestBody
 		// TODO: Get origin from filename (#25)
 		const origin = originalFormat?.replace(/\./, "") ?? ""
 		const target = targetFormat.replace(/\./, "")
@@ -119,16 +121,12 @@ export class ConversionService extends ConverterService {
 		if (!supports) {
 			throw new UnsupportedConversionFormatError(`Your input contains unsupported conversion formats. ${originalFormat} or ${targetFormat} is not supported.`)
 		}
-		const conversionId = uuidV4()
-		const inPath = `input/${conversionId}.${origin}`
-		await writeToFile(inPath, file)
-		const conversionRequest: IConversionFile = {
-			conversionId,
-			path: inPath,
-			retries: 0,
-			sourceFormat: origin,
+		const conversionRequest: IConversionFile = transformRequestBodyToConversionFile({
+			...conversionRequestBody,
+			originalFormat: origin,
 			targetFormat: target
-		}
+		})
+		await writeToFile(conversionRequest.path, file)
 		return this.addToConversionQueue(conversionRequest)
 	}
 	async supportsConversion(sourceFormat: string, targetFormat: string): Promise<boolean> {

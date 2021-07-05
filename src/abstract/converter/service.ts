@@ -27,7 +27,7 @@ const {
 } = config.conversionMaximaConfiguration
 export class ConverterService {
 	@Inject
-	protected readonly conversionQueue!: ConversionQueue
+	public readonly conversionQueue!: ConversionQueue
 	@Inject
 	protected readonly logger!: Logger
 	protected converterMap: TConverterMap
@@ -46,7 +46,6 @@ export class ConverterService {
 	public determineConverter(
 		conversionFormats: TConversionRequestFormatSummary
 	): EConversionWrapper {
-		this.logger.log(`Determine Wrapper for conversion`)
 		const {
 			conversionWrapperConfiguration: {
 				precedenceOrder: {
@@ -55,6 +54,9 @@ export class ConverterService {
 				}
 			}
 		} = config
+		if (!(document.length > 0 && media.length > 0)) {
+			throw new NoAvailableConversionWrapperError("No wrappers found")
+		}
 		const isMediaSourceFile = isMediaFile(conversionFormats.sourceFormat)
 		const monoRuleWrapper = loadValueFromEnv(
 			getRuleStringFromTemplate(conversionFormats, EConversionRuleType.mono)
@@ -62,9 +64,6 @@ export class ConverterService {
 		const multiRuleWrapper = loadValueFromEnv(
 			getRuleStringFromTemplate(conversionFormats, EConversionRuleType.multi)
 		)
-		if (!(document.length > 0 && media.length > 0)) {
-			throw new NoAvailableConversionWrapperError("No wrappers found")
-		}
 		if (multiRuleWrapper !== undefined) {
 			return transformStringToWrapperEnumValue(multiRuleWrapper)
 		}
