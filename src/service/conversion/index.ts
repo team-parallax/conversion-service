@@ -111,6 +111,7 @@ export class ConversionService extends ConverterService {
 	): Promise<IConversionProcessingResponse> {
 		const {
 			file,
+			filename,
 			originalFormat,
 			targetFormat
 		} = conversionRequestBody
@@ -144,7 +145,7 @@ export class ConversionService extends ConverterService {
 		})
 		return isFfmpegConvertable || isImageMagickConvertable || isUnoconvConvertable
 	}
-	private async update(): Promise<void> {
+	public async update(): Promise<void> {
 		if (!this.isCurrentlyConverting) {
 			return await new Promise((resolve, reject) => {
 				try {

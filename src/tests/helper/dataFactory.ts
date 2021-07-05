@@ -1,4 +1,5 @@
 import { IConversionFile } from "../../abstract/converter/interface"
+import { IConversionRequestBody } from "../../service/conversion/interface"
 import { TConversionFiles } from "../../service/conversion/queue/types"
 import faker from "faker"
 const maxNumber = 100
@@ -11,6 +12,12 @@ export const createConversionRequests = (sampleSize: number = 1): TConversionFil
 	}
 	return sample
 }
+export const createConversionRequestBody = (): IConversionRequestBody => ({
+	file: Buffer.from("testbuffer"),
+	filename: faker.system.fileName(),
+	originalFormat: faker.system.fileExt(),
+	targetFormat: faker.system.fileExt()
+})
 export const createConversionRequestDummy = (
 	source?: string,
 	target?: string,

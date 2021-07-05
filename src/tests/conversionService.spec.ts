@@ -13,12 +13,28 @@ import { TConversionRequestFormatSummary } from "../abstract/converter/types"
 import { createConversionRequestDummy } from "./helper/dataFactory"
 describe("Conversion Service should pass all tests", () => {
 	const conversionService = new ConversionService()
+	it("update should return 'undefined' when 'isCurrentlyConverting' is 'true'", async () => {
+		/* Arrange */
+		conversionService.isCurrentlyConverting = true
+		/* Act */
+		const executeUpdate = async (): Promise<void> => await conversionService.update()
+		/* Assert */
+		await expect(executeUpdate()).resolves.toBeUndefined()
+	})
+	it("update should resolve when 'isCurrentlyConverting' is 'false'", async () => {
+		/* Arrange */
+		conversionService.isCurrentlyConverting = false
+		/* Act */
+		const executeUpdate = async (): Promise<void> => await conversionService.update()
+		/* Assert */
+		await expect(executeUpdate()).resolves.toBeUndefined()
+	})
 	it(
 		"wrapConversion should throw an error because max-retries value for conversion is reached",
 		async () => {
 			/* Arrange */
 			process.env.MAX_CONVERSION_TRIES = "2"
-			const conversionFile: IConversionFile = createConversionRequestDummy("mp3", "pdf")
+			const conversionFile: IConversionFile = createConversionRequestDummy("mp3", "mp4")
 			/* Act */
 			/* Assert */
 			await expect(
