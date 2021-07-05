@@ -1,13 +1,49 @@
 import { ConversionService } from "../service/conversion"
 import { EConversionWrapper } from "../enum"
+import { IConversionFile } from "../abstract/converter/interface"
+import {
+	IConversionProcessingResponse,
+	IConversionRequestBody
+} from "../service/conversion/interface"
+import {
+	MaxConversionTriesError,
+	UnsupportedConversionFormatError
+} from "../constants"
 import { TConversionRequestFormatSummary } from "../abstract/converter/types"
+import { createConversionRequestDummy } from "./helper/dataFactory"
 describe("Conversion Service should pass all tests", () => {
 	const conversionService = new ConversionService()
-	it.todo(
-		"wrapConversion should throw an error because max-retries value for conversion is reached"
+	it(
+		"wrapConversion should throw an error because max-retries value for conversion is reached",
+		async () => {
+			/* Arrange */
+			process.env.MAX_CONVERSION_TRIES = "2"
+			const conversionFile: IConversionFile = createConversionRequestDummy("mp3", "pdf")
+			/* Act */
+			/* Assert */
+			await expect(
+				conversionService.wrapConversion(conversionFile)
+			).rejects.toThrow(MaxConversionTriesError)
+		}
 	)
-	it.todo(
-		"processConversionRequest should throw an 'UnsupportedConversionFormatError' because invalid formats are passed"
+	it(
+		"processConversionRequest should throw an 'UnsupportedConversionFormatError' because invalid formats are passed", async () => {
+			/* Arrange */
+			const testFormats: IConversionRequestBody = {
+				file: Buffer.from("test buffer"),
+				filename: "foobar",
+				originalFormat: "mp3",
+				targetFormat: "pdf"
+			}
+			/* Act */
+			const getProcessingResult = async (): Promise<IConversionProcessingResponse> => {
+				return conversionService.processConversionRequest(testFormats)
+			}
+			/* Assert */
+			await expect(
+				getProcessingResult()
+			).rejects.toThrow(UnsupportedConversionFormatError)
+		}
 	)
 	describe("supportsConversion returns the correct value for input formats", () => {
 		const isSupportedConversion = async (
