@@ -76,11 +76,6 @@ export const createConfiguration = (): IConfig => {
 			throw error
 		}
 		else {
-			/**
-			 * TODO: Handle errors thrown: check if error source is critical
-			 * or if thrown error could be handled otherwise
-			 * Eventually throw ConfigurationCreationError here.
-			 */
 			if (error instanceof MissingConfigurationValueError) {
 				throw new ConfigurationCreationError(
 					error.message,
@@ -314,7 +309,7 @@ export const getWrapperPathConfigKeyFromEnum = (
 		case EConversionWrapper.ffmpeg:
 			return EConfigurationKey.ffmpegPath
 		case EConversionWrapper.imagemagick:
-			return EConfigurationKey.imageMagickPath
+			return EConfigurationKey.imagemagickPath
 		case EConversionWrapper.unoconv:
 		default:
 			return EConfigurationKey.unoconvPath

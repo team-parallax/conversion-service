@@ -25,7 +25,13 @@ export class ImageMagickWrapper extends BaseConverter {
 			sourceFormat,
 			targetFormat
 		} = conversionRequest
-		const targetPath = path.replace(sourceFormat, targetFormat)
+		const targetPath = path.replace(
+			"input",
+			"output"
+		).replace(
+			sourceFormat,
+			targetFormat
+		)
 		const outPath = await ImageMagick.convert(path, targetPath)
 		return {
 			...conversionRequest,

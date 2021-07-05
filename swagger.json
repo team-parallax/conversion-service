@@ -36,6 +36,7 @@
 			"EConversionStatus": {
 				"enum": [
 					"converted",
+					"erroneous",
 					"in queue",
 					"processing"
 				],

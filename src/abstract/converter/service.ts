@@ -40,7 +40,7 @@ export class ConverterService {
 		converter: EConversionWrapper,
 		file: IConversionFile
 	): Promise<IConversionFile> {
-		const conversionWrapper: BaseConverter = this.converterMap[converter]
+		const conversionWrapper: BaseConverter = this.converterMap.get(converter) as BaseConverter
 		return await conversionWrapper.convertToTarget(file)
 	}
 	public determineConverter(
@@ -92,6 +92,10 @@ export class ConverterService {
 		}
 		catch (error) {
 			/* Propagate error to calling function */
+			const {
+				message,
+				name
+			} = error
 			if (error instanceof MaxConversionTriesError) {
 				throw error
 			}
@@ -99,7 +103,7 @@ export class ConverterService {
 				`Re-add the file conversion request due to error before: ${error}`
 			)
 			this.conversionQueue.addToConversionQueue(conversionRequest, retries + 1)
-			throw new ConversionError("Error during conversion")
+			throw new ConversionError(`Error during conversion: ${name} ${message}`)
 		}
 	}
 }

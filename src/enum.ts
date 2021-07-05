@@ -13,7 +13,7 @@ export enum EConfigurationKey {
 	converterDocumentPriority = "CONVERTER_DOCUMENT_PRIORITY",
 	converterMediaPriority = "CONVERTER_MEDIA_PRIORITY",
 	ffmpegPath = "FFMPEG_PATH",
-	imageMagickPath = "IMAGE_MAGICK_PATH",
+	imagemagickPath = "IMAGE_MAGICK_PATH",
 	maxConversionTime = "MAX_CONVERSION_TIME",
 	maxConversionTries = "MAX_CONVERSION_TRIES",
 	unoconvPath = "UNOCONV_PATH",
