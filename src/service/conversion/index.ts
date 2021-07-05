@@ -15,8 +15,11 @@ import {
 	IConversionRequestBody
 } from "./interface"
 import { ImageMagickWrapper } from "../imagemagick"
+import {
+	MaxConversionTriesError,
+	UnsupportedConversionFormatError
+} from "../../constants"
 import { UnoconvWrapper } from "../unoconv"
-import { UnsupportedConversionFormatError } from "../../constants"
 import {
 	deleteFile,
 	writeToFile
@@ -67,9 +70,13 @@ export class ConversionService extends ConverterService {
 				)
 			}
 			catch (err) {
-				this.logger.error(`Re-add the file conversion request due to error before: ${err}`)
-				this.queueService.addToConversionQueue(fileToProcess)
-				this.queueService.changeConvLogEntry(conversionId, EConversionStatus.inQueue)
+				this.logger.error(`Caught error during conversion:\n${err}`)
+				if (err instanceof MaxConversionTriesError) {
+					this.queueService.changeConvLogEntry(conversionId, EConversionStatus.erroneous)
+				}
+				else {
+					this.queueService.changeConvLogEntry(conversionId, EConversionStatus.inQueue)
+				}
 			}
 			finally {
 				this.isCurrentlyConverting = false

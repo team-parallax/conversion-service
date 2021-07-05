@@ -1,5 +1,8 @@
 import { BaseConverter } from "."
-import { ConversionError } from "../../constants"
+import {
+	ConversionError,
+	MaxConversionTriesError
+} from "../../constants"
 import { ConversionQueue } from "../../service/conversion/queue"
 import {
 	EConversionRuleType,
@@ -9,21 +12,29 @@ import { IConversionFile } from "../../abstract/converter/interface"
 import { Inject } from "typescript-ioc"
 import { Logger } from "../../service/logger"
 import { NoAvailableConversionWrapperError } from "../../config/exception"
-import { TConversionRequestFormatSummary, TConverterMap } from "./types"
+import {
+	TConversionRequestFormatSummary,
+	TConverterMap
+} from "./types"
 import { isMediaFile } from "./util"
 import config, {
 	getRuleStringFromTemplate,
 	loadValueFromEnv,
 	transformStringToWrapperEnumValue
 } from "../../config"
+const {
+	conversionTries: maxConversionTries
+} = config.conversionMaximaConfiguration
 export class ConverterService {
 	@Inject
 	protected readonly conversionQueue!: ConversionQueue
 	@Inject
 	protected readonly logger!: Logger
 	protected converterMap: TConverterMap
+	protected maxConversionTries: number
 	constructor() {
 		this.converterMap = new Map()
+		this.maxConversionTries = maxConversionTries
 	}
 	public async convert(
 		converter: EConversionWrapper,
@@ -66,18 +77,28 @@ export class ConverterService {
 				: document[0]
 		}
 	}
-	protected async wrapConversion(
+	public async wrapConversion(
 		conversionRequest: IConversionFile
 	): Promise<IConversionFile> {
+		const {
+			conversionId,
+			retries
+		} = conversionRequest
 		try {
+			if (retries >= maxConversionTries) {
+				throw new MaxConversionTriesError(conversionId)
+			}
 			const converter = this.determineConverter(conversionRequest)
 			return await this.convert(converter, conversionRequest)
 		}
 		catch (error) {
-			/* Throw error inside enqueue if max retries are reached */
-			const {
-				retries
-			} = conversionRequest
+			/* Propagate error to calling function */
+			if (error instanceof MaxConversionTriesError) {
+				throw error
+			}
+			this.logger.error(
+				`Re-add the file conversion request due to error before: ${error}`
+			)
 			this.conversionQueue.addToConversionQueue(conversionRequest, retries + 1)
 			throw new ConversionError("Error during conversion")
 		}

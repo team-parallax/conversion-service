@@ -32,6 +32,14 @@ export class ConversionError extends Error {
 		this.name = "ConversionError"
 	}
 }
+export class MaxConversionTriesError extends Error {
+	readonly name: string
+	constructor(conversionId: string, message?: string) {
+		const errorMessage = message ?? `Maximum conversion tries reached for ${conversionId}`
+		super(errorMessage)
+		this.name = "MaxConversionTriesError"
+	}
+}
 export class ConversionTimeoutError extends ConversionError {
 	readonly conversionProcessId: number
 	readonly name: string

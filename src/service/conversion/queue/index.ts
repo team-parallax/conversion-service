@@ -32,7 +32,7 @@ export class ConversionQueue {
 	}
 	public addToConversionQueue(
 		requestObject: IConversionFile,
-		retries: number = 1
+		retries: number = 0
 	): IConversionBase {
 		this.conversion.push(requestObject)
 		this.convLog.set(requestObject.conversionId, {
