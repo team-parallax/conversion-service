@@ -98,7 +98,11 @@ describe("Conversion Service should pass all tests", () => {
 				...initEnv
 			}
 		})
-		it.todo("determineConverter should throw an 'NoAvailableConversionWrapperError' because of no wrappers being available")
+		beforeEach(() => {
+			process.env = {
+				...initEnv
+			}
+		})
 		it("should return unoconv as wrapper", () => {
 			process.env.CONVERT_TO_ODT_WITH = EConversionWrapper.unoconv
 			const formats: TConversionRequestFormatSummary = {
