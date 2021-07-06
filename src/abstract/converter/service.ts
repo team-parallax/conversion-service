@@ -8,6 +8,7 @@ import {
 	EConversionRuleType,
 	EConversionWrapper
 } from "../../enum"
+import { EConversionStatus } from "../../service/conversion/enum"
 import { IConversionFile } from "../../abstract/converter/interface"
 import { Inject } from "typescript-ioc"
 import { Logger } from "../../service/logger"
@@ -88,7 +89,13 @@ export class ConverterService {
 				throw new MaxConversionTriesError(conversionId)
 			}
 			const converter = this.determineConverter(conversionRequest)
-			return await this.convert(converter, conversionRequest)
+			const conversionFile = await this.convert(converter, conversionRequest)
+			this.conversionQueue.changeConvLogEntry(
+				conversionId,
+				EConversionStatus.converted,
+				conversionFile.path
+			)
+			return conversionFile
 		}
 		catch (error) {
 			/* Propagate error to calling function */

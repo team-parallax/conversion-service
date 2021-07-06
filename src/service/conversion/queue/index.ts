@@ -11,15 +11,16 @@ import {
 } from "../../../constants"
 import {
 	TConversionFiles,
-	TConversionIdToStatusMap
+	TConversionIdToConversionFileMap,
+	TNullableConversionFile
 } from "./types"
-const initialIdMap: TConversionIdToStatusMap = new Map()
+const initialIdMap: TConversionIdToConversionFileMap = new Map()
 export class ConversionQueue {
 	private static instance: ConversionQueue
-	private currentlyConverting!: IConversionFile | null
+	private currentlyConverting!: TNullableConversionFile
 	private isConverting!: boolean
 	constructor(
-		private convLog: TConversionIdToStatusMap = initialIdMap,
+		private convLog: TConversionIdToConversionFileMap = initialIdMap,
 		private conversion: TConversionFiles = []
 	) {
 		if (ConversionQueue.instance) {
@@ -72,14 +73,14 @@ export class ConversionQueue {
 		const isInConvertedQueue: boolean = this.convLog.get(
 			conversionId
 		)?.status === EConversionStatus.converted
-		if (this.currentlyConvertingFile?.conversionId === conversionId) {
-			return this.response(EConversionStatus.processing, conversionId)
-		}
 		if (isInConversionQueue) {
 			return this.response(EConversionStatus.inQueue, conversionId)
 		}
 		if (isInConvertedQueue) {
 			return this.response(EConversionStatus.converted, conversionId)
+		}
+		if (this.currentlyConvertingFile?.conversionId === conversionId) {
+			return this.response(EConversionStatus.processing, conversionId)
 		}
 		else {
 			throw new NoSuchConversionIdError(`No conversion request found for given conversionId ${conversionId}`)
@@ -115,22 +116,22 @@ export class ConversionQueue {
 		}
 		return response
 	}
-	get conversionLog(): Map<string, Omit<IConversionStatus, "conversionId">> {
+	get conversionLog(): TConversionIdToConversionFileMap {
 		return this.convLog
 	}
-	set conversionLog(newConversionLog: Map<string, Omit<IConversionStatus, "conversionId">>) {
+	set conversionLog(newConversionLog: TConversionIdToConversionFileMap) {
 		this.convLog = newConversionLog
 	}
-	get conversionQueue(): IConversionFile[] {
+	get conversionQueue(): TConversionFiles {
 		return this.conversion
 	}
-	set conversionQueue(newConversionQueue: IConversionFile[]) {
+	set conversionQueue(newConversionQueue: TConversionFiles) {
 		this.conversion = newConversionQueue
 	}
-	get currentlyConvertingFile(): IConversionFile | null {
+	get currentlyConvertingFile(): TNullableConversionFile {
 		return this.currentlyConverting
 	}
-	set currentlyConvertingFile(file: IConversionFile | null) {
+	set currentlyConvertingFile(file: TNullableConversionFile) {
 		this.currentlyConverting = file
 	}
 	get isCurrentlyConverting(): boolean {

@@ -26,14 +26,14 @@ import {
 } from "../file-io"
 import { transformRequestBodyToConversionFile } from "./util"
 import config, { initializeConversionWrapperMap } from "../../config"
+const {
+	conversionWrapperConfiguration: {
+		availableWrappers: availableWrapperInterfaces
+	}
+} = config
 export class ConversionService extends ConverterService {
 	constructor() {
 		super()
-		const {
-			conversionWrapperConfiguration: {
-				availableWrappers: availableWrapperInterfaces
-			}
-		} = config
 		const availableWrappers = availableWrapperInterfaces.map(
 			wrapperInterface => wrapperInterface.binary
 		)
@@ -60,14 +60,11 @@ export class ConversionService extends ConverterService {
 			this.queueService.currentlyConvertingFile = fileToProcess
 			this.queueService.changeConvLogEntry(conversionId, EConversionStatus.processing)
 			try {
-				const conversionResponse: IConversionFile = await this.wrapConversion(fileToProcess)
+				await this.wrapConversion(fileToProcess)
+				/* Unsets the current conversion file in the conversion-queue */
+				this.conversionQueue.currentlyConvertingFile = null
 				/* Delete input file. */
 				await deleteFile(path)
-				this.queueService.changeConvLogEntry(
-					conversionId,
-					EConversionStatus.converted,
-					conversionResponse.path
-				)
 			}
 			catch (err) {
 				this.logger.error(`Caught error during conversion:\n${err}`)
@@ -115,7 +112,6 @@ export class ConversionService extends ConverterService {
 			originalFormat,
 			targetFormat
 		} = conversionRequestBody
-		// TODO: Get origin from filename (#25)
 		const origin = originalFormat?.replace(/\./, "") ?? ""
 		const target = targetFormat.replace(/\./, "")
 		const supports = await this.supportsConversion(origin, target)

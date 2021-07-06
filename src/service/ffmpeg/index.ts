@@ -49,7 +49,7 @@ export class FFmpegWrapper extends BaseConverter {
 				const delay = 2000
 				const inputFile = join(basePath, path)
 				const outPath = join(basePath, "output")
-				const outputFile = `${outPath}/${conversionId}.${targetFormat}`
+				const outputFilePath = `${outPath}/${conversionId}.${targetFormat}`
 				const ffmpegCommand: FfmpegCommand = Ffmpeg(inputFile).format(targetFormat)
 				if (conversionOptions?.filter) {
 					ffmpegCommand.addOptions(conversionOptions?.filter as string[])
@@ -57,12 +57,12 @@ export class FFmpegWrapper extends BaseConverter {
 				if (conversionOptions?.encoder) {
 					ffmpegCommand.addOptions(conversionOptions?.encoder as string[])
 				}
-				ffmpegCommand.save(outputFile).run()
+				ffmpegCommand.save(outputFilePath).run()
 				setTimeout(
 					() =>
 						resolve({
 							conversionId,
-							path: outputFile,
+							path: outputFilePath,
 							retries,
 							sourceFormat,
 							targetFormat
