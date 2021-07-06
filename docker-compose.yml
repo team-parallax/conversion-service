@@ -1,0 +1,39 @@
+version: "3"
+services:
+  mariadb:
+    image: "docker.io/bitnami/mariadb:10.3-debian-10"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_USER=bn_moodle
+      - MARIADB_DATABASE=bitnami_moodle
+    ports:
+      - "3306:3306"
+    volumes:
+      - "data:/bitnami/mariadb"
+  moodle:
+    image: "docker.io/bitnami/moodle:3.9.1-debian-10-r18"
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    environment:
+      - MOODLE_DATABASE_HOST=mariadb
+      - MOODLE_DATABASE_PORT_NUMBER=3306
+      - MOODLE_DATABASE_USER=bn_moodle
+      - MOODLE_DATABASE_NAME=bitnami_moodle
+      - ALLOW_EMPTY_PASSWORD=yes
+      - BITNAMI_DEBUG=true
+    volumes:
+      - "moodledata:/bitnami/moodle"
+    depends_on:
+      - mariadb
+  conversion-service:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: conversion-service
+    env_file: ./template.env
+    ports:
+      - "3000:3000"
+volumes:
+  data:
+  moodledata:
