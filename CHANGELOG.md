@@ -2,6 +2,55 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.7](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.6...v0.1.7) (2021-07-06)
+
+
+### Features
+
+* **conversion-service:** add rule-dependent wrapper retrieval ([a4e938f](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/a4e938fcb030c742665b369521ba6623c8ed4752)), closes [#32](https://gitlab.internal.team-parallax.com/belwue/conversion-service/issues/32) [#45](https://gitlab.internal.team-parallax.com/belwue/conversion-service/issues/45)
+
+
+### Bug Fixes
+
+* **config.spec.ts:** remove unused import ([963bf0d](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/963bf0d702ff92351cd2ac2c11a4b0557e7f855c))
+* **fileio.spec.ts:** remove unneeded, erroneous test case ([7829602](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/7829602bec3ce070693d75ceab23e71e559d5364))
+
+
+### CI
+
+* **test-stage:** add test:types to pipeline ([f5448f7](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/f5448f72df9bc70d427381f2cb6e556c2745fd48))
+
+
+### Others
+
+* **conversion-service:** add errors and error handling to conversion-service ([2f1e44e](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/2f1e44ec29aa3545e6f6154efb5d6c59198e1930)), closes [#28](https://gitlab.internal.team-parallax.com/belwue/conversion-service/issues/28)
+* **dependencies:** update dependencies ([a21c735](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/a21c73502dc6e8d8ee513000f374568f4ba75a18))
+* **environment:** add simple image conversion rule to template.env ([8401bac](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/8401bacbe18298e0e37a5a55f852585141a2bc38))
+* **quality-report:** update quality report ([89a8cc0](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/89a8cc05959ca341ced9f28a0e6d60e5618cbacb))
+* **workflow:** add MR template for features ([7dbec7c](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/7dbec7cb0e5d690dc053688b6d38010284f5faba))
+
+
+### Code Refactoring
+
+* **abstract-service:** add call to changeConvLogEntry after successful converison ([f07e73a](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/f07e73a61fe50ea61a69eafd2aed1cd1490844a9))
+* **code-consistency:** refactor all imports to be in consistent format ([0f0e642](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/0f0e6429b0308a2a5150958cee0b62f3049da692))
+* **config:** refactor function ordering to be alphabetic ([023ec7a](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/023ec7a89769bb855a13649566c0d7cda5d9653b))
+* **conversion-service:** refactor conversion service to implement all wrappers ([42c002f](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/42c002f45bd8faaea01add409ebd51a73fa038a7))
+* **conversion-util:** extract interface transformation to own function ([5c4f6c2](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/5c4f6c2536c297675cdfb5488bf705334d190c77))
+* **fileio.spec.ts:** add missing folder creation in test setup ([d956b5a](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/d956b5aa1132137d6ef56cb6aa00c3bec3be0e32))
+
+
+### Tests
+
+* **conversion-queue:** add test cases for conversion queue ([c662029](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/c662029c07cb639a9452b8bfe3c237eb8f0fc831))
+* **conversion-service:** add conversion request processing testcase ([e950f86](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/e950f867364900dc263f2bdf5a4393137e20be78))
+* **conversion-service:** add tests for conversion service code ([d713d68](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/d713d68143560746ca2debc5c0699d980070f391))
+* **conversion-service:** add tests for conversion-service and unoconv-wrapper ([3afc39e](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/3afc39e8eb6df016a3a431ff527e0cca70858216))
+* **conversion-service:** add tests for conversion-service as application ([3681227](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/3681227ac769e5b3a3def1389cf360ba9af58863))
+* **conversion-util:** add test for conversion and util functions ([13362f5](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/13362f57ef4ba5cbb1df2ae8361181ceeabee0f4))
+* **ffmpeg-wrapper:** add tests for ffmpeg-wrapper functions ([b1097f9](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/b1097f9311e301c440fbbc630c8c00e42071587e))
+* **file-io:** add file-io tests, update ignore file ([5d1f0fd](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/5d1f0fd61a3f7b2bd9a29f8e8709661b1e659fcf))
+
 ### [0.1.6](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.5...v0.1.6) (2021-06-29)
 
 
