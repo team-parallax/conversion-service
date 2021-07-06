@@ -33,7 +33,7 @@ describe("ImageMagick should pass all tests", () => {
 			const testFormat = "html"
 			/* Act */
 			const isConvertable = async (sourceFormat: string): Promise<boolean> => {
-				return await imageMagickWrapper.isSupportedFormat(sourceFormat)
+				return await ImageMagickWrapper.isSupportedFormat(sourceFormat)
 			}
 			/* Assert */
 			await expect(isConvertable(testFormat)).resolves.toBe(false)
@@ -43,7 +43,7 @@ describe("ImageMagick should pass all tests", () => {
 			const testFormat = "html"
 			/* Act */
 			const isConvertable = async (sourceFormat: string): Promise<boolean> => {
-				return await imageMagickWrapper.isSupportedFormat(sourceFormat)
+				return await ImageMagickWrapper.isSupportedFormat(sourceFormat)
 			}
 			/* Assert */
 			await expect(isConvertable(testFormat)).resolves.toBe(false)
@@ -72,7 +72,7 @@ describe("ImageMagick should pass all tests", () => {
 			/* Act */
 			const canBeConverted = async (
 				format: TConversionRequestFormatSummary
-			): Promise<boolean> => await imageMagickWrapper.canConvert(format)
+			): Promise<boolean> => await ImageMagickWrapper.canConvert(format)
 			for (const formatPair of formats) {
 				testCases.push(canBeConverted(formatPair))
 			}
@@ -85,7 +85,7 @@ describe("ImageMagick should pass all tests", () => {
 			/* Arrange */
 			/* Act */
 			const getAllSupportedFormats = async (): Promise<TConversionFormats> => {
-				return await imageMagickWrapper.getSupportedConversionFormats()
+				return await ImageMagickWrapper.getSupportedConversionFormats()
 			}
 			/* Asssert */
 			try {

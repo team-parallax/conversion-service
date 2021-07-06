@@ -36,6 +36,7 @@
 			"EConversionStatus": {
 				"enum": [
 					"converted",
+					"erroneous",
 					"in queue",
 					"processing"
 				],
@@ -305,7 +306,7 @@
 	},
 	"info": {
 		"title": "conversion-service",
-		"version": "0.1.4",
+		"version": "0.1.6",
 		"description": "A webservice with a REST Api which can convert document/media files using different binaries",
 		"license": {
 			"name": "GPL-3.0-or-later"

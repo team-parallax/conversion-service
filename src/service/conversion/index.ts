@@ -1,34 +1,43 @@
 /* eslint-disable no-void */
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import { CapabilityService } from "../capabilities"
 import { ConversionQueue } from "./queue"
 import { ConverterService } from "../../abstract/converter/service"
 import { EConversionStatus } from "./enum"
 import { FFmpegWrapper } from "../ffmpeg"
-import { IConversionFile, IConversionStatus } from "../../abstract/converter/interface"
+import {
+	IConversionFile,
+	IConversionStatus
+} from "../../abstract/converter/interface"
 import {
 	IConversionInQueue,
 	IConversionProcessingResponse,
 	IConversionQueueStatus,
 	IConversionRequestBody
 } from "./interface"
-import { IFfmpegFormat } from "../ffmpeg/interface"
-import { Inject } from "typescript-ioc"
-import { Logger } from "../logger"
-import { TCapabilities } from "../ffmpeg/types"
+import { ImageMagickWrapper } from "../imagemagick"
+import {
+	MaxConversionTriesError,
+	UnsupportedConversionFormatError
+} from "../../constants"
 import { UnoconvWrapper } from "../unoconv"
-import { UnsupportedConversionFormatError } from "../../constants"
-import { deleteFile, writeToFile } from "../file-io"
-import { v4 as uuidV4 } from "uuid"
+import {
+	deleteFile,
+	writeToFile
+} from "../file-io"
+import { transformRequestBodyToConversionFile } from "./util"
+import config, { initializeConversionWrapperMap } from "../../config"
+const {
+	conversionWrapperConfiguration: {
+		availableWrappers: availableWrapperInterfaces
+	}
+} = config
 export class ConversionService extends ConverterService {
-	@Inject
-	private readonly ffmpeg!: FFmpegWrapper
-	@Inject
-	private readonly logger!: Logger
-	@Inject
-	private readonly unoconv!: UnoconvWrapper
 	constructor() {
 		super()
+		const availableWrappers = availableWrapperInterfaces.map(
+			wrapperInterface => wrapperInterface.binary
+		)
+		this.converterMap = initializeConversionWrapperMap(availableWrappers)
 	}
 	public addToConversionQueue(requestObject: IConversionFile): IConversionProcessingResponse {
 		const {
@@ -51,20 +60,20 @@ export class ConversionService extends ConverterService {
 			this.queueService.currentlyConvertingFile = fileToProcess
 			this.queueService.changeConvLogEntry(conversionId, EConversionStatus.processing)
 			try {
-				const conversionResponse: IConversionFile = await this.ffmpeg
-					.convertToTarget(fileToProcess)
+				await this.wrapConversion(fileToProcess)
+				/* Unsets the current conversion file in the conversion-queue */
+				this.conversionQueue.currentlyConvertingFile = null
 				/* Delete input file. */
 				await deleteFile(path)
-				this.queueService.changeConvLogEntry(
-					conversionId,
-					EConversionStatus.converted,
-					conversionResponse.path
-				)
 			}
 			catch (err) {
-				this.logger.error(`Re-add the file conversion request due to error before: ${err}`)
-				this.queueService.addToConversionQueue(fileToProcess)
-				this.queueService.changeConvLogEntry(conversionId, EConversionStatus.inQueue)
+				this.logger.error(`Caught error during conversion:\n${err}`)
+				if (err instanceof MaxConversionTriesError) {
+					this.queueService.changeConvLogEntry(conversionId, EConversionStatus.erroneous)
+				}
+				else {
+					this.queueService.changeConvLogEntry(conversionId, EConversionStatus.inQueue)
+				}
 			}
 			finally {
 				this.isCurrentlyConverting = false
@@ -94,44 +103,45 @@ export class ConversionService extends ConverterService {
 	public getConvertedFile(fileId: string): IConversionStatus {
 		return this.queueService.getStatusById(fileId)
 	}
-	public async processConversionRequest({
-		file,
-		filename,
-		originalFormat,
-		targetFormat
-	}: IConversionRequestBody): Promise<IConversionProcessingResponse> {
-		// TODO: Get origin from filename (#25)
+	public async processConversionRequest(
+		conversionRequestBody: IConversionRequestBody
+	): Promise<IConversionProcessingResponse> {
+		const {
+			file,
+			filename,
+			originalFormat,
+			targetFormat
+		} = conversionRequestBody
 		const origin = originalFormat?.replace(/\./, "") ?? ""
 		const target = targetFormat.replace(/\./, "")
 		const supports = await this.supportsConversion(origin, target)
 		if (!supports) {
 			throw new UnsupportedConversionFormatError(`Your input contains unsupported conversion formats. ${originalFormat} or ${targetFormat} is not supported.`)
 		}
-		const conversionId = uuidV4()
-		const inPath = `input/${conversionId}.${origin}`
-		await writeToFile(inPath, file)
-		const conversionRequest: IConversionFile = {
-			conversionId,
-			path: inPath,
-			retries: 0,
-			sourceFormat: origin,
+		const conversionRequest: IConversionFile = transformRequestBodyToConversionFile({
+			...conversionRequestBody,
+			originalFormat: origin,
 			targetFormat: target
-		}
+		})
+		await writeToFile(conversionRequest.path, file)
 		return this.addToConversionQueue(conversionRequest)
 	}
-	async supportsConversion(from: string, to: string): Promise<boolean> {
-		const capabilityService: CapabilityService = new CapabilityService()
-		const formats = await capabilityService.getAvailableFormats()
-		const supportsFrom = this.containsCapability<IFfmpegFormat>(formats, from)
-		const supportsTo = this.containsCapability<IFfmpegFormat>(formats, to)
-		return supportsFrom && supportsTo
+	async supportsConversion(sourceFormat: string, targetFormat: string): Promise<boolean> {
+		const isFfmpegConvertable = await FFmpegWrapper.canConvert({
+			sourceFormat,
+			targetFormat
+		})
+		const isUnoconvConvertable = await UnoconvWrapper.canConvert({
+			sourceFormat,
+			targetFormat
+		})
+		const isImageMagickConvertable = await ImageMagickWrapper.canConvert({
+			sourceFormat,
+			targetFormat
+		})
+		return isFfmpegConvertable || isImageMagickConvertable || isUnoconvConvertable
 	}
-	private containsCapability<T extends TCapabilities>(
-		capabilities: T[], capability: string
-	): boolean {
-		return capabilities.find(cap => cap.name === capability) !== undefined
-	}
-	private async update(): Promise<void> {
+	public async update(): Promise<void> {
 		if (!this.isCurrentlyConverting) {
 			return await new Promise((resolve, reject) => {
 				try {

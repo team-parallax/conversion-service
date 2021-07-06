@@ -22,3 +22,5 @@ package-lock.json
 # coverage
 coverage
 junit.xml
+# files created during tests
+testing

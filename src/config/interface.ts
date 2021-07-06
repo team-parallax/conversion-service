@@ -1,9 +1,14 @@
-import { EConversionRuleType, EConversionWrapper } from "../enum"
-import { TConversionRulesConfig } from "./type"
+import {
+	EConversionRuleType,
+	EConversionWrapper
+} from "../enum"
+import {
+	TConversionWrapperEnums,
+	TConversionWrappers
+} from "./type"
 export interface IConfig {
 	conversionMaximaConfiguration: IConversionMaximaConfig,
 	conversionWrapperConfiguration: IConversionWrapperConfig,
-	rules?: TConversionRulesConfig,
 	webservicePort: number
 }
 export interface IConversionRule {
@@ -11,7 +16,7 @@ export interface IConversionRule {
 	ruleType: EConversionRuleType
 }
 export interface IConversionWrapperConfig {
-	availableWrappers: IConversionWrapper[],
+	availableWrappers: TConversionWrappers,
 	precedenceOrder: IConversionPrecedenceOrder
 }
 export interface IConversionWrapper {
@@ -23,6 +28,6 @@ export interface IConversionMaximaConfig {
 	conversionTries: number
 }
 export interface IConversionPrecedenceOrder {
-	document: EConversionWrapper[],
-	media: EConversionWrapper[]
+	document: TConversionWrapperEnums,
+	media: TConversionWrapperEnums
 }

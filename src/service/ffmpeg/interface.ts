@@ -1,19 +1,3 @@
-// #region Review
-export interface IConvertedFile extends IConversionResult {
-	// TODO: review if this is sufficient for usecase.
-	outputFilename: string,
-	resultFile?: Buffer
-}
-export interface IConversionResult {
-	outputFilepath: string
-}
-export interface IConversionParams {
-	// TODO: review if this is sufficient for usecase.
-	conversionId: string,
-	filePath: string,
-	outputFilename?: string,
-	targetFormat: string
-}
 export interface IFfmpegOptions {
 	encoder: unknown[],
 	filter: unknown[]

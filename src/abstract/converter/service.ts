@@ -1,46 +1,116 @@
 import { BaseConverter } from "."
-import { ConversionError } from "../../constants"
-import { ConversionQueue } from "../../service/conversion/queue"
-import { EConversionWrapper } from "../../enum"
 import {
-	IConversionFile,
-	IConversionRequest,
-	IConversionStatus
-} from "../../abstract/converter/interface"
+	ConversionError,
+	MaxConversionTriesError
+} from "../../constants"
+import { ConversionQueue } from "../../service/conversion/queue"
+import {
+	EConversionRuleType,
+	EConversionWrapper
+} from "../../enum"
+import { EConversionStatus } from "../../service/conversion/enum"
+import { IConversionFile } from "../../abstract/converter/interface"
 import { Inject } from "typescript-ioc"
+import { Logger } from "../../service/logger"
+import { NoAvailableConversionWrapperError } from "../../config/exception"
+import {
+	TConversionRequestFormatSummary,
+	TConverterMap
+} from "./types"
+import { isMediaFile } from "./util"
+import config, {
+	getRuleStringFromTemplate,
+	loadValueFromEnv,
+	transformStringToWrapperEnumValue
+} from "../../config"
+const {
+	conversionTries: maxConversionTries
+} = config.conversionMaximaConfiguration
 export class ConverterService {
 	@Inject
-	protected readonly conversionQueue!: ConversionQueue
-	protected readonly converterMap: Map<EConversionWrapper, BaseConverter>
+	public readonly conversionQueue!: ConversionQueue
+	@Inject
+	protected readonly logger!: Logger
+	protected converterMap: TConverterMap
+	protected maxConversionTries: number
 	constructor() {
 		this.converterMap = new Map()
+		this.maxConversionTries = maxConversionTries
 	}
 	public async convert(
 		converter: EConversionWrapper,
 		file: IConversionFile
-	): Promise<IConversionStatus> {
-		return await this.converterMap[converter].convertToTarget(file)
+	): Promise<IConversionFile> {
+		const conversionWrapper: BaseConverter = this.converterMap.get(converter) as BaseConverter
+		return await conversionWrapper.convertToTarget(file)
 	}
-	public determineConverter({
-		sourceFormat: fromFormat,
-		targetFormat
-	}: IConversionRequest): EConversionWrapper {
-		return EConversionWrapper.unoconv
+	public determineConverter(
+		conversionFormats: TConversionRequestFormatSummary
+	): EConversionWrapper {
+		const {
+			conversionWrapperConfiguration: {
+				precedenceOrder: {
+					document,
+					media
+				}
+			}
+		} = config
+		if (!(document.length > 0 && media.length > 0)) {
+			throw new NoAvailableConversionWrapperError("No wrappers found")
+		}
+		const isMediaSourceFile = isMediaFile(conversionFormats.sourceFormat)
+		const monoRuleWrapper = loadValueFromEnv(
+			getRuleStringFromTemplate(conversionFormats, EConversionRuleType.mono)
+		)
+		const multiRuleWrapper = loadValueFromEnv(
+			getRuleStringFromTemplate(conversionFormats, EConversionRuleType.multi)
+		)
+		if (multiRuleWrapper !== undefined) {
+			return transformStringToWrapperEnumValue(multiRuleWrapper)
+		}
+		else if (monoRuleWrapper !== undefined) {
+			return transformStringToWrapperEnumValue(monoRuleWrapper)
+		}
+		else {
+			return isMediaSourceFile
+				? media[0]
+				: document[0]
+		}
 	}
-	private async wrapConversion(
+	public async wrapConversion(
 		conversionRequest: IConversionFile
 	): Promise<IConversionFile> {
+		const {
+			conversionId,
+			retries
+		} = conversionRequest
 		try {
+			if (retries >= maxConversionTries) {
+				throw new MaxConversionTriesError(conversionId)
+			}
 			const converter = this.determineConverter(conversionRequest)
-			return await this.convert(converter, conversionRequest)
+			const conversionFile = await this.convert(converter, conversionRequest)
+			this.conversionQueue.changeConvLogEntry(
+				conversionId,
+				EConversionStatus.converted,
+				conversionFile.path
+			)
+			return conversionFile
 		}
 		catch (error) {
-			/* Throw error inside enqueue if max retries are reached */
+			/* Propagate error to calling function */
 			const {
-				retries
-			} = conversionRequest
+				message,
+				name
+			} = error
+			if (error instanceof MaxConversionTriesError) {
+				throw error
+			}
+			this.logger.error(
+				`Re-add the file conversion request due to error before: ${error}`
+			)
 			this.conversionQueue.addToConversionQueue(conversionRequest, retries + 1)
-			throw new ConversionError("Error during conversion")
+			throw new ConversionError(`Error during conversion: ${name} ${message}`)
 		}
 	}
 }

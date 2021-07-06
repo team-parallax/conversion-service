@@ -7,14 +7,14 @@ import {
 	IFfmpegFormat,
 	IFilter
 } from "../ffmpeg/interface"
-import { Inject } from "typescript-ioc"
 import {
 	TCapabilities,
 	TCapabilitiesData
 } from "../ffmpeg/types"
 export class CapabilityService {
-	@Inject
-	private readonly ffmpegWrapper!: FFmpegWrapper
+	constructor(
+		private readonly ffmpegWrapper: FFmpegWrapper = new FFmpegWrapper()
+	) {}
 	public containsCapability<T extends TCapabilities>(
 		capabilities: T[], capability: string
 	): boolean {

@@ -1,3 +1,4 @@
+import { BaseConverter } from "../abstract/converter"
 import {
 	ConfigurationCreationError,
 	InvalidConfigurationSpecError,
@@ -6,18 +7,30 @@ import {
 	UnknownConversionWrapperError
 } from "../config/exception"
 import {
-	EConfigurationKey, EConversionRuleType, EConversionWrapper
+	EConfigurationKey,
+	EConversionRuleType,
+	EConversionWrapper
 } from "../enum"
+import { FFmpegWrapper } from "../service/ffmpeg"
 import { IConversionWrapper } from "../config/interface"
-import { ITestCaseInput, ITestCaseResult } from "./helper/interface"
+import {
+	ITestCaseInput,
+	ITestCaseResult
+} from "./helper/interface"
+import { ImageMagickWrapper } from "../service/imagemagick"
+import { UnoconvWrapper } from "../service/unoconv"
 import {
 	createConversionPrecedenceOrderConfig,
 	createConversionRule,
-	createMaximaConfiguration, createWrapperConfiguration,
+	createMaximaConfiguration,
+	createWrapperConfiguration,
 	getPortConfigValue,
 	getRuleShape,
 	getWrapperPathConfigKeyFromEnum,
-	loadValueFromEnv, transformEnumToIWrapper, transformStringToWrapperCollection
+	initializeConversionWrapperMap,
+	loadValueFromEnv,
+	transformEnumToIWrapper,
+	transformStringToWrapperCollection
 } from "../config"
 import { deleteEnvVarAndDefaultCollection } from "./helper/util"
 import { getRandomNumber } from "./helper/dataFactory"
@@ -193,6 +206,11 @@ describe("It should pass all tests for initialization", () => {
 			})
 		})
 		describe("It should handle wrapper configuration assembly correctly", () => {
+			const {
+				ffmpeg,
+				imagemagick,
+				unoconv
+			} = EConversionWrapper
 			it("transformStringToWrapperCollection should return EConversionWrapper[]", () => {
 				/* Arrange */
 				const testWrapperStrings: string[] = [
@@ -246,6 +264,49 @@ describe("It should pass all tests for initialization", () => {
 					)
 						.toThrow(UnknownConversionWrapperError)
 				}
+			})
+			it("should return an empty Conversion-Wrapper-Map object", () => {
+				/* Arrange */
+				const expectedMap: Map<EConversionWrapper, BaseConverter> = new Map()
+				/* Act */
+				const getConverterMap = jest.fn(initializeConversionWrapperMap)
+				/* Assert */
+				expect(getConverterMap([])).toEqual(expectedMap)
+			})
+			it("should return a Conversion-Wrapper-Map object", () => {
+				/* Arrange */
+				const expectedMap: Map<EConversionWrapper, BaseConverter> = new Map()
+				expectedMap.set(ffmpeg, FFmpegWrapper)
+				expectedMap.set(imagemagick, ImageMagickWrapper)
+				expectedMap.set(unoconv, UnoconvWrapper)
+				/* Act */
+				const getConverterMap = jest.fn(initializeConversionWrapperMap)
+				/* Assert */
+				expect(getConverterMap([ffmpeg, imagemagick, unoconv])).toEqual(expectedMap)
+			})
+			it("should read wrappers from config and initialize Map accordingly", () => {
+				/* Arrange */
+				const wrappers: EConversionWrapper[] = [
+					ffmpeg,
+					imagemagick,
+					unoconv
+				]
+				// Reset possibly set value to adjust it for the test
+				delete process.env?.[EConfigurationKey.converterDocumentPriority]
+				delete process.env?.[EConfigurationKey.converterMediaPriority]
+				/* Act */
+				process.env[EConfigurationKey.converterDocumentPriority] = wrappers.join(", ")
+				process.env[EConfigurationKey.converterMediaPriority] = wrappers.reverse().join(", ")
+				const readWrapperFromConfig = jest.fn(createWrapperConfiguration)
+				const getWrapperMap = jest.fn(initializeConversionWrapperMap)
+				/* Assert */
+				expect(readWrapperFromConfig).not.toThrow()
+				expect(readWrapperFromConfig().availableWrappers).toBeDefined()
+				expect(readWrapperFromConfig().precedenceOrder).toBeDefined()
+				const {
+					availableWrappers
+				} = readWrapperFromConfig()
+				expect(getWrapperMap.bind(availableWrappers)).toBeDefined()
 			})
 		})
 		it("getPortConfigValue should throw MissingConfigurationError if port (and default) vars are missing", () => {

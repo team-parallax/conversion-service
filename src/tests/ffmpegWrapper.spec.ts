@@ -1,4 +1,5 @@
 import { FFmpegWrapper } from "../service/ffmpeg"
+import { TConversionFormats, TConversionRequestFormatSummary } from "../abstract/converter/types"
 import { basePath } from "../constants"
 import { createDirectoryIfNotPresent } from "../service/file-io"
 import path from "path"
@@ -35,5 +36,74 @@ describe("FFmpegWrapper should pass all tests", () => {
 			}
 		)
 		expect(conversion).toBeDefined()
+	})
+	it("should retrieve a non-empty list of supported conversion formats", async (done: jest.DoneCallback) => {
+		/* Arrange */
+		/* Act */
+		const getSupportedConversionFormats = async (): Promise<TConversionFormats> => {
+			return await FFmpegWrapper.getSupportedConversionFormats()
+		}
+		const isNonEmptyCollection = async (): Promise<boolean> => {
+			const retrievedFormats = await getSupportedConversionFormats()
+			return retrievedFormats.length > 0
+		}
+		/* Assert */
+		await expect(getSupportedConversionFormats()).resolves.toBeDefined()
+		await expect(isNonEmptyCollection()).resolves.toBe(true)
+		done()
+	})
+	describe("It should return true if formats can be converted and false otherwise", () => {
+		it("should be able to convert from mp3 to mp4", async () => {
+			/* Arrange */
+			const testFormats: TConversionRequestFormatSummary = {
+				sourceFormat: "mp3",
+				targetFormat: "mp4"
+			}
+			/* Act */
+			const isSupportedConversion = async (): Promise<boolean> => {
+				return await FFmpegWrapper.canConvert(testFormats)
+			}
+			/* Assert */
+			await expect(isSupportedConversion()).resolves.toBe(true)
+		})
+		it("should be able to convert from ogg to mp4", async () => {
+			/* Arrange */
+			const testFormats: TConversionRequestFormatSummary = {
+				sourceFormat: "ogg",
+				targetFormat: "mp4"
+			}
+			/* Act */
+			const isSupportedConversion = async (): Promise<boolean> => {
+				return await FFmpegWrapper.canConvert(testFormats)
+			}
+			/* Assert */
+			await expect(isSupportedConversion()).resolves.toBe(true)
+		})
+		it("should be able to convert from webm to mp4", async () => {
+			/* Arrange */
+			const testFormats: TConversionRequestFormatSummary = {
+				sourceFormat: "webm",
+				targetFormat: "mp4"
+			}
+			/* Act */
+			const isSupportedConversion = async (): Promise<boolean> => {
+				return await FFmpegWrapper.canConvert(testFormats)
+			}
+			/* Assert */
+			await expect(isSupportedConversion()).resolves.toBe(true)
+		})
+		it("should be able to convert from ogg to html", async () => {
+			/* Arrange */
+			const testFormats: TConversionRequestFormatSummary = {
+				sourceFormat: "ogg",
+				targetFormat: "html"
+			}
+			/* Act */
+			const isSupportedConversion = async (): Promise<boolean> => {
+				return await FFmpegWrapper.canConvert(testFormats)
+			}
+			/* Assert */
+			await expect(isSupportedConversion()).resolves.toBe(false)
+		})
 	})
 })

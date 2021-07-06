@@ -1,8 +1,16 @@
-import "lodash"
 import { BaseConverter } from "../../abstract/converter"
-import { ConversionError, ConversionTimeoutError } from "../../constants"
-import { IFileFormat, IFormatList } from "./interface"
-import { execFile, spawn } from "child_process"
+import {
+	ConversionError,
+	ConversionTimeoutError
+} from "../../constants"
+import {
+	IFileFormat,
+	IFormatList
+} from "./interface"
+import {
+	execFile,
+	spawn
+} from "child_process"
 import { executeShellCommand } from "../../util"
 import { getType } from "mime"
 import config from "../../config/index"

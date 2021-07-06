@@ -2,13 +2,16 @@ import { BaseConverter } from "../abstract/converter"
 import {
 	ConfigurationCreationError,
 	InvalidConfigurationSpecError,
+	InvalidRuleCheckParameterError,
 	MissingConfigurationValueError,
 	MissingWrapperDefinitionError,
 	UnknownConversionRuleFormatError,
 	UnknownConversionWrapperError
 } from "./exception"
 import {
-	EConfigurationKey, EConversionRuleType, EConversionWrapper
+	EConfigurationKey,
+	EConversionRuleType,
+	EConversionWrapper
 } from "../enum"
 import { FFmpegWrapper } from "../service/ffmpeg"
 import {
@@ -19,27 +22,39 @@ import {
 	IConversionWrapper,
 	IConversionWrapperConfig
 } from "./interface"
-import { TConversionRulesConfig } from "./type"
+import { ImageMagickWrapper } from "../service/imagemagick"
+import { Logger } from "../service/logger"
+import { TConversionRequestFormatSummary } from "../abstract/converter/types"
 import { UnoconvWrapper } from "../service/unoconv"
 import { config as envConfig } from "dotenv"
+import { isUndefinedOrEmptyString } from "../util"
 envConfig()
+const logger = new Logger()
 export const initializeConversionWrapperMap = (
 	availableWrappers: EConversionWrapper[]
 ): Map<EConversionWrapper, BaseConverter> => {
 	const converterMap = new Map<EConversionWrapper, BaseConverter>()
 	for (const wrapperName of availableWrappers) {
-		switch (wrapperName) {
-			case EConversionWrapper.ffmpeg:
-				converterMap.set(wrapperName, FFmpegWrapper as BaseConverter)
-				break
-			case EConversionWrapper.unoconv:
-				converterMap.set(wrapperName, UnoconvWrapper as BaseConverter)
-				break
-			default:
-				if (wrapperName === EConversionWrapper.imagemagick) {
-					throw new UnknownConversionWrapperError(`${wrapperName} is not yet implemented`)
-				}
-				throw new UnknownConversionWrapperError(wrapperName)
+		try {
+			switch (wrapperName) {
+				case EConversionWrapper.ffmpeg:
+					converterMap.set(wrapperName, FFmpegWrapper as BaseConverter)
+					break
+				case EConversionWrapper.unoconv:
+					converterMap.set(wrapperName, UnoconvWrapper as BaseConverter)
+					break
+				case EConversionWrapper.imagemagick:
+					converterMap.set(wrapperName, ImageMagickWrapper as BaseConverter)
+					break
+				default:
+					throw new UnknownConversionWrapperError(wrapperName)
+			}
+		}
+		catch (err) {
+			if (err instanceof UnknownConversionWrapperError) {
+				logger.log(`Caught error when trying to add ${wrapperName} as binary wrapper`)
+				continue
+			}
 		}
 	}
 	return converterMap
@@ -48,15 +63,10 @@ export const createConfiguration = (): IConfig => {
 	try {
 		const conversionMaximaConfiguration = createMaximaConfiguration()
 		const conversionWrapperConfiguration = createWrapperConfiguration()
-		const conversionRules = {
-			mono: [],
-			multi: []
-		}
 		const webservicePort = getPortConfigValue()
 		return {
 			conversionMaximaConfiguration,
 			conversionWrapperConfiguration,
-			rules: conversionRules,
 			webservicePort
 		}
 	}
@@ -66,11 +76,6 @@ export const createConfiguration = (): IConfig => {
 			throw error
 		}
 		else {
-			/**
-			 * TODO: Handle errors thrown: check if error source is critical
-			 * or if thrown error could be handled otherwise
-			 * Eventually throw ConfigurationCreationError here.
-			 */
 			if (error instanceof MissingConfigurationValueError) {
 				throw new ConfigurationCreationError(
 					error.message,
@@ -108,23 +113,66 @@ export const createConversionPrecedenceOrderConfig = (): IConversionPrecedenceOr
 			media: mediaPrecedenceOrder
 		}
 	}
-	catch (error) {
-		if (error instanceof MissingConfigurationValueError) {
+	catch (err) {
+		if (err instanceof MissingConfigurationValueError) {
 			throw new MissingWrapperDefinitionError(
-				`Missing definition for wrapper precedence:\n\n${error?.message ?? "No error-message set"}`
+				`Missing definition for wrapper precedence:\n\n${err?.message ?? "No error-message"}`
 			)
 		}
 		else {
 			/* Just pass the error as is */
-			throw error
+			throw err
 		}
 	}
 }
-export const createConversionRulesConfiguration = (): TConversionRulesConfig => {
-	return {
-		mono: [],
-		multi: []
+export const getRuleStringFromTemplate = (
+	{
+		sourceFormat,
+		targetFormat
+	}: TConversionRequestFormatSummary,
+	ruleType: EConversionRuleType
+): string => {
+	if (
+		isUndefinedOrEmptyString(sourceFormat)
+		&& isUndefinedOrEmptyString(targetFormat)
+	) {
+		throw new InvalidRuleCheckParameterError()
 	}
+	return hydratedRuleString(
+		{
+			sourceFormat,
+			targetFormat
+		},
+		ruleType
+	)
+}
+const hydratedRuleString = (
+	{
+		sourceFormat,
+		targetFormat
+	}: TConversionRequestFormatSummary,
+	ruleType: EConversionRuleType
+): string => {
+	const upperCasedSource = sourceFormat.toUpperCase()
+	const upperCasedTarget = targetFormat.toUpperCase()
+	switch (ruleType) {
+		case EConversionRuleType.mono:
+			return `CONVERT_TO_${upperCasedTarget}_WITH`
+		case EConversionRuleType.multi:
+			return `CONVERT_FROM_${upperCasedSource}_TO_${upperCasedTarget}_WITH`
+		default:
+			throw new UnknownConversionRuleFormatError(
+				"Could not find a rule for the given formats"
+			)
+	}
+}
+export const getCorrectWrapperWithActiveRuleSet = (
+	{
+		sourceFormat,
+		targetFormat
+	}: TConversionRequestFormatSummary
+): EConversionWrapper => {
+	return EConversionWrapper.unoconv
 }
 export const createConversionRule = (ruleKey: string): IConversionRule | undefined => {
 	try {
@@ -147,17 +195,6 @@ export const createConversionRule = (ruleKey: string): IConversionRule | undefin
 		}
 		throw error
 	}
-}
-export const getRuleShape = (ruleString: string): EConversionRuleType => {
-	const monoPattern: RegExp = /(CONVERT_TO_[A-Za-z0-9]*_WITH)/
-	const multiPattern: RegExp = /(CONVERT_FROM_[A-Za-z0-9]*_TO_[A-Za-z0-9]*_WITH)/
-	if (ruleString.search(multiPattern) !== -1) {
-		return EConversionRuleType.multi
-	}
-	else if (ruleString.search(monoPattern) !== -1) {
-		return EConversionRuleType.mono
-	}
-	throw new UnknownConversionRuleFormatError(ruleString)
 }
 export const createMaximaConfiguration = (): IConversionMaximaConfig => {
 	const maxConversionTime = loadValueFromEnv(
@@ -251,8 +288,32 @@ export const getPortConfigValue = (): number => {
 	}
 	return Number(webservicePort)
 }
+export const getRuleShape = (ruleString: string): EConversionRuleType => {
+	const monoPattern: RegExp = /(CONVERT_TO_[A-Za-z0-9]*_WITH)/
+	const multiPattern: RegExp = /(CONVERT_FROM_[A-Za-z0-9]*_TO_[A-Za-z0-9]*_WITH)/
+	if (ruleString.search(multiPattern) !== -1) {
+		return EConversionRuleType.multi
+	}
+	else if (ruleString.search(monoPattern) !== -1) {
+		return EConversionRuleType.mono
+	}
+	throw new UnknownConversionRuleFormatError(ruleString)
+}
 export const loadValueFromEnv = (variableKey: string): string | undefined => {
 	return process.env?.[variableKey]
+}
+export const getWrapperPathConfigKeyFromEnum = (
+	wrapperEnumValue: EConversionWrapper
+): EConfigurationKey => {
+	switch (wrapperEnumValue) {
+		case EConversionWrapper.ffmpeg:
+			return EConfigurationKey.ffmpegPath
+		case EConversionWrapper.imagemagick:
+			return EConfigurationKey.imagemagickPath
+		case EConversionWrapper.unoconv:
+		default:
+			return EConfigurationKey.unoconvPath
+	}
 }
 export const transformEnumToIWrapper = (
 	wrapperEnumValue: EConversionWrapper
@@ -269,19 +330,6 @@ export const transformEnumToIWrapper = (
 		path: wrapperPath
 	}
 }
-export const getWrapperPathConfigKeyFromEnum = (
-	wrapperEnumValue: EConversionWrapper
-): EConfigurationKey => {
-	switch (wrapperEnumValue) {
-		case EConversionWrapper.ffmpeg:
-			return EConfigurationKey.ffmpegPath
-		case EConversionWrapper.imagemagick:
-			return EConfigurationKey.imageMagickPath
-		case EConversionWrapper.unoconv:
-		default:
-			return EConfigurationKey.unoconvPath
-	}
-}
 export const transformStringToWrapperCollection = (
 	wrapperString: string,
 	splitDelimiterString: string = ","
@@ -290,11 +338,11 @@ export const transformStringToWrapperCollection = (
 		.split(splitDelimiterString)
 		.map(
 			converterCandidate => {
-				// Ignore word-casing
-				const conversionWrapperName = converterCandidate.trim()
+				/* Ignore word-casing */
+				const conversionWrapperName = converterCandidate
+					.trim()
 					.toLowerCase()
-				if (!Object.keys(EConversionWrapper)
-					.includes(conversionWrapperName)) {
+				if (!Object.keys(EConversionWrapper).includes(conversionWrapperName)) {
 					throw new UnknownConversionWrapperError(conversionWrapperName)
 				}
 				return EConversionWrapper[
@@ -303,6 +351,13 @@ export const transformStringToWrapperCollection = (
 			}
 		)
 }
+export const transformStringToWrapperEnumValue = (wrapperString: string): EConversionWrapper => {
+	const wrapper: EConversionWrapper | undefined = EConversionWrapper[wrapperString]
+	if (!wrapper) {
+		throw new UnknownConversionWrapperError(`${wrapper}`)
+	}
+	return wrapper
+}
 const config: IConfig = createConfiguration()
-// eslint-disable-next-line import/no-default-export
+/* eslint-disable-next-line import/no-default-export */
 export default config

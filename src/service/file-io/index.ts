@@ -1,20 +1,29 @@
-import { InvalidPathError, basePath } from "../../constants"
+import {
+	InvalidPathError,
+	basePath
+} from "../../constants"
 import {
 	ReadStream,
 	createReadStream,
 	existsSync,
 	mkdir,
 	readFileSync,
+	readdirSync,
+	rmdirSync,
 	statSync,
 	unlink,
+	unlinkSync,
 	writeFile
 } from "fs"
 import { resolve } from "path"
 type TArrayBufferView = NodeJS.ArrayBufferView
-export const deleteFile = async (path: string | undefined): Promise<void> => {
+export const deleteFile = async (path?: string): Promise<void> => {
 	return await new Promise((resolve, reject) => {
 		if (!path) {
-			reject()
+			reject(new InvalidPathError("No path was provided"))
+		}
+		else if (!existsSync(path)) {
+			reject(new InvalidPathError("No path was provided"))
 		}
 		else {
 			unlink(path, err => {
@@ -62,6 +71,9 @@ export const createDirectoryIfNotPresent = async (
 	newDirectory: string
 ): Promise<string> => {
 	return new Promise((resolve, reject) => {
+		if (newDirectory === "") {
+			reject()
+		}
 		if (!existsSync(newDirectory)) {
 			mkdir(
 				newDirectory,
@@ -80,6 +92,32 @@ export const createDirectoryIfNotPresent = async (
 		}
 		reject()
 	})
+}
+export const deleteFolderRecursive = (path: string): void => {
+	if (isDirectory(path)) {
+		readdirSync(path).forEach((file: string, index: number) => {
+			const currentPath = `${path}/${file}`
+			if (isDirectory(currentPath)) {
+				deleteFolderRecursive(currentPath)
+			}
+			else {
+				unlinkSync(currentPath)
+			}
+		})
+		rmdirSync(path, {
+			// eslint-disable-next-line @typescript-eslint/naming-convention
+			recursive: true
+		})
+	}
+	else {
+		throw new InvalidPathError(`Given Path does not point to a directory: ${path}`)
+	}
+}
+export const isDirectory = (path: string): boolean => {
+	if (existsSync(path) && statSync(path).isDirectory()) {
+		return true
+	}
+	return false
 }
 export const isFile = (path: string): boolean => {
 	if (existsSync(path) && statSync(path).isFile()) {
