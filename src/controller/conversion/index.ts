@@ -24,7 +24,6 @@ import {
 import { IConversionStatus } from "../../abstract/converter/interface"
 import { Inject } from "typescript-ioc"
 import { Logger } from "../../service/logger"
-import { extname } from "path"
 import { getType } from "mime"
 import express from "express"
 import fs from "fs"
@@ -153,12 +152,6 @@ export class ConversionController extends Controller {
 				const {
 					file
 				} = request
-				const fileExtension = extname(file.originalname)
-				if (fileExtension !== originalFormat) {
-					reject(new DifferentOriginalFormatsDetectedError(
-						`The specified 'originalFormat' (${originalFormat}) differs from the one of your uploaded file (${fileExtension}).`
-					))
-				}
 				resolve({
 					file: file.buffer,
 					filename: file.originalname,
