@@ -41,6 +41,7 @@ export class ConversionService extends ConverterService {
 		this.converterMap = initializeConversionWrapperMap(availableWrappers)
 	}
 	public addToConversionQueue(requestObject: IConversionFile): IConversionProcessingResponse {
+		this.logger.log(`Add to conversion-queue: ${requestObject.conversionId}`)
 		const {
 			conversionId
 		} = this.queueService.addToConversionQueue(requestObject)
@@ -57,12 +58,14 @@ export class ConversionService extends ConverterService {
 				conversionId,
 				path
 			} = fileToProcess
+			this.logger.log(`Starting conversion process for ${conversionId}`)
 			this.queueService.isCurrentlyConverting = true
 			this.queueService.currentlyConvertingFile = fileToProcess
+			this.logger.log(`Change conversion-log status to 'processing' for ${conversionId}`)
 			this.queueService.changeConvLogEntry(conversionId, EConversionStatus.processing)
 			try {
 				await this.wrapConversion(fileToProcess)
-				/* Unsets the current conversion file in the conversion-queue */
+				this.logger.log("Done! Unset current conversion file")
 				this.conversionQueue.currentlyConvertingFile = null
 				/* Delete input file. */
 				await deleteFile(path)
@@ -83,6 +86,7 @@ export class ConversionService extends ConverterService {
 		}
 	}
 	public getConversionQueueStatus(): IConversionQueueStatus {
+		this.logger.log(`Fetch conversion-queue status`)
 		const conversions: IConversionInQueue[] = []
 		for (const [key, value] of this.queueService.conversionLog) {
 			const queuePosition: number = this.queueService.conversionQueue.findIndex(
@@ -102,9 +106,11 @@ export class ConversionService extends ConverterService {
 		}
 	}
 	public getConvertedFile(fileId: string): IConversionStatus {
+		this.logger.log(`Fetch conversion status for ${fileId}`)
 		return this.queueService.getStatusById(fileId)
 	}
 	public async getSupportedConversionFormats(): Promise<TConversionFormats> {
+		this.logger.log("Fetch conversion formats")
 		const formats: Promise<TConversionFormats>[] = []
 		for (const wrapperName of this.converterMap.keys()) {
 			const wrapper = this.converterMap.get(wrapperName)
@@ -137,6 +143,7 @@ export class ConversionService extends ConverterService {
 		return this.addToConversionQueue(conversionRequest)
 	}
 	async supportsConversion(sourceFormat: string, targetFormat: string): Promise<boolean> {
+		this.logger.log(`Retrieve convertability from '${sourceFormat}' to '${targetFormat}'`)
 		const isFfmpegConvertable = await FFmpegWrapper.canConvert({
 			sourceFormat,
 			targetFormat
