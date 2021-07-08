@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.8](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.7...v0.1.8) (2021-07-08)
+
+
+### Features
+
+* **conversion-service:** add getAllSupportedConversionFormats to conversion-service ([39b9b91](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/39b9b91a4491d956021c8748ae0df37371b78424)), closes [#50](https://gitlab.internal.team-parallax.com/belwue/conversion-service/issues/50)
+
+
+### Others
+
+* **docker-compose.yml:** add docker-compose file for development environment ([403d929](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/403d9291c46a6d82342d33b7263abe133e124514))
+* **swagger.json:** update version in swagger file ([935c359](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/935c359d33be1f1127688aa9a04b67897adae7a1))
+
+
+### Code Refactoring
+
+* **conversion-controller:** remove unneccessary extension check in controller ([7136cc0](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/7136cc04b5b40891a582c683935f75a52f464fe4))
+
 ### [0.1.7](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.6...v0.1.7) (2021-07-06)
 
 
