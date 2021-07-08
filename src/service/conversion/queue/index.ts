@@ -5,10 +5,12 @@ import {
 	IConversionStatus
 } from "../../../abstract/converter/interface"
 import { IConversionInQueue } from "../interface"
+import { Inject } from "typescript-ioc"
 import {
 	InvalidPathError,
 	NoSuchConversionIdError
 } from "../../../constants"
+import { Logger } from "../../../service/logger"
 import {
 	TConversionFiles,
 	TConversionIdToConversionFileMap,
@@ -17,6 +19,8 @@ import {
 const initialIdMap: TConversionIdToConversionFileMap = new Map()
 export class ConversionQueue {
 	private static instance: ConversionQueue
+	@Inject
+	private readonly logger!: Logger
 	private currentlyConverting!: TNullableConversionFile
 	private isConverting!: boolean
 	constructor(
@@ -51,15 +55,20 @@ export class ConversionQueue {
 	): void {
 		const element = this.convLog.get(conversionId)
 		if (!element) {
+			this.logger.error(`No element found for ${conversionId}`)
 			throw new NoSuchConversionIdError("No such conversion element")
 		}
 		else {
 			if (status === EConversionStatus.converted) {
+				this.logger.log(`${conversionId} is converted`)
 				if (!convertedFilePath) {
+					this.logger.log(`No converted file found for: ${conversionId}`)
 					throw new InvalidPathError(`No path given for id: ${conversionId}`)
 				}
+				this.logger.log(`Set new filepath for ${conversionId}`)
 				element.path = convertedFilePath
 			}
+			this.logger.log(`Update status for ${conversionId}`)
 			element.status = status
 		}
 	}
@@ -67,6 +76,7 @@ export class ConversionQueue {
 		return this.conversionQueue.shift()
 	}
 	public getStatusById(conversionId: string): IConversionStatus {
+		this.logger.log(`Retrieve status for ${conversionId}`)
 		const isInConversionQueue: boolean = this.convLog.get(
 			conversionId
 		)?.status === EConversionStatus.inQueue
