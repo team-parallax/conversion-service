@@ -300,6 +300,28 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"IFormat": {
+				"properties": {
+					"description": {
+						"type": "string"
+					},
+					"extension": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"description",
+					"extension"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TConversionFormats": {
+				"items": {
+					"$ref": "#/components/schemas/IFormat"
+				},
+				"type": "array"
 			}
 		},
 		"securitySchemes": {}
@@ -619,6 +641,28 @@
 				},
 				"tags": [
 					"Misc."
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/formats": {
+			"get": {
+				"operationId": "GetSupportedConversionFormats",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TConversionFormats"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Conversion-Formats"
 				],
 				"security": [],
 				"parameters": []

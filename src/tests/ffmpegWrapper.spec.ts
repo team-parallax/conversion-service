@@ -66,6 +66,32 @@ describe("FFmpegWrapper should pass all tests", () => {
 			/* Assert */
 			await expect(isSupportedConversion()).resolves.toBe(true)
 		})
+		it("should be able to convert from ogg to mp3", async () => {
+			/* Arrange */
+			const testFormats: TConversionRequestFormatSummary = {
+				sourceFormat: "ogg",
+				targetFormat: "mp3"
+			}
+			/* Act */
+			const isSupportedConversion = async (): Promise<boolean> => {
+				return await FFmpegWrapper.canConvert(testFormats)
+			}
+			/* Assert */
+			await expect(isSupportedConversion()).resolves.toBe(true)
+		})
+		it("should be able to convert from ogv to mp4", async () => {
+			/* Arrange */
+			const testFormats: TConversionRequestFormatSummary = {
+				sourceFormat: "ogv",
+				targetFormat: "mp4"
+			}
+			/* Act */
+			const isSupportedConversion = async (): Promise<boolean> => {
+				return await FFmpegWrapper.canConvert(testFormats)
+			}
+			/* Assert */
+			await expect(isSupportedConversion()).resolves.toBe(true)
+		})
 		it("should be able to convert from ogg to mp4", async () => {
 			/* Arrange */
 			const testFormats: TConversionRequestFormatSummary = {

@@ -124,6 +124,20 @@ const models: TsoaRoute.Models = {
 		"additionalProperties": false,
 	},
 	// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+	"IFormat": {
+		"dataType": "refObject",
+		"properties": {
+			"description": { "dataType": "string", "required": true },
+			"extension": { "dataType": "string", "required": true },
+		},
+		"additionalProperties": false,
+	},
+	// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+	"TConversionFormats": {
+		"dataType": "refAlias",
+		"type": { "dataType": "array", "array": { "ref": "IFormat" }, "validators": {} },
+	},
+	// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const validationService = new ValidationService(models);
 
@@ -345,6 +359,27 @@ export function RegisterRoutes(app: express.Express) {
 
 
 			const promise = controller.getPingResponse.apply(controller, validatedArgs as any);
+			promiseHandler(controller, promise, response, next);
+		});
+	// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+	app.get('/formats',
+		function(request: any, response: any, next: any) {
+			const args = {
+			};
+
+			// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+			let validatedArgs: any[] = [];
+			try {
+				validatedArgs = getValidatedArgs(args, request, response);
+			} catch (err) {
+				return next(err);
+			}
+
+			const controller = new IndexController();
+
+
+			const promise = controller.getSupportedConversionFormats.apply(controller, validatedArgs as any);
 			promiseHandler(controller, promise, response, next);
 		});
 	// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
