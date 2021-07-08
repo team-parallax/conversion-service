@@ -77,10 +77,12 @@ export class FFmpegWrapper extends BaseConverter {
 	}
 	public static getSupportedConversionFormats = async (): Promise<IFormat[]> => {
 		const formats = await new CapabilityService().getAvailableFormats()
-		return formats.map(ffmpegFormat => ({
-			description: ffmpegFormat.description,
-			extension: ffmpegFormat.name
-		}))
+		return formats.map(
+			ffmpegFormat => ({
+				description: ffmpegFormat.description,
+				extension: ffmpegFormat.name
+			})
+		)
 	}
 	async getAvailableCodecs(): Promise<IFFmpegCapabilitiesObject<ICodecData>> {
 		return await new Promise((resolve, reject) => {

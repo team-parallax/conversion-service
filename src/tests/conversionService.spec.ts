@@ -9,58 +9,76 @@ import {
 	MaxConversionTriesError,
 	UnsupportedConversionFormatError
 } from "../constants"
-import { TConversionRequestFormatSummary } from "../abstract/converter/types"
+import { TConversionFormats, TConversionRequestFormatSummary } from "../abstract/converter/types"
 import { createConversionRequestDummy } from "./helper/dataFactory"
 describe("Conversion Service should pass all tests", () => {
 	const conversionService = new ConversionService()
-	it("update should return 'undefined' when 'isCurrentlyConverting' is 'true'", async () => {
+	it("should getAllSupportedConversionFormats correctly", async () => {
 		/* Arrange */
-		conversionService.isCurrentlyConverting = true
 		/* Act */
-		const executeUpdate = async (): Promise<void> => await conversionService.update()
-		/* Assert */
-		await expect(executeUpdate()).resolves.toBeUndefined()
-	})
-	it("update should resolve when 'isCurrentlyConverting' is 'false'", async () => {
-		/* Arrange */
-		conversionService.isCurrentlyConverting = false
-		/* Act */
-		const executeUpdate = async (): Promise<void> => await conversionService.update()
-		/* Assert */
-		await expect(executeUpdate()).resolves.toBeUndefined()
-	})
-	it(
-		"wrapConversion should throw an error because max-retries value for conversion is reached",
-		async () => {
-			/* Arrange */
-			process.env.MAX_CONVERSION_TRIES = "2"
-			const conversionFile: IConversionFile = createConversionRequestDummy("mp3", "mp4")
-			/* Act */
-			/* Assert */
-			await expect(
-				conversionService.wrapConversion(conversionFile)
-			).rejects.toThrow(MaxConversionTriesError)
+		const getConversionFormats = async (): Promise<TConversionFormats> => {
+			return await conversionService.getSupportedConversionFormats()
 		}
-	)
-	it(
-		"processConversionRequest should throw an 'UnsupportedConversionFormatError' because invalid formats are passed", async () => {
-			/* Arrange */
-			const testFormats: IConversionRequestBody = {
-				file: Buffer.from("test buffer"),
-				filename: "foobar",
-				originalFormat: "mp3",
-				targetFormat: "pdf"
-			}
-			/* Act */
-			const getProcessingResult = async (): Promise<IConversionProcessingResponse> => {
-				return conversionService.processConversionRequest(testFormats)
-			}
-			/* Assert */
-			await expect(
-				getProcessingResult()
-			).rejects.toThrow(UnsupportedConversionFormatError)
+		const getFormatsLength = async (): Promise<number> => {
+			const formats = await getConversionFormats()
+			return formats.length
 		}
-	)
+		/* Assert */
+		await expect(getConversionFormats()).resolves.toBeDefined()
+		await expect(getFormatsLength()).resolves.toBeGreaterThanOrEqual(1)
+	})
+	describe("It should handle 'update' function correctly", () => {
+		it("update should return 'undefined' when 'isCurrentlyConverting' is 'true'", async () => {
+			/* Arrange */
+			conversionService.isCurrentlyConverting = true
+			/* Act */
+			const executeUpdate = async (): Promise<void> => await conversionService.update()
+			/* Assert */
+			await expect(executeUpdate()).resolves.toBeUndefined()
+		})
+		it("update should resolve when 'isCurrentlyConverting' is 'false'", async () => {
+			/* Arrange */
+			conversionService.isCurrentlyConverting = false
+			/* Act */
+			const executeUpdate = async (): Promise<void> => await conversionService.update()
+			/* Assert */
+			await expect(executeUpdate()).resolves.toBeUndefined()
+		})
+	})
+	describe("It should throw errors", () => {
+		it(
+			"wrapConversion should throw an error because max-retries value for conversion is reached",
+			async () => {
+				/* Arrange */
+				process.env.MAX_CONVERSION_TRIES = "2"
+				const conversionFile: IConversionFile = createConversionRequestDummy("mp3", "mp4")
+				/* Act */
+				/* Assert */
+				await expect(
+					conversionService.wrapConversion(conversionFile)
+				).rejects.toThrow(MaxConversionTriesError)
+			}
+		)
+		it(
+			"processConversionRequest should throw an 'UnsupportedConversionFormatError' because invalid formats are passed", async () => {
+				/* Arrange */
+				const testFormats: IConversionRequestBody = {
+					file: Buffer.from("test buffer"),
+					filename: "foobar",
+					originalFormat: "mp3",
+					targetFormat: "pdf"
+				}
+				/* Act */
+				const getProcessingResult = async (): Promise<IConversionProcessingResponse> => {
+					return conversionService.processConversionRequest(testFormats)
+				}
+				/* Assert */
+				await expect(
+					getProcessingResult()
+				).rejects.toThrow(UnsupportedConversionFormatError)
+			}
+		)
+	})
 	describe("supportsConversion returns the correct value for input formats", () => {
 		const isSupportedConversion = async (
 			{

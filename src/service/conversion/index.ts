@@ -19,6 +19,7 @@ import {
 	MaxConversionTriesError,
 	UnsupportedConversionFormatError
 } from "../../constants"
+import { TConversionFormats } from "../../abstract/converter/types"
 import { UnoconvWrapper } from "../unoconv"
 import {
 	deleteFile,
@@ -102,6 +103,15 @@ export class ConversionService extends ConverterService {
 	}
 	public getConvertedFile(fileId: string): IConversionStatus {
 		return this.queueService.getStatusById(fileId)
+	}
+	public async getSupportedConversionFormats(): Promise<TConversionFormats> {
+		const formats: Promise<TConversionFormats>[] = []
+		for (const wrapperName of this.converterMap.keys()) {
+			const wrapper = this.converterMap.get(wrapperName)
+			formats.push(wrapper?.getSupportedConversionFormats() as Promise<TConversionFormats>)
+		}
+		const totalFormats = await Promise.all(formats)
+		return [...new Set(...totalFormats)]
 	}
 	public async processConversionRequest(
 		conversionRequestBody: IConversionRequestBody
