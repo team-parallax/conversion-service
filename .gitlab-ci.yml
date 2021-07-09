@@ -5,7 +5,7 @@ default:
 cache:
   key: "$CI_COMMIT_REF_SLUG"
   paths:
-    - .npm/
+    - .yarn/
 
 stages:
   - prepare
@@ -26,7 +26,7 @@ workflow:
 
 
 before_script:
-  - yarn install --cache .npm --prefer-offline
+  - yarn install --cache .yarn --prefer-offline
 
 build_docker:
   stage: build
@@ -77,8 +77,8 @@ test_code:
         - src/**/*.ts
       when: always
 
-test_types:
-  stage: test
+prepare_typecheck:
+  stage: prepare
   script:
     - yarn test:types
   rules:
