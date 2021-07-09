@@ -94,7 +94,7 @@ test_quality:
   stage: quality
   needs:
     - job: test_lint_code
-    - job: test_types
+    - job: prepare_typecheck
   variables:
     DOCKER_TLS_CERTDIR: ""
     DOCKER_HOST: tcp://localhost:2375
