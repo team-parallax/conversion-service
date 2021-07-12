@@ -17,7 +17,8 @@ describe("Conversion Service should pass all tests", () => {
 		/* Arrange */
 		/* Act */
 		const getConversionFormats = async (): Promise<TConversionFormats> => {
-			return await conversionService.getSupportedConversionFormats()
+			const formatResponse = await conversionService.getSupportedConversionFormats()
+			return formatResponse.document
 		}
 		const getFormatsLength = async (): Promise<number> => {
 			const formats = await getConversionFormats()
