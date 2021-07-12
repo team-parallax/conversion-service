@@ -52,6 +52,28 @@ describe("FFmpegWrapper should pass all tests", () => {
 		await expect(isNonEmptyCollection()).resolves.toBe(true)
 		done()
 	})
+	it("should return true for mp3 to mp4", async () => {
+		/* Arrange */
+		const testFormats = {
+			sourceFormat: "mp3",
+			targetFormat: "mp4"
+		}
+		/* Act */
+		const canConvert = async (): Promise<boolean> => await FFmpegWrapper.canConvert(testFormats)
+		/* Assert */
+		await expect(canConvert()).resolves.toBe(true)
+	})
+	it("should return false for jpg to mp4", async () => {
+		/* Arrange */
+		const testFormats = {
+			sourceFormat: "jpg",
+			targetFormat: "mp4"
+		}
+		/* Act */
+		const canConvert = async (): Promise<boolean> => await FFmpegWrapper.canConvert(testFormats)
+		/* Assert */
+		await expect(canConvert()).resolves.toBe(false)
+	})
 	describe("It should return true if formats can be converted and false otherwise", () => {
 		it("should be able to convert from mp3 to mp4", async () => {
 			/* Arrange */
