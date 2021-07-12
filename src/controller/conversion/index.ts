@@ -12,9 +12,9 @@ import {
 import { ConversionService } from "../../service/conversion"
 import {
 	DifferentOriginalFormatsDetectedError,
-	EHttpResponseCodes,
-	basePath
+	EHttpResponseCodes
 } from "../../constants"
+import { EConversionStatus } from "../../service/conversion/enum"
 import {
 	IConversionProcessingResponse,
 	IConversionQueueStatus,
@@ -24,6 +24,7 @@ import {
 import { IConversionStatus } from "../../abstract/converter/interface"
 import { Inject } from "typescript-ioc"
 import { Logger } from "../../service/logger"
+import { getConvertedFileNameAndPath } from "../../service/conversion/util"
 import { getType } from "mime"
 import express from "express"
 import fs from "fs"
@@ -76,10 +77,26 @@ export class ConversionController extends Controller {
 	 * @param conversionId Unique identifier for the conversion of a file.
 	 */
 	@Get("{conversionId}")
-	public getConvertedFile(@Path() conversionId: string): IConversionStatus {
+	public getConvertedFile(
+		@Request() req: express.Request,
+		@Path() conversionId: string
+	): IConversionStatus {
 		try {
+			const statusResponse = this.conversionService.getConvertedFile(conversionId)
+			if (statusResponse.status === EConversionStatus.converted) {
+				/*
+				* In case the file is converted, redirect the request to auto-download the file
+				* Idea for tsoa implementation from here:
+				* https://github.com/lukeautry/tsoa/issues/235#issuecomment-397263868
+				*/
+				const expressResponse = req.res as express.Response
+				this.setStatus(EHttpResponseCodes.redirect)
+				expressResponse.redirect(
+					`/conversion/${conversionId}/download?extension=${statusResponse.targetFormat}`
+				)
+			}
 			this.setStatus(EHttpResponseCodes.ok)
-			return this.conversionService.getConvertedFile(conversionId)
+			return statusResponse
 		}
 		catch (err) {
 			this.setStatus(EHttpResponseCodes.notFound)
@@ -98,18 +115,20 @@ export class ConversionController extends Controller {
 	 */
 	@Get("{conversionId}/download")
 	public async getConvertedFileDownload(
-		@Path("conversionId") conversionId: string,
-			@Query("extension") extension: string = "mp3"
+		@Path("conversionId") conversionId: string
 	): Promise<unknown> {
 		try {
 			const {
 				conversionId: fileId,
-				status
+				status,
+				targetFormat
 			} = this.conversionService.getConvertedFile(conversionId)
 			this.setStatus(EHttpResponseCodes.ok)
 			if (status === "converted") {
-				const fileName = `${fileId}.${extension}`
-				const filePath = `${basePath}output/${fileName}`
+				const {
+					fileName,
+					filePath
+				} = getConvertedFileNameAndPath(conversionId, targetFormat)
 				const stats: fs.Stats = await fs.promises.stat(filePath)
 				this.setHeader("Content-Type", `${getType(filePath)}`)
 				this.setHeader("Content-Length", stats.size.toString())

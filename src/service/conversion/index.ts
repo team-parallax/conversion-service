@@ -5,6 +5,7 @@ import { ConverterService } from "../../abstract/converter/service"
 import { EConversionStatus } from "./enum"
 import { FFmpegWrapper } from "../ffmpeg"
 import {
+	IApiConversionFormatResponse,
 	IConversionFile,
 	IConversionStatus
 } from "../../abstract/converter/interface"
@@ -109,7 +110,7 @@ export class ConversionService extends ConverterService {
 		this.logger.log(`Fetch conversion status for ${fileId}`)
 		return this.queueService.getStatusById(fileId)
 	}
-	public async getSupportedConversionFormats(): Promise<TConversionFormats> {
+	public async getSupportedConversionFormats(): Promise<IApiConversionFormatResponse> {
 		this.logger.log("Fetch conversion formats")
 		const formats: Promise<TConversionFormats>[] = []
 		for (const wrapperName of this.converterMap.keys()) {
@@ -117,7 +118,9 @@ export class ConversionService extends ConverterService {
 			formats.push(wrapper?.getSupportedConversionFormats() as Promise<TConversionFormats>)
 		}
 		const totalFormats = await Promise.all(formats)
-		return [...new Set(...totalFormats)]
+		return {
+			document: [...new Set(...totalFormats)]
+		}
 	}
 	public async processConversionRequest(
 		conversionRequestBody: IConversionRequestBody

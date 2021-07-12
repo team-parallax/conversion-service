@@ -2,6 +2,7 @@ import path from "path"
 export enum EHttpResponseCodes {
     ok = 200,
     created = 201,
+	redirect = 302,
     noContent = 204,
     badRequest = 400,
     unauthorized = 401,

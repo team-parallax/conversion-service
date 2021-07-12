@@ -9,7 +9,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - "data:/bitnami/mariadb"
+      - "cs_data:/bitnami/mariadb"
   moodle:
     image: "docker.io/bitnami/moodle:3.9.1-debian-10-r18"
     ports:
@@ -23,7 +23,7 @@ services:
       - ALLOW_EMPTY_PASSWORD=yes
       - BITNAMI_DEBUG=true
     volumes:
-      - "moodledata:/bitnami/moodle"
+      - "cs_moodledata:/bitnami/moodle"
     depends_on:
       - mariadb
   conversion-service:
@@ -35,5 +35,5 @@ services:
     ports:
       - "3000:3000"
 volumes:
-  data:
-  moodledata:
+  cs_data:
+  cs_moodledata:

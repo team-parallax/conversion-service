@@ -1,6 +1,7 @@
-import { createConversionRequestBody } from "./helper/dataFactory"
+import { basePath } from "../constants"
+import { createConversionRequestBody, createConversionRequestDummy } from "./helper/dataFactory"
 import { executeShellCommand } from "../util"
-import { transformRequestBodyToConversionFile } from "../service/conversion/util"
+import { getConvertedFileNameAndPath, transformRequestBodyToConversionFile } from "../service/conversion/util"
 describe("It should pass all tests for utility functions", () => {
 	it("should execute shell commands without an incident", async () => {
 		/* Arrange */
@@ -29,5 +30,20 @@ describe("It should pass all tests for utility functions", () => {
 		expect(transformedConversionFile).toHaveProperty("conversionId")
 		expect(transformedConversionFile).toHaveProperty("path")
 		expect(transformedConversionFile.retries).toBe(0)
+	})
+	it("should return correct filename and filepath info", () => {
+		/* Arrange */
+		const {
+			conversionId,
+			targetFormat
+		} = createConversionRequestDummy()
+		/* Act */
+		const {
+			fileName,
+			filePath
+		} = getConvertedFileNameAndPath(conversionId, targetFormat)
+		/* Assert */
+		expect(fileName).toBe(`${conversionId}.${targetFormat}`)
+		expect(filePath).toBe(`${basePath}output/${fileName}`)
 	})
 })
