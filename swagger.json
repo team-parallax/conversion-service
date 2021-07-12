@@ -492,15 +492,6 @@
 						"schema": {
 							"type": "string"
 						}
-					},
-					{
-						"in": "query",
-						"name": "extension",
-						"required": false,
-						"schema": {
-							"default": "mp3",
-							"type": "string"
-						}
 					}
 				]
 			}
