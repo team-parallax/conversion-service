@@ -1,5 +1,8 @@
 import { EConversionStatus } from "Service/conversion/enum"
-import { TConversionOptions } from "./types"
+import {
+	TConversionFormats,
+	TConversionOptions
+} from "./types"
 export interface IApiConversionRequest {
 	file: Buffer,
 	options?: TConversionOptions,
@@ -23,4 +26,7 @@ export interface IConversionStatus extends IConversionFile {
 export interface IFormat {
 	description: string,
 	extension: string
+}
+export interface IApiConversionFormatResponse {
+	document: TConversionFormats
 }

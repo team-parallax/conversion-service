@@ -15,6 +15,7 @@ import {
 	EHttpResponseCodes,
 	basePath
 } from "../../constants"
+import { EConversionStatus } from "../../service/conversion/enum"
 import {
 	IConversionProcessingResponse,
 	IConversionQueueStatus,
@@ -76,10 +77,26 @@ export class ConversionController extends Controller {
 	 * @param conversionId Unique identifier for the conversion of a file.
 	 */
 	@Get("{conversionId}")
-	public getConvertedFile(@Path() conversionId: string): IConversionStatus {
+	public getConvertedFile(
+		@Request() req: express.Request,
+		@Path() conversionId: string
+	): IConversionStatus {
 		try {
+			const statusResponse = this.conversionService.getConvertedFile(conversionId)
+			if (statusResponse.status === EConversionStatus.converted) {
+				/*
+				* In case the file is converted, redirect the request to auto-download the file
+				* Idea for tsoa implementation from here:
+				* https://github.com/lukeautry/tsoa/issues/235#issuecomment-397263868
+				*/
+				const expressResponse = req.res as express.Response
+				this.setStatus(EHttpResponseCodes.redirect)
+				expressResponse.redirect(
+					`/conversion/${conversionId}/download?extension=${statusResponse.targetFormat}`
+				)
+			}
 			this.setStatus(EHttpResponseCodes.ok)
-			return this.conversionService.getConvertedFile(conversionId)
+			return statusResponse
 		}
 		catch (err) {
 			this.setStatus(EHttpResponseCodes.notFound)

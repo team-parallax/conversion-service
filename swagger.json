@@ -322,13 +322,25 @@
 					"$ref": "#/components/schemas/IFormat"
 				},
 				"type": "array"
+			},
+			"IApiConversionFormatResponse": {
+				"properties": {
+					"document": {
+						"$ref": "#/components/schemas/TConversionFormats"
+					}
+				},
+				"required": [
+					"document"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
 	},
 	"info": {
 		"title": "conversion-service",
-		"version": "0.1.7",
+		"version": "0.1.9",
 		"description": "A webservice with a REST Api which can convert document/media files using different binaries",
 		"license": {
 			"name": "GPL-3.0-or-later"
@@ -655,7 +667,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/TConversionFormats"
+									"$ref": "#/components/schemas/IApiConversionFormatResponse"
 								}
 							}
 						}

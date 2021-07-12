@@ -7,9 +7,9 @@ import {
 } from "tsoa"
 import { ConversionService } from "../service/conversion"
 import { EHttpResponseCodes } from "../constants"
+import { IApiConversionFormatResponse } from "../abstract/converter/interface"
 import { Inject } from "typescript-ioc"
 import { Logger } from "../service/logger"
-import { TConversionFormats } from "../abstract/converter/types"
 @Route("/")
 export class IndexController extends Controller {
 	@Inject
@@ -26,7 +26,7 @@ export class IndexController extends Controller {
 	}
 	@Tags("Conversion-Formats")
 	@Get("/formats")
-	public async getSupportedConversionFormats(): Promise<TConversionFormats> {
+	public async getSupportedConversionFormats(): Promise<IApiConversionFormatResponse> {
 		this.logger.log("Conversion formats requested")
 		return await this.conversionService.getSupportedConversionFormats()
 	}
