@@ -23,7 +23,7 @@ module.exports = {
 		"./jest.setup.ts"
 	],
 	testRegex: [
-		"(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$"
+		"(/__tests__/.*|\\.(test|spec)|\\.(unit|integration))\\.(ts|tsx|js)$"
 	],
 	transform: {
 		".ts$": "ts-jest"

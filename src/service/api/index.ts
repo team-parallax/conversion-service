@@ -24,8 +24,8 @@ import swaggerDocument from "../../../swagger.json"
 export class Api {
 	@Inject
 	private readonly logger!: Logger
+	public readonly app: Application
 	private readonly _port: number
-	private readonly app: Application
 	private readonly startUpDelay: number = 1500
 	constructor(port?: number) {
 		const config = createConfiguration()

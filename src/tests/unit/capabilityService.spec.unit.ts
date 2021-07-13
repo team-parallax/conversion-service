@@ -1,8 +1,8 @@
-import { CapabilityService } from "../service/capabilities"
-import { FFmpegWrapper } from "../service/ffmpeg"
+import { CapabilityService } from "../../service/capabilities"
+import { FFmpegWrapper } from "../../service/ffmpeg"
 import {
 	ICodec, IEncoder, IFfmpegFormat, IFilter
-} from "../service/ffmpeg/interface"
+} from "../../service/ffmpeg/interface"
 describe("CapabilityService should pass all tests", () => {
 	const capabilityService = new CapabilityService()
 	const ffmpeg = new FFmpegWrapper()

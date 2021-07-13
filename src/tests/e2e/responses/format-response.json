@@ -1,0 +1,548 @@
+{
+  "document": [
+    {
+      "description": "BibTeX",
+      "extension": "bib"
+    },
+    {
+      "description": "Microsoft Word 97/2000/XP",
+      "extension": "doc"
+    },
+    {
+      "description": "Microsoft Word 6.0",
+      "extension": "doc"
+    },
+    {
+      "description": "Microsoft Word 95",
+      "extension": "doc"
+    },
+    {
+      "description": "DocBook",
+      "extension": "xml"
+    },
+    {
+      "description": "Microsoft Office Open XML",
+      "extension": "docx"
+    },
+    {
+      "description": "Microsoft Office Open XML",
+      "extension": "docx"
+    },
+    {
+      "description": "OpenDocument Text (Flat XML)",
+      "extension": "fodt"
+    },
+    {
+      "description": "HTML Document (OpenOffice.org Writer)",
+      "extension": "html"
+    },
+    {
+      "description": "LaTeX 2e",
+      "extension": "ltx"
+    },
+    {
+      "description": "MediaWiki",
+      "extension": "txt"
+    },
+    {
+      "description": "ODF Text Document",
+      "extension": "odt"
+    },
+    {
+      "description": "Microsoft Office Open XML",
+      "extension": "xml"
+    },
+    {
+      "description": "Open Document Text",
+      "extension": "ott"
+    },
+    {
+      "description": "AportisDoc (Palm)",
+      "extension": "pdb"
+    },
+    {
+      "description": "Portable Document Format",
+      "extension": "pdf"
+    },
+    {
+      "description": "Pocket Word",
+      "extension": "psw"
+    },
+    {
+      "description": "Rich Text Format",
+      "extension": "rtf"
+    },
+    {
+      "description": "StarWriter 5.0",
+      "extension": "sdw"
+    },
+    {
+      "description": "StarWriter 4.0",
+      "extension": "sdw"
+    },
+    {
+      "description": "StarWriter 3.0",
+      "extension": "sdw"
+    },
+    {
+      "description": "Open Office.org 1.0 Text Document Template",
+      "extension": "stw"
+    },
+    {
+      "description": "Open Office.org 1.0 Text Document",
+      "extension": "sxw"
+    },
+    {
+      "description": "Text Encoded",
+      "extension": "txt"
+    },
+    {
+      "description": "Text",
+      "extension": "txt"
+    },
+    {
+      "description": "Unified Office Format text",
+      "extension": "uot"
+    },
+    {
+      "description": "StarWriter 5.0 Template",
+      "extension": "vor"
+    },
+    {
+      "description": "StarWriter 4.0 Template",
+      "extension": "vor"
+    },
+    {
+      "description": "StarWriter 3.0 Template",
+      "extension": "vor"
+    },
+    {
+      "description": "Microsoft Works",
+      "extension": "wps"
+    },
+    {
+      "description": "XHTML Document",
+      "extension": "html"
+    },
+    {
+      "description": "Electronic Publication",
+      "extension": "epub"
+    },
+    {
+      "description": "Portable Network Graphic",
+      "extension": "png"
+    },
+    {
+      "description": "Windows Bitmap",
+      "extension": "bmp"
+    },
+    {
+      "description": "Enhanced Metafile",
+      "extension": "emf"
+    },
+    {
+      "description": "Encapsulated PostScript",
+      "extension": "eps"
+    },
+    {
+      "description": "OpenDocument Drawing (Flat XML)",
+      "extension": "fodg"
+    },
+    {
+      "description": "Graphics Interchange Format",
+      "extension": "gif"
+    },
+    {
+      "description": "HTML Document (OpenOffice.org Draw)",
+      "extension": "html"
+    },
+    {
+      "description": "Joint Photographic Experts Group",
+      "extension": "jpg"
+    },
+    {
+      "description": "Joint Photographic Experts Group",
+      "extension": "jpeg"
+    },
+    {
+      "description": "OS/2 Metafile",
+      "extension": "met"
+    },
+    {
+      "description": "OpenDocument Drawing",
+      "extension": "odd"
+    },
+    {
+      "description": "OpenDocument Drawing Template",
+      "extension": "otg"
+    },
+    {
+      "description": "Portable Bitmap",
+      "extension": "pbm"
+    },
+    {
+      "description": "Mac Pict",
+      "extension": "pct"
+    },
+    {
+      "description": "Portable Document Format",
+      "extension": "pdf"
+    },
+    {
+      "description": "Portable Graymap",
+      "extension": "pgm"
+    },
+    {
+      "description": "Portable Network Graphic",
+      "extension": "png"
+    },
+    {
+      "description": "Portable Pixelmap",
+      "extension": "ppm"
+    },
+    {
+      "description": "Sun Raster Image",
+      "extension": "ras"
+    },
+    {
+      "description": "OpenOffice.org 1.0 Drawing Template",
+      "extension": "std"
+    },
+    {
+      "description": "Scalable Vector Graphics",
+      "extension": "svg"
+    },
+    {
+      "description": "StarView Metafile",
+      "extension": "svm"
+    },
+    {
+      "description": "Macromedia Flash (SWF)",
+      "extension": "swf"
+    },
+    {
+      "description": "OpenOffice.org 1.0 Drawing",
+      "extension": "sxd"
+    },
+    {
+      "description": "StarDraw 3.0",
+      "extension": "sxd"
+    },
+    {
+      "description": "StarDraw 5.0",
+      "extension": "sxd"
+    },
+    {
+      "description": "StarOffice XML (Draw)",
+      "extension": "sxw"
+    },
+    {
+      "description": "Tagged Image File Format",
+      "extension": "tiff"
+    },
+    {
+      "description": "StarDraw 5.0 Template",
+      "extension": "vor"
+    },
+    {
+      "description": "StarDraw 3.0 Template",
+      "extension": "vor"
+    },
+    {
+      "description": "Windows Metafile",
+      "extension": "wmf"
+    },
+    {
+      "description": "XHTML",
+      "extension": "xhtml"
+    },
+    {
+      "description": "X PixMap",
+      "extension": "xpm"
+    },
+    {
+      "description": "Windows Bitmap",
+      "extension": "bmp"
+    },
+    {
+      "description": "Enhanced Metafile",
+      "extension": "emf"
+    },
+    {
+      "description": "Encapsulated PostScript",
+      "extension": "eps"
+    },
+    {
+      "description": "OpenDocument Presentation (Flat XML)",
+      "extension": "fodp"
+    },
+    {
+      "description": "Graphics Interchange Format",
+      "extension": "gif"
+    },
+    {
+      "description": "HTML Document (OpenOffice.org Impress)",
+      "extension": "html"
+    },
+    {
+      "description": "Joint Photographic Experts Group",
+      "extension": "jpg"
+    },
+    {
+      "description": "OS/2 Metafile",
+      "extension": "met"
+    },
+    {
+      "description": "ODF Drawing (Impress)",
+      "extension": "odg"
+    },
+    {
+      "description": "ODF Presentation",
+      "extension": "odp"
+    },
+    {
+      "description": "ODF Presentation Template",
+      "extension": "otp"
+    },
+    {
+      "description": "Portable Bitmap",
+      "extension": "pbm"
+    },
+    {
+      "description": "Mac Pict",
+      "extension": "pct"
+    },
+    {
+      "description": "Portable Document Format",
+      "extension": "pdf"
+    },
+    {
+      "description": "Portable Graymap",
+      "extension": "pgm"
+    },
+    {
+      "description": "Portable Network Graphic",
+      "extension": "png"
+    },
+    {
+      "description": "Microsoft PowerPoint 2007/2010 XML Template",
+      "extension": "potm"
+    },
+    {
+      "description": "Microsoft PowerPoint 97/2000/XP Template",
+      "extension": "pot"
+    },
+    {
+      "description": "Portable Pixelmap",
+      "extension": "ppm"
+    },
+    {
+      "description": "Microsoft PowerPoint 2007/2010 XML",
+      "extension": "pptx"
+    },
+    {
+      "description": "Microsoft PowerPoint 97/2000/XP (Autoplay)",
+      "extension": "pps"
+    },
+    {
+      "description": "Microsoft PowerPoint 97/2000/XP",
+      "extension": "ppt"
+    },
+    {
+      "description": "PlaceWare",
+      "extension": "pwp"
+    },
+    {
+      "description": "Sun Raster Image",
+      "extension": "ras"
+    },
+    {
+      "description": "StarDraw 5.0 (OpenOffice.org Impress)",
+      "extension": "sda"
+    },
+    {
+      "description": "StarImpress 5.0",
+      "extension": "sdd"
+    },
+    {
+      "description": "StarDraw 3.0 (OpenOffice.org Impress)",
+      "extension": "sdd"
+    },
+    {
+      "description": "StarImpress 4.0",
+      "extension": "sdd"
+    },
+    {
+      "description": "OpenOffice.org 1.0 Drawing (OpenOffice.org Impress)",
+      "extension": "sxd"
+    },
+    {
+      "description": "OpenOffice.org 1.0 Presentation Template",
+      "extension": "sti"
+    },
+    {
+      "description": "Scalable Vector Graphics",
+      "extension": "svg"
+    },
+    {
+      "description": "StarView Metafile",
+      "extension": "svm"
+    },
+    {
+      "description": "Macromedia Flash (SWF)",
+      "extension": "swf"
+    },
+    {
+      "description": "OpenOffice.org 1.0 Presentation",
+      "extension": "sxi"
+    },
+    {
+      "description": "Tagged Image File Format",
+      "extension": "tiff"
+    },
+    {
+      "description": "Unified Office Format presentation",
+      "extension": "uop"
+    },
+    {
+      "description": "StarImpress 5.0 Template",
+      "extension": "vor"
+    },
+    {
+      "description": "StarDraw 3.0 Template (OpenOffice.org Impress)",
+      "extension": "vor"
+    },
+    {
+      "description": "StarImpress 4.0 Template",
+      "extension": "vor"
+    },
+    {
+      "description": "StarDraw 5.0 Template (OpenOffice.org Impress)",
+      "extension": "vor"
+    },
+    {
+      "description": "Windows Metafile",
+      "extension": "wmf"
+    },
+    {
+      "description": "XHTML",
+      "extension": "xml"
+    },
+    {
+      "description": "X PixMap",
+      "extension": "xpm"
+    },
+    {
+      "description": "Text CSV",
+      "extension": "csv"
+    },
+    {
+      "description": "dBASE",
+      "extension": "dbf"
+    },
+    {
+      "description": "Data Interchange Format",
+      "extension": "dif"
+    },
+    {
+      "description": "OpenDocument Spreadsheet (Flat XML)",
+      "extension": "fods"
+    },
+    {
+      "description": "HTML Document (OpenOffice.org Calc)",
+      "extension": "html"
+    },
+    {
+      "description": "ODF Spreadsheet",
+      "extension": "ods"
+    },
+    {
+      "description": "Microsoft Excel 2003 XML",
+      "extension": "xml"
+    },
+    {
+      "description": "ODF Spreadsheet Template",
+      "extension": "ots"
+    },
+    {
+      "description": "Portable Document Format",
+      "extension": "pdf"
+    },
+    {
+      "description": "Pocket Excel",
+      "extension": "pxl"
+    },
+    {
+      "description": "StarCalc 5.0",
+      "extension": "sdc"
+    },
+    {
+      "description": "StarCalc 4.0",
+      "extension": "sdc"
+    },
+    {
+      "description": "StarCalc 3.0",
+      "extension": "sdc"
+    },
+    {
+      "description": "SYLK",
+      "extension": "slk"
+    },
+    {
+      "description": "OpenOffice.org 1.0 Spreadsheet Template",
+      "extension": "stc"
+    },
+    {
+      "description": "OpenOffice.org 1.0 Spreadsheet",
+      "extension": "sxc"
+    },
+    {
+      "description": "Unified Office Format spreadsheet",
+      "extension": "uos"
+    },
+    {
+      "description": "StarCalc 3.0 Template",
+      "extension": "vor"
+    },
+    {
+      "description": "StarCalc 4.0 Template",
+      "extension": "vor"
+    },
+    {
+      "description": "StarCalc 5.0 Template",
+      "extension": "vor"
+    },
+    {
+      "description": "XHTML",
+      "extension": "xhtml"
+    },
+    {
+      "description": "Microsoft Excel 97/2000/XP",
+      "extension": "xls"
+    },
+    {
+      "description": "Microsoft Excel 5.0",
+      "extension": "xls"
+    },
+    {
+      "description": "Microsoft Excel 95",
+      "extension": "xls"
+    },
+    {
+      "description": "Microsoft Excel 97/2000/XP Template",
+      "extension": "xlt"
+    },
+    {
+      "description": "Microsoft Excel 5.0 Template",
+      "extension": "xlt"
+    },
+    {
+      "description": "Microsoft Excel 95 Template",
+      "extension": "xlt"
+    },
+    {
+      "description": "Microsoft Excel 2007/2010 XML",
+      "extension": "xlsx"
+    }
+  ]
+}

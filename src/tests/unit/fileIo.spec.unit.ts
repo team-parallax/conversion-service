@@ -1,4 +1,4 @@
-import { InvalidPathError, basePath } from "../constants"
+import { InvalidPathError, basePath } from "../../constants"
 import {
 	createDirectoryIfNotPresent,
 	deleteFile,
@@ -7,7 +7,7 @@ import {
 	isFile,
 	readFromFileSync,
 	writeToFile
-} from "../service/file-io"
+} from "../../service/file-io"
 import { existsSync } from "fs"
 import { resolve } from "path"
 const resolvePath = (path: string): string => resolve(basePath, path)
