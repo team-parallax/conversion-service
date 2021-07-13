@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.11](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.10...v0.1.11) (2021-07-13)
+
+
+### Others
+
+* **sample-input:** add sample jpeg ([78bd54a](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/78bd54a2d621aed4b49dab3c33255669a8b19f88))
+
 ### [0.1.10](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.9...v0.1.10) (2021-07-13)
 
 
