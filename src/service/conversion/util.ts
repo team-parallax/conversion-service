@@ -1,4 +1,4 @@
-import { IConversionFile } from "../../abstract/converter/interface"
+import { IConversionFile, IConversionFileProps } from "../../abstract/converter/interface"
 import { IConversionRequestBody } from "./interface"
 import { basePath } from "../../constants"
 import { v4 as uuidV4 } from "uuid"
@@ -18,9 +18,10 @@ export const transformRequestBodyToConversionFile = (
 		targetFormat
 	}
 }
-export const getConvertedFileNameAndPath = (conversionId: string, targetFormat: string): {
-	fileName: string, filePath: string
-} => {
+export const getConvertedFileNameAndPath = (
+	conversionId: string,
+	targetFormat: string
+): IConversionFileProps => {
 	const fileName = `${conversionId}.${targetFormat}`
 	const filePath = `${basePath}output/${fileName}`
 	return {
