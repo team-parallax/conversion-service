@@ -3,7 +3,6 @@ default:
   interruptible: true
 
 cache:
-  key: "$CI_COMMIT_REF_SLUG"
   paths:
     - .yarn/
 
@@ -11,7 +10,7 @@ stages:
   - prepare
   - test
   - build
-  - quality
+  - review
   - release
 
 
@@ -21,14 +20,13 @@ workflow:
   rules:
     - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS && $CI_PIPELINE_SOURCE == "push"
       when: never
-    - if: $CI_COMMIT_TAG
     - if: $CI_COMMIT_BRANCH || $CI_COMMIT_TAG
 
 
 before_script:
   - yarn install --cache .yarn --prefer-offline
 
-build_docker:
+build docker:
   stage: build
   services:
     - docker:19.03.5-dind
@@ -48,8 +46,8 @@ build_docker:
   rules:
     - if: $CI_COMMIT_TAG
 
-test_lint_code:
-  stage: test
+lint code:
+  stage: prepare
   script:
     - yarn lint
   rules:
@@ -57,19 +55,19 @@ test_lint_code:
         - src/**/*.ts
       when: always
 
-test_code:
+test unit:
   stage: test
   script:
     - |
       mkdir -p ./output/ ./input/
-      yarn test:all:ci
+      yarn test:unit:coverage --ci
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   artifacts:
-    expire_in: 30 days
+    expire_in: 7 days
     paths:
-      - junit.xml
+      - artifacts/test/unit/junit.xml
     reports:
-      junit: junit.xml
+      junit: artifacts/test/unit/junit.xml
     untracked: false
     when: always
   rules:
@@ -77,7 +75,17 @@ test_code:
         - src/**/*.ts
       when: always
 
-prepare_typecheck:
+test integration:
+  extends: "test unit"
+  script:
+    - yarn test:integration --ci
+  artifacts:
+    paths:
+      - artifacts/test/integration/junit.xml
+    reports:
+      junit: artifacts/test/integration/junit.xml
+
+prepare typecheck:
   stage: prepare
   script:
     - yarn test:types
@@ -86,15 +94,15 @@ prepare_typecheck:
         - src/**/*.ts
       when: always
 
-test_quality:
+code quality:
   allow_failure: true
   image: docker:stable
   services:
     - docker:stable-dind
-  stage: quality
+  stage: review
   needs:
-    - job: test_lint_code
-    - job: prepare_typecheck
+    - job: "lint code"
+    - job: "prepare typecheck"
   variables:
     DOCKER_TLS_CERTDIR: ""
     DOCKER_HOST: tcp://localhost:2375
@@ -124,7 +132,7 @@ test_quality:
 # The steps below originally come from here, but the release_job step
 # should wait for the docker build before creating a release
 # https://gitlab.com/uulmhack/pipelines/auto-create-release/-/blob/master/.gitlab-ci.yml
-prepare_release:
+prepare release:
   image: alpine:3.13
   stage: prepare
   before_script:
@@ -141,13 +149,16 @@ prepare_release:
       exists:
         - CHANGELOG.md
 
-release_job:
+release job:
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   before_script: []
   needs:
-    - job: build_docker
-    - job: prepare_release
+    - job: "build docker"
+    - job: "prepare release"
       artifacts: true
+    - job: "code quality"
+    - job: "test unit"
+    - job: "test integration"
   script:
     - echo "create gitlab-release for ${CI_COMMIT_TAG}"
   stage: release

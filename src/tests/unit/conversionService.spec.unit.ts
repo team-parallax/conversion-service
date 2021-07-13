@@ -1,16 +1,16 @@
-import { ConversionService } from "../service/conversion"
-import { EConversionWrapper } from "../enum"
-import { IConversionFile } from "../abstract/converter/interface"
+import { ConversionService } from "../../service/conversion"
+import { EConversionWrapper } from "../../enum"
+import { IConversionFile } from "../../abstract/converter/interface"
 import {
 	IConversionProcessingResponse,
 	IConversionRequestBody
-} from "../service/conversion/interface"
+} from "../../service/conversion/interface"
 import {
 	MaxConversionTriesError,
 	UnsupportedConversionFormatError
-} from "../constants"
-import { TConversionFormats, TConversionRequestFormatSummary } from "../abstract/converter/types"
-import { createConversionRequestDummy } from "./helper/dataFactory"
+} from "../../constants"
+import { TConversionFormats, TConversionRequestFormatSummary } from "../../abstract/converter/types"
+import { createConversionRequestDummy } from "../helper/dataFactory"
 describe("Conversion Service should pass all tests", () => {
 	const conversionService = new ConversionService()
 	it("should getAllSupportedConversionFormats correctly", async () => {

@@ -1,7 +1,13 @@
-import { basePath } from "../constants"
-import { createConversionRequestBody, createConversionRequestDummy } from "./helper/dataFactory"
-import { executeShellCommand } from "../util"
-import { getConvertedFileNameAndPath, transformRequestBodyToConversionFile } from "../service/conversion/util"
+import { basePath } from "../../constants"
+import {
+	createConversionRequestBody,
+	createConversionRequestDummy
+} from "../helper/dataFactory"
+import { executeShellCommand } from "../../util"
+import {
+	getConvertedFileNameAndPath,
+	transformRequestBodyToConversionFile
+} from "../../service/conversion/util"
 describe("It should pass all tests for utility functions", () => {
 	it("should execute shell commands without an incident", async () => {
 		/* Arrange */

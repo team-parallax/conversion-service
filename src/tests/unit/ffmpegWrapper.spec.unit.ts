@@ -1,7 +1,7 @@
-import { FFmpegWrapper } from "../service/ffmpeg"
-import { TConversionFormats, TConversionRequestFormatSummary } from "../abstract/converter/types"
-import { basePath } from "../constants"
-import { createDirectoryIfNotPresent } from "../service/file-io"
+import { FFmpegWrapper } from "../../service/ffmpeg"
+import { TConversionFormats, TConversionRequestFormatSummary } from "../../abstract/converter/types"
+import { basePath } from "../../constants"
+import { createDirectoryIfNotPresent } from "../../service/file-io"
 import path from "path"
 beforeAll(async () => {
 	const paths = ["input", "output"]

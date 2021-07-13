@@ -1,8 +1,8 @@
-import { ConversionQueue } from "../service/conversion/queue"
-import { EConversionStatus } from "../service/conversion/enum"
-import { IConversionStatusResponse } from "../service/conversion/interface"
-import { InvalidPathError, NoSuchConversionIdError } from "../constants"
-import { createChangeConvLogParams, createConversionRequests } from "./helper/dataFactory"
+import { ConversionQueue } from "../../service/conversion/queue"
+import { EConversionStatus } from "../../service/conversion/enum"
+import { IConversionStatusResponse } from "../../service/conversion/interface"
+import { InvalidPathError, NoSuchConversionIdError } from "../../constants"
+import { createChangeConvLogParams, createConversionRequests } from "../helper/dataFactory"
 import { v4 as uuid } from "uuid"
 describe("ConversionQueueService should pass all tests", () => {
 	const conversionQueue = new ConversionQueue()

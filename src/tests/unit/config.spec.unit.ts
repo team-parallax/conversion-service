@@ -1,24 +1,24 @@
-import { BaseConverter } from "../abstract/converter"
+import { BaseConverter } from "../../abstract/converter"
 import {
 	ConfigurationCreationError,
 	InvalidConfigurationSpecError,
 	MissingConfigurationValueError, MissingWrapperDefinitionError,
 	UnknownConversionRuleFormatError,
 	UnknownConversionWrapperError
-} from "../config/exception"
+} from "../../config/exception"
 import {
 	EConfigurationKey,
 	EConversionRuleType,
 	EConversionWrapper
-} from "../enum"
-import { FFmpegWrapper } from "../service/ffmpeg"
-import { IConversionWrapper } from "../config/interface"
+} from "../../enum"
+import { FFmpegWrapper } from "../../service/ffmpeg"
+import { IConversionWrapper } from "../../config/interface"
 import {
 	ITestCaseInput,
 	ITestCaseResult
-} from "./helper/interface"
-import { ImageMagickWrapper } from "../service/imagemagick"
-import { UnoconvWrapper } from "../service/unoconv"
+} from "../helper/interface"
+import { ImageMagickWrapper } from "../../service/imagemagick"
+import { UnoconvWrapper } from "../../service/unoconv"
 import {
 	createConversionPrecedenceOrderConfig,
 	createConversionRule,
@@ -31,9 +31,9 @@ import {
 	loadValueFromEnv,
 	transformEnumToIWrapper,
 	transformStringToWrapperCollection
-} from "../config"
-import { deleteEnvVarAndDefaultCollection } from "./helper/util"
-import { getRandomNumber } from "./helper/dataFactory"
+} from "../../config"
+import { deleteEnvVarAndDefaultCollection } from "../helper/util"
+import { getRandomNumber } from "../helper/dataFactory"
 describe("It should pass all tests for initialization", () => {
 	const initEnv = process.env
 	beforeEach(() => {

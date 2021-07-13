@@ -1,11 +1,11 @@
-import { ConversionError } from "../constants"
-import { EConfigurationKey } from "../enum"
-import { IFileFormat, IFormatList } from "../service/unoconv/interface"
-import { TConversionRequestFormatSummary } from "../abstract/converter/types"
-import { TUnoconvOptions } from "../service/unoconv/unoconv"
-import { UnoconvWrapper } from "../service/unoconv"
+import { ConversionError } from "../../constants"
+import { EConfigurationKey } from "../../enum"
+import { IFileFormat, IFormatList } from "../../service/unoconv/interface"
+import { TConversionRequestFormatSummary } from "../../abstract/converter/types"
+import { TUnoconvOptions } from "../../service/unoconv/unoconv"
+import { UnoconvWrapper } from "../../service/unoconv"
 import { getType } from "mime"
-import { Unoconv as unoconv } from "../service/unoconv/unoconv"
+import { Unoconv as unoconv } from "../../service/unoconv/unoconv"
 describe("Unoconv-Wrapper should pass all tests", () => {
 	describe("It should return the correct value for binary", () => {
 		it("should return the default binary value, because no options argument is passed", () => {

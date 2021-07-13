@@ -1,11 +1,11 @@
-import { ImageMagick } from "../service/imagemagick/imagemagick"
-import { ImageMagickWrapper } from "../service/imagemagick"
+import { ImageMagick } from "../../service/imagemagick/imagemagick"
+import { ImageMagickWrapper } from "../../service/imagemagick"
 import {
 	TConversionFormats,
 	TConversionRequestFormatSummary,
 	TConversionRequestFormats
-} from "../abstract/converter/types"
-import { basePath } from "../constants"
+} from "../../abstract/converter/types"
+import { basePath } from "../../constants"
 import { join } from "path"
 describe("ImageMagick should pass all tests", () => {
 	it("should convert an png image to a pdf file", async () => {
