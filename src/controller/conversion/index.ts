@@ -91,16 +91,6 @@ export class ConversionController extends Controller {
 				targetFormat
 			} = statusResponse
 			if (status === EConversionStatus.converted) {
-				// /*
-				// * In case the file is converted, redirect the request to auto-download the file
-				// * Idea for tsoa implementation from here:
-				// * https://github.com/lukeautry/tsoa/issues/235#issuecomment-397263868
-				// */
-				// Const expressResponse = req.res as express.Response
-				// This.setStatus(EHttpResponseCodes.redirect)
-				// ExpressResponse.redirect(
-				// 	`/conversion/${conversionId}/download?extension=${targetFormat}`
-				// )
 				if (!isV2Request) {
 					const conversionFileProperties = getConvertedFileNameAndPath(
 						conversionId, targetFormat
@@ -111,6 +101,7 @@ export class ConversionController extends Controller {
 						failures: retries,
 						resultFile
 					}
+					return response
 				}
 			}
 			this.setStatus(EHttpResponseCodes.ok)
