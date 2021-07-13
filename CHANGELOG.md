@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.10](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.9...v0.1.10) (2021-07-13)
+
+
+### Features
+
+* **conversion-formats:** change formats route to return object ([1afde7d](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/1afde7df9fe2726f9eb997b25568f001b1a583d9)), closes [#53](https://gitlab.internal.team-parallax.com/belwue/conversion-service/issues/53)
+
+
+### Bug Fixes
+
+* **.gitlab-ci.yml:** fix invalid ci definition ([0439f64](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/0439f64f0850b0049e2f40f63015143568156153))
+* **conversion-service:** add return statement in controller ([bd1fed2](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/bd1fed23b1fcfc9ef79c575f828ea33c09577e14))
+* **conversion-service-tests:** correct wrong mock function in test ([00c1e73](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/00c1e73736d11cff4ccb3f4e0a577dffb087b6ed))
+
+
+### CI
+
+* **prepare-stage:** move typecheck to prepare stage ([1dcb050](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/1dcb05045681eb692148050aef6cc7e6a7258391))
+
+
+### Tests
+
+* **conversion-queue, util:** add tests for queue and util-function ([2c84995](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/2c84995175a67d36eb4ffe6d556334fafdacaa50))
+
+
+### Code Refactoring
+
+* **conversion-service:** refactor function definition and add query parameter for api version ([38592ec](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/38592ece1832fb7b2a32affc371b7c41bad54791))
+* **conversion-util:** add function to retrieve filename for converted file ([b5ecab0](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/b5ecab04f39f1e51317e8e2b62793f65c8a931e5)), closes [#54](https://gitlab.internal.team-parallax.com/belwue/conversion-service/issues/54)
+
 ### [0.1.9](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.8...v0.1.9) (2021-07-08)
 
 
