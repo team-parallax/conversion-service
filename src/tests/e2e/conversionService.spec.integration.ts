@@ -84,7 +84,7 @@ describe("It should handle different requests correctly", () => {
 		await assertRequestResults()
 	})
 	it("responds with json", async (done: jest.DoneCallback) => {
-		return request(hostUrl)
+		return request(app)
 			.post("/conversion")
 			.send(
 				{
@@ -99,7 +99,6 @@ describe("It should handle different requests correctly", () => {
 			// .expect(200)
 			.then(
 				response => {
-					console.debug(response)
 					done()
 				}
 			)
