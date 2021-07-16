@@ -13,7 +13,8 @@ import {
 import { ConversionService } from "../../service/conversion"
 import {
 	DifferentOriginalFormatsDetectedError,
-	EHttpResponseCodes
+	EHttpResponseCodes,
+	InvalidRequestBodyError
 } from "../../constants"
 import { EConversionStatus } from "../../service/conversion/enum"
 import {
@@ -49,7 +50,7 @@ export class ConversionController extends Controller {
 	@Post("/")
 	public async convertFile(
 		@Request() request: express.Request,
-		@Body() requestBody: IConversionRequestBody,
+		@Body() requestBody?: IConversionRequestBody,
 		@Query("v2") isV2Request?: boolean
 	): Promise<IConversionProcessingResponse | IUnsupportedConversionFormatError> {
 		this.logger.log("Conversion requested")
@@ -60,6 +61,9 @@ export class ConversionController extends Controller {
 				conversionRequest = multipartConversionRequest
 			}
 			else {
+				if (!requestBody) {
+					throw new InvalidRequestBodyError()
+				}
 				conversionRequest = requestBody
 			}
 			return await this.conversionService.processConversionRequest(conversionRequest)

@@ -23,7 +23,6 @@ const getPostApiResponse = async (apiRoute: string, body: any): Promise<request.
 		: `/${apiRoute}`
 	return await request(app)
 		.post(route)
-		.set("Content-Type:", "multipart/form-data")
 		.send(body)
 }
 const getResultBody = async (apiRoute: string): Promise<unknown> => {
@@ -63,7 +62,8 @@ describe("It should handle different requests correctly", () => {
 	it("should return a uuid v4 string as response for a conversion-request", async () => {
 		/* Arrange */
 		const conversionApiRequestBody = {
-			conversionFile: Buffer.from("test content for a e2e test file"),
+			file: Buffer.from("test content for a e2e test file"),
+			filename: "testfile.txt",
 			originalFormat: "txt",
 			targetFormat: "pdf"
 		}

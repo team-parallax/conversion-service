@@ -171,7 +171,7 @@ export function RegisterRoutes(app: express.Express) {
 		function(request: any, response: any, next: any) {
 			const args = {
 				request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
-				requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "IConversionRequestBody" },
+				requestBody: { "in": "body", "name": "requestBody", "ref": "IConversionRequestBody" },
 				isV2Request: { "in": "query", "name": "v2", "dataType": "boolean" },
 			};
 
