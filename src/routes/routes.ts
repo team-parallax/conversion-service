@@ -29,6 +29,17 @@ const models: TsoaRoute.Models = {
 		"additionalProperties": false,
 	},
 	// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+	"IConversionRequestBody": {
+		"dataType": "refObject",
+		"properties": {
+			"file": { "dataType": "buffer", "required": true },
+			"filename": { "dataType": "string", "required": true },
+			"originalFormat": { "dataType": "string" },
+			"targetFormat": { "dataType": "string", "required": true },
+		},
+		"additionalProperties": false,
+	},
+	// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 	"EConversionStatus": {
 		"dataType": "refEnum",
 		"enums": ["converted", "erroneous", "in queue", "processing"],
@@ -160,6 +171,8 @@ export function RegisterRoutes(app: express.Express) {
 		function(request: any, response: any, next: any) {
 			const args = {
 				request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+				requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "IConversionRequestBody" },
+				isV2Request: { "in": "query", "name": "v2", "dataType": "boolean" },
 			};
 
 			// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -204,7 +217,7 @@ export function RegisterRoutes(app: express.Express) {
 			const args = {
 				req: { "in": "request", "name": "req", "required": true, "dataType": "object" },
 				conversionId: { "in": "path", "name": "conversionId", "required": true, "dataType": "string" },
-				isV2Request: { "in": "query", "name": "v2", "required": true, "dataType": "boolean" },
+				isV2Request: { "in": "query", "name": "v2", "dataType": "boolean" },
 			};
 
 			// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

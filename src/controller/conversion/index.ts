@@ -1,4 +1,5 @@
 import {
+	Body,
 	Controller,
 	Get,
 	Path,
@@ -21,7 +22,10 @@ import {
 	IConversionRequestBody,
 	IUnsupportedConversionFormatError
 } from "../../service/conversion/interface"
-import { IConversionStatus, TApiConvertedCompatResponseV1 } from "../../abstract/converter/interface"
+import {
+	IConversionStatus,
+	TApiConvertedCompatResponseV1
+} from "../../abstract/converter/interface"
 import { Inject } from "typescript-ioc"
 import { Logger } from "../../service/logger"
 import { getConvertedFileNameAndPath } from "../../service/conversion/util"
@@ -44,11 +48,20 @@ export class ConversionController extends Controller {
 	 */
 	@Post("/")
 	public async convertFile(
-		@Request() request: express.Request
+		@Request() request: express.Request,
+		@Body() requestBody: IConversionRequestBody,
+		@Query("v2") isV2Request?: boolean
 	): Promise<IConversionProcessingResponse | IUnsupportedConversionFormatError> {
 		this.logger.log("Conversion requested")
 		try {
-			const conversionRequest = await this.handleMultipartFormData(request)
+			let conversionRequest: IConversionRequestBody
+			if (isV2Request) {
+				const multipartConversionRequest = await this.handleMultipartFormData(request)
+				conversionRequest = multipartConversionRequest
+			}
+			else {
+				conversionRequest = requestBody
+			}
 			return await this.conversionService.processConversionRequest(conversionRequest)
 		}
 		catch (error) {
@@ -81,7 +94,7 @@ export class ConversionController extends Controller {
 	public async getConvertedFile(
 		@Request() req: express.Request,
 		@Path() conversionId: string,
-		@Query("v2") isV2Request: boolean
+		@Query("v2") isV2Request?: boolean
 	): Promise<IConversionStatus> {
 		try {
 			const statusResponse = this.conversionService.getConvertedFile(conversionId)
