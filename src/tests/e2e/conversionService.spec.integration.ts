@@ -1,27 +1,28 @@
 // eslint-disable-next-line unused-imports/no-unused-imports-ts
 import * as expectedFormatResponseBody from "./responses/format-response.json"
+import { Api } from "../../service/api"
 import { ConversionService } from "../../service/conversion"
 import { TConversionFormats } from "../../abstract/converter/types"
 import request from "supertest"
 beforeAll(() => {
 	const conversionService = new ConversionService()
 })
-// Const {
-// 	App
-// } = new Api()
+const {
+	app
+} = new Api()
 const hostUrl = "localhost:3000"
 const getApiResponse = async (apiRoute: string): Promise<request.Test> => {
 	const route = apiRoute.startsWith("/")
 		? apiRoute
 		: `/${apiRoute}`
-	return await request(hostUrl).get(route)
+	return await request(app).get(route)
 }
 const getPostApiResponse = async (apiRoute: string, body: any): Promise<request.Test> => {
 	const route = apiRoute.startsWith("/")
 		? apiRoute
 		: `/${apiRoute}`
-	return await request(hostUrl)
-		.post(apiRoute)
+	return await request(app)
+		.post(route)
 		.set("Content-Type:", "multipart/form-data")
 		.send(body)
 }
