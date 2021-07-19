@@ -45,26 +45,46 @@ export class ConversionController extends Controller {
 	/**
 	 * Adds the file from the request body to the internal conversion queue.
 	 * The files in queue will be processed after the FIFO principle.
-	 * @param conversionRequestBody	contains the file to convert
+	 * @param request contains the conversion request and the uploaded file
 	 */
-	@Post("/")
+	@Post("/v2")
 	public async convertFile(
-		@Request() request: express.Request,
-		@Body() requestBody?: IConversionRequestBody,
-		@Query("v2") isV2Request?: boolean
+		@Request() request: express.Request
+		// @Body() requestBody?: IConversionRequestBody
 	): Promise<IConversionProcessingResponse | IUnsupportedConversionFormatError> {
 		this.logger.log("Conversion requested")
 		try {
-			let conversionRequest: IConversionRequestBody
-			if (isV2Request) {
-				const multipartConversionRequest = await this.handleMultipartFormData(request)
-				conversionRequest = multipartConversionRequest
+			const multipartConversionRequest = await this.handleMultipartFormData(request)
+			return await this.conversionService.processConversionRequest(multipartConversionRequest)
+		}
+		catch (error) {
+			if (error instanceof DifferentOriginalFormatsDetectedError) {
+				this.setStatus(EHttpResponseCodes.badRequest)
 			}
 			else {
-				if (!requestBody) {
-					throw new InvalidRequestBodyError()
-				}
-				conversionRequest = requestBody
+				this.setStatus(EHttpResponseCodes.internalServerError)
+			}
+			this.logger.error(error.message)
+			return {
+				message: error.message
+			}
+		}
+	}
+	/**
+	 * LEGACY VERSION - will be deprecated in the future
+	 * Adds the file from the request body to the internal conversion queue.
+	 * The files in queue will be processed after the FIFO principle.
+	 * @param conversionRequestBody	contains the file to convert
+	 */
+	@Post("/")
+	public async convertFileLegacy(
+		@Body() requestBody: IConversionRequestBody
+	): Promise<IConversionProcessingResponse | IUnsupportedConversionFormatError> {
+		this.logger.log("Conversion requested")
+		try {
+			const conversionRequest: IConversionRequestBody = requestBody
+			if (!requestBody) {
+				throw new InvalidRequestBodyError()
 			}
 			return await this.conversionService.processConversionRequest(conversionRequest)
 		}

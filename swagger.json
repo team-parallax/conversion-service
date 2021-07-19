@@ -433,7 +433,7 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/conversion": {
+		"/conversion/v2": {
 			"post": {
 				"operationId": "ConvertFile",
 				"responses": {
@@ -460,24 +460,10 @@
 					"Conversion"
 				],
 				"security": [],
-				"parameters": [
-					{
-						"in": "query",
-						"name": "v2",
-						"required": false,
-						"schema": {
-							"type": "boolean"
-						}
-					}
-				],
+				"parameters": [],
 				"requestBody": {
 					"required": true,
 					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IConversionRequestBody"
-							}
-						},
 						"multipart/form-data": {
 							"schema": {
 								"type": "object",
@@ -493,6 +479,46 @@
 										"type": "string"
 									}
 								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/conversion": {
+			"post": {
+				"operationId": "ConvertFileLegacy",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/IConversionProcessingResponse"
+										},
+										{
+											"$ref": "#/components/schemas/IUnsupportedConversionFormatError"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"description": "LEGACY VERSION - will be deprecated in the future\nAdds the file from the request body to the internal conversion queue.\nThe files in queue will be processed after the FIFO principle.",
+				"tags": [
+					"Conversion"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IConversionRequestBody"
 							}
 						}
 					}
