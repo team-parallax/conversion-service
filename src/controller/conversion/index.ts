@@ -1,6 +1,7 @@
 import {
 	Body,
 	Controller,
+	Deprecated,
 	Get,
 	Path,
 	Post,
@@ -77,6 +78,7 @@ export class ConversionController extends Controller {
 	 * @param conversionRequestBody	contains the file to convert
 	 */
 	@Post("/")
+	@Deprecated()
 	public async convertFileLegacy(
 		@Body() requestBody: IConversionRequestBody
 	): Promise<IConversionProcessingResponse | IUnsupportedConversionFormatError> {
@@ -116,9 +118,9 @@ export class ConversionController extends Controller {
 	 */
 	@Get("{conversionId}")
 	public async getConvertedFile(
-		@Request() req: express.Request,
+		@Query("v2") isV2Request: boolean = false,
 		@Path() conversionId: string,
-		@Query("v2") isV2Request?: boolean
+		@Request() req: express.Request
 	): Promise<IConversionStatus> {
 		try {
 			const statusResponse = this.conversionService.getConvertedFile(conversionId)

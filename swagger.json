@@ -511,6 +511,7 @@
 				"tags": [
 					"Conversion"
 				],
+				"deprecated": true,
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -568,20 +569,21 @@
 				"security": [],
 				"parameters": [
 					{
+						"in": "query",
+						"name": "v2",
+						"required": false,
+						"schema": {
+							"default": false,
+							"type": "boolean"
+						}
+					},
+					{
 						"description": "Unique identifier for the conversion of a file.",
 						"in": "path",
 						"name": "conversionId",
 						"required": true,
 						"schema": {
 							"type": "string"
-						}
-					},
-					{
-						"in": "query",
-						"name": "v2",
-						"required": false,
-						"schema": {
-							"type": "boolean"
 						}
 					}
 				]
