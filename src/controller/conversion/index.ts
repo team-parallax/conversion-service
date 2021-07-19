@@ -59,16 +59,7 @@ export class ConversionController extends Controller {
 			return await this.conversionService.processConversionRequest(multipartConversionRequest)
 		}
 		catch (error) {
-			if (error instanceof DifferentOriginalFormatsDetectedError) {
-				this.setStatus(EHttpResponseCodes.badRequest)
-			}
-			else {
-				this.setStatus(EHttpResponseCodes.internalServerError)
-			}
-			this.logger.error(error.message)
-			return {
-				message: error.message
-			}
+			return this.errorHandler(error)
 		}
 	}
 	/**
@@ -91,16 +82,7 @@ export class ConversionController extends Controller {
 			return await this.conversionService.processConversionRequest(conversionRequest)
 		}
 		catch (error) {
-			if (error instanceof DifferentOriginalFormatsDetectedError) {
-				this.setStatus(EHttpResponseCodes.badRequest)
-			}
-			else {
-				this.setStatus(EHttpResponseCodes.internalServerError)
-			}
-			this.logger.error(error.message)
-			return {
-				message: error.message
-			}
+			return this.errorHandler(error)
 		}
 	}
 	/**
@@ -198,6 +180,23 @@ export class ConversionController extends Controller {
 				conversionId,
 				status: err.message
 			}
+		}
+	}
+	/**
+	 * Error handler that handles different errors and stes the response code accordingly
+	 * @param error The error to handle.
+	 * @returns an formatted error message
+	 */
+	private readonly errorHandler = (error: Error): IUnsupportedConversionFormatError => {
+		if (error instanceof DifferentOriginalFormatsDetectedError) {
+			this.setStatus(EHttpResponseCodes.badRequest)
+		}
+		else {
+			this.setStatus(EHttpResponseCodes.internalServerError)
+		}
+		this.logger.error(error.message)
+		return {
+			message: error.message
 		}
 	}
 	/**
