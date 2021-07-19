@@ -12,12 +12,11 @@ import {
 	Tags
 } from "tsoa"
 import { ConversionService } from "../../service/conversion"
+import { EConversionStatus } from "../../service/conversion/enum"
 import {
-	DifferentOriginalFormatsDetectedError,
 	EHttpResponseCodes,
 	InvalidRequestBodyError
 } from "../../constants"
-import { EConversionStatus } from "../../service/conversion/enum"
 import {
 	IConversionProcessingResponse,
 	IConversionQueueStatus,
@@ -30,12 +29,15 @@ import {
 } from "../../abstract/converter/interface"
 import { Inject } from "typescript-ioc"
 import { Logger } from "../../service/logger"
-import { getConvertedFileNameAndPath } from "../../service/conversion/util"
+import {
+	getConvertedFileNameAndPath,
+	handleError,
+	handleMultipartFormData
+} from "../../service/conversion/util"
 import { getType } from "mime"
 import { readFileToBuffer } from "../../service/file-io"
 import express from "express"
 import fs from "fs"
-import multer from "multer"
 @Route("/conversion")
 @Tags("Conversion")
 export class ConversionController extends Controller {
@@ -51,15 +53,14 @@ export class ConversionController extends Controller {
 	@Post("/v2")
 	public async convertFile(
 		@Request() request: express.Request
-		// @Body() requestBody?: IConversionRequestBody
 	): Promise<IConversionProcessingResponse | IUnsupportedConversionFormatError> {
 		this.logger.log("Conversion requested")
 		try {
-			const multipartConversionRequest = await this.handleMultipartFormData(request)
+			const multipartConversionRequest = await handleMultipartFormData(request)
 			return await this.conversionService.processConversionRequest(multipartConversionRequest)
 		}
 		catch (error) {
-			return this.errorHandler(error)
+			return handleError(error)
 		}
 	}
 	/**
@@ -82,7 +83,7 @@ export class ConversionController extends Controller {
 			return await this.conversionService.processConversionRequest(conversionRequest)
 		}
 		catch (error) {
-			return this.errorHandler(error)
+			return handleError(error)
 		}
 	}
 	/**
@@ -181,50 +182,5 @@ export class ConversionController extends Controller {
 				status: err.message
 			}
 		}
-	}
-	/**
-	 * Error handler that handles different errors and stes the response code accordingly
-	 * @param error The error to handle.
-	 * @returns an formatted error message
-	 */
-	private readonly errorHandler = (error: Error): IUnsupportedConversionFormatError => {
-		if (error instanceof DifferentOriginalFormatsDetectedError) {
-			this.setStatus(EHttpResponseCodes.badRequest)
-		}
-		else {
-			this.setStatus(EHttpResponseCodes.internalServerError)
-		}
-		this.logger.error(error.message)
-		return {
-			message: error.message
-		}
-	}
-	/**
-	 * Handles file-uploads with multipart/formData requests.
-	 */
-	private async handleMultipartFormData(
-		request: express.Request
-	): Promise<IConversionRequestBody> {
-		const multerSingle = multer().single("conversionFile")
-		return new Promise((resolve, reject) => {
-			multerSingle(request, express.response, (error: unknown) => {
-				if (error) {
-					reject(error)
-				}
-				const {
-					originalFormat,
-					targetFormat
-				} = request?.body
-				const {
-					file
-				} = request
-				resolve({
-					file: file.buffer,
-					filename: file.originalname,
-					originalFormat,
-					targetFormat
-				})
-			})
-		})
 	}
 }
