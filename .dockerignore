@@ -22,9 +22,10 @@ idea/
 # markdown files
 *.md
 # Tests
+coverage
 jest*
 junit.xml
-gl-code-quality.json
+gl-code-quality-report.json
 src/tests
 # log files
 yarn-error.log
