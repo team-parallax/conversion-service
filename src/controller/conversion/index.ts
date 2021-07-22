@@ -35,7 +35,7 @@ import {
 	handleMultipartFormData
 } from "../../service/conversion/util"
 import { getType } from "mime"
-import { readFileToBuffer } from "../../service/file-io"
+import { readFromFileSync } from "../../service/file-io"
 import express from "express"
 import fs from "fs"
 @Route("/conversion")
@@ -100,11 +100,11 @@ export class ConversionController extends Controller {
 	 * @param conversionId Unique identifier for the conversion of a file.
 	 */
 	@Get("{conversionId}")
-	public async getConvertedFile(
+	public getConvertedFile(
 		@Query("v2") isV2Request: boolean = false,
 		@Path() conversionId: string,
 		@Request() req: express.Request
-	): Promise<IConversionStatus> {
+	): IConversionStatus {
 		try {
 			const statusResponse = this.conversionService.getConvertedFile(conversionId)
 			const {
@@ -117,7 +117,7 @@ export class ConversionController extends Controller {
 					const conversionFileProperties = getConvertedFileNameAndPath(
 						conversionId, targetFormat
 					)
-					const resultFile = await readFileToBuffer(conversionFileProperties.filePath)
+					const resultFile = readFromFileSync(conversionFileProperties.filePath)
 					const response: TApiConvertedCompatResponseV1 = {
 						...statusResponse,
 						failures: retries,
