@@ -1,5 +1,6 @@
 import { IConversionStatus } from "../../abstract/converter/interface"
 export interface IError {
+	errorCode?: number,
 	message: string
 }
 export interface IUnsupportedConversionFormatError extends IError {}

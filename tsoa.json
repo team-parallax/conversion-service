@@ -20,7 +20,7 @@
 		"specVersion": 3,
 		"spec": {
 			"paths": {
-				"/conversion": {
+				"/conversion/v2": {
 					"post": {
 						"requestBody": {
 							"required": true,

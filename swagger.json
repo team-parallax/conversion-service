@@ -33,6 +33,86 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IConversionRequestBody": {
+				"properties": {
+					"file": {
+						"type": "string",
+						"format": "byte"
+					},
+					"filename": {
+						"type": "string"
+					},
+					"originalFormat": {
+						"type": "string"
+					},
+					"targetFormat": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"file",
+					"filename",
+					"targetFormat"
+				],
+				"type": "object",
+				"additionalProperties": false,
+				"example": {
+					"file": {
+						"type": "Buffer",
+						"data": [
+							67,
+							111,
+							110,
+							118,
+							101,
+							114,
+							116,
+							101,
+							100,
+							32,
+							118,
+							105,
+							97,
+							32,
+							116,
+							101,
+							97,
+							109,
+							112,
+							97,
+							114,
+							97,
+							108,
+							108,
+							97,
+							120,
+							47,
+							117,
+							110,
+							111,
+							99,
+							111,
+							110,
+							118,
+							45,
+							119,
+							101,
+							98,
+							115,
+							101,
+							114,
+							118,
+							105,
+							99,
+							101,
+							10
+						]
+					},
+					"filename": "assignment1",
+					"originalFormat": "docx",
+					"targetFormat": "pdf"
+				}
+			},
 			"EConversionStatus": {
 				"enum": [
 					"converted",
@@ -340,7 +420,7 @@
 	},
 	"info": {
 		"title": "conversion-service",
-		"version": "0.1.10",
+		"version": "0.1.11",
 		"description": "A webservice with a REST Api which can convert document/media files using different binaries",
 		"license": {
 			"name": "GPL-3.0-or-later"
@@ -353,7 +433,7 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/conversion": {
+		"/conversion/v2": {
 			"post": {
 				"operationId": "ConvertFile",
 				"responses": {
@@ -403,6 +483,47 @@
 						}
 					}
 				}
+			}
+		},
+		"/conversion": {
+			"post": {
+				"operationId": "ConvertFileLegacy",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/IConversionProcessingResponse"
+										},
+										{
+											"$ref": "#/components/schemas/IUnsupportedConversionFormatError"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"description": "LEGACY VERSION - will be deprecated in the future\nAdds the file from the request body to the internal conversion queue.\nThe files in queue will be processed after the FIFO principle.",
+				"tags": [
+					"Conversion"
+				],
+				"deprecated": true,
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IConversionRequestBody"
+							}
+						}
+					}
+				}
 			},
 			"get": {
 				"operationId": "GetConversionQueueStatus",
@@ -448,20 +569,21 @@
 				"security": [],
 				"parameters": [
 					{
+						"in": "query",
+						"name": "v2",
+						"required": false,
+						"schema": {
+							"default": false,
+							"type": "boolean"
+						}
+					},
+					{
 						"description": "Unique identifier for the conversion of a file.",
 						"in": "path",
 						"name": "conversionId",
 						"required": true,
 						"schema": {
 							"type": "string"
-						}
-					},
-					{
-						"in": "query",
-						"name": "v2",
-						"required": true,
-						"schema": {
-							"type": "boolean"
 						}
 					}
 				]

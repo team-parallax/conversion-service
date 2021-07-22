@@ -57,6 +57,13 @@ export class DifferentOriginalFormatsDetectedError extends Error {
 		this.name = "DifferentOriginalFormatsDetectedError"
 	}
 }
+export class InvalidRequestBodyError extends Error {
+	readonly name: string
+	constructor(message?: string) {
+		super(message)
+		this.name = "InvalidRequestBodyError"
+	}
+}
 export class InvalidPathError extends Error {
 	readonly name: string
 	constructor(message?: string) {

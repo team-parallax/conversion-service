@@ -1,5 +1,7 @@
 import {
+	Body,
 	Controller,
+	Deprecated,
 	Get,
 	Path,
 	Post,
@@ -10,26 +12,32 @@ import {
 	Tags
 } from "tsoa"
 import { ConversionService } from "../../service/conversion"
-import {
-	DifferentOriginalFormatsDetectedError,
-	EHttpResponseCodes
-} from "../../constants"
 import { EConversionStatus } from "../../service/conversion/enum"
+import {
+	EHttpResponseCodes,
+	InvalidRequestBodyError
+} from "../../constants"
 import {
 	IConversionProcessingResponse,
 	IConversionQueueStatus,
 	IConversionRequestBody,
 	IUnsupportedConversionFormatError
 } from "../../service/conversion/interface"
-import { IConversionStatus, TApiConvertedCompatResponseV1 } from "../../abstract/converter/interface"
+import {
+	IConversionStatus,
+	TApiConvertedCompatResponseV1
+} from "../../abstract/converter/interface"
 import { Inject } from "typescript-ioc"
 import { Logger } from "../../service/logger"
-import { getConvertedFileNameAndPath } from "../../service/conversion/util"
+import {
+	getConvertedFileNameAndPath,
+	handleError,
+	handleMultipartFormData
+} from "../../service/conversion/util"
 import { getType } from "mime"
-import { readFileToBuffer } from "../../service/file-io"
+import { readFromFileSync } from "../../service/file-io"
 import express from "express"
 import fs from "fs"
-import multer from "multer"
 @Route("/conversion")
 @Tags("Conversion")
 export class ConversionController extends Controller {
@@ -40,28 +48,42 @@ export class ConversionController extends Controller {
 	/**
 	 * Adds the file from the request body to the internal conversion queue.
 	 * The files in queue will be processed after the FIFO principle.
-	 * @param conversionRequestBody	contains the file to convert
+	 * @param request contains the conversion request and the uploaded file
 	 */
-	@Post("/")
+	@Post("/v2")
 	public async convertFile(
 		@Request() request: express.Request
 	): Promise<IConversionProcessingResponse | IUnsupportedConversionFormatError> {
 		this.logger.log("Conversion requested")
 		try {
-			const conversionRequest = await this.handleMultipartFormData(request)
+			const multipartConversionRequest = await handleMultipartFormData(request)
+			return await this.conversionService.processConversionRequest(multipartConversionRequest)
+		}
+		catch (error) {
+			return handleError(error)
+		}
+	}
+	/**
+	 * LEGACY VERSION - will be deprecated in the future
+	 * Adds the file from the request body to the internal conversion queue.
+	 * The files in queue will be processed after the FIFO principle.
+	 * @param conversionRequestBody	contains the file to convert
+	 */
+	@Post("/")
+	@Deprecated()
+	public async convertFileLegacy(
+		@Body() requestBody: IConversionRequestBody
+	): Promise<IConversionProcessingResponse | IUnsupportedConversionFormatError> {
+		this.logger.log("Conversion requested")
+		try {
+			const conversionRequest: IConversionRequestBody = requestBody
+			if (!requestBody) {
+				throw new InvalidRequestBodyError()
+			}
 			return await this.conversionService.processConversionRequest(conversionRequest)
 		}
 		catch (error) {
-			if (error instanceof DifferentOriginalFormatsDetectedError) {
-				this.setStatus(EHttpResponseCodes.badRequest)
-			}
-			else {
-				this.setStatus(EHttpResponseCodes.internalServerError)
-			}
-			this.logger.error(error.message)
-			return {
-				message: error.message
-			}
+			return handleError(error)
 		}
 	}
 	/**
@@ -78,11 +100,11 @@ export class ConversionController extends Controller {
 	 * @param conversionId Unique identifier for the conversion of a file.
 	 */
 	@Get("{conversionId}")
-	public async getConvertedFile(
-		@Request() req: express.Request,
+	public getConvertedFile(
+		@Query("v2") isV2Request: boolean = false,
 		@Path() conversionId: string,
-		@Query("v2") isV2Request: boolean
-	): Promise<IConversionStatus> {
+		@Request() req: express.Request
+	): IConversionStatus {
 		try {
 			const statusResponse = this.conversionService.getConvertedFile(conversionId)
 			const {
@@ -95,7 +117,7 @@ export class ConversionController extends Controller {
 					const conversionFileProperties = getConvertedFileNameAndPath(
 						conversionId, targetFormat
 					)
-					const resultFile = await readFileToBuffer(conversionFileProperties.filePath)
+					const resultFile = readFromFileSync(conversionFileProperties.filePath)
 					const response: TApiConvertedCompatResponseV1 = {
 						...statusResponse,
 						failures: retries,
@@ -160,33 +182,5 @@ export class ConversionController extends Controller {
 				status: err.message
 			}
 		}
-	}
-	/**
-	 * Handles file-uploads with multipart/formData requests.
-	 */
-	private async handleMultipartFormData(
-		request: express.Request
-	): Promise<IConversionRequestBody> {
-		const multerSingle = multer().single("conversionFile")
-		return new Promise((resolve, reject) => {
-			multerSingle(request, express.response, (error: unknown) => {
-				if (error) {
-					reject(error)
-				}
-				const {
-					originalFormat,
-					targetFormat
-				} = request?.body
-				const {
-					file
-				} = request
-				resolve({
-					file: file.buffer,
-					filename: file.originalname,
-					originalFormat,
-					targetFormat
-				})
-			})
-		})
 	}
 }

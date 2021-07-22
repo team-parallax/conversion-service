@@ -1,12 +1,32 @@
 # System environment
 .DS_Store
+# repository folders
+.devcontainer
+.git*
+.husky
+docs
+input
+output
+sample-input
+testing
 # Dependencies
 node_modules/
 # Env files
 *.env
 # IDE files
+.editorconfig
+.eslint*
 idea/
+.versionrc
 .vscode
+# markdown files
+*.md
+# Tests
+coverage
+jest*
+junit.xml
+gl-code-quality-report.json
+src/tests
 # log files
 yarn-error.log
 yarn-debug.log

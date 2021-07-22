@@ -29,6 +29,17 @@ const models: TsoaRoute.Models = {
 		"additionalProperties": false,
 	},
 	// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+	"IConversionRequestBody": {
+		"dataType": "refObject",
+		"properties": {
+			"file": { "dataType": "buffer", "required": true },
+			"filename": { "dataType": "string", "required": true },
+			"originalFormat": { "dataType": "string" },
+			"targetFormat": { "dataType": "string", "required": true },
+		},
+		"additionalProperties": false,
+	},
+	// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 	"EConversionStatus": {
 		"dataType": "refEnum",
 		"enums": ["converted", "erroneous", "in queue", "processing"],
@@ -156,7 +167,7 @@ export function RegisterRoutes(app: express.Express) {
 	//  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
 	//      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
 	// ###########################################################################################################
-	app.post('/conversion',
+	app.post('/conversion/v2',
 		function(request: any, response: any, next: any) {
 			const args = {
 				request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
@@ -175,6 +186,28 @@ export function RegisterRoutes(app: express.Express) {
 
 
 			const promise = controller.convertFile.apply(controller, validatedArgs as any);
+			promiseHandler(controller, promise, response, next);
+		});
+	// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+	app.post('/conversion',
+		function(request: any, response: any, next: any) {
+			const args = {
+				requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "IConversionRequestBody" },
+			};
+
+			// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+			let validatedArgs: any[] = [];
+			try {
+				validatedArgs = getValidatedArgs(args, request, response);
+			} catch (err) {
+				return next(err);
+			}
+
+			const controller = new ConversionController();
+
+
+			const promise = controller.convertFileLegacy.apply(controller, validatedArgs as any);
 			promiseHandler(controller, promise, response, next);
 		});
 	// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -202,9 +235,9 @@ export function RegisterRoutes(app: express.Express) {
 	app.get('/conversion/:conversionId',
 		function(request: any, response: any, next: any) {
 			const args = {
-				req: { "in": "request", "name": "req", "required": true, "dataType": "object" },
+				isV2Request: { "default": false, "in": "query", "name": "v2", "dataType": "boolean" },
 				conversionId: { "in": "path", "name": "conversionId", "required": true, "dataType": "string" },
-				isV2Request: { "in": "query", "name": "v2", "required": true, "dataType": "boolean" },
+				req: { "in": "request", "name": "req", "required": true, "dataType": "object" },
 			};
 
 			// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
