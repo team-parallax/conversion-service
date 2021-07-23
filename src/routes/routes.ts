@@ -24,6 +24,7 @@ const models: TsoaRoute.Models = {
 	"IUnsupportedConversionFormatError": {
 		"dataType": "refObject",
 		"properties": {
+			"errorCode": { "dataType": "double" },
 			"message": { "dataType": "string", "required": true },
 		},
 		"additionalProperties": false,

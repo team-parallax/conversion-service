@@ -23,6 +23,10 @@
 			},
 			"IUnsupportedConversionFormatError": {
 				"properties": {
+					"errorCode": {
+						"type": "number",
+						"format": "double"
+					},
 					"message": {
 						"type": "string"
 					}
