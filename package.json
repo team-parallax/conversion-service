@@ -1,6 +1,6 @@
 {
 	"name": "conversion-service",
-	"version": "0.1.11",
+	"version": "0.1.12",
 	"description": "A webservice with a REST Api which can convert document/media files using different binaries",
 	"license": "GPL-3.0-or-later",
 	"author": "Sven Patrick Meier <sven.patrick.meier@team-parallax.com>",

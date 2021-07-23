@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.12](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.11...v0.1.12) (2021-07-23)
+
+
+### Bug Fixes
+
+* **tests:** fix test case conversion target url ([d000039](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/d000039fe0b50b82e4a42cb8c8d781742501c506))
+
+
+### Tests
+
+* **integration-test:** add correct param to function ([981961c](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/981961c0a2104b2acd38eb3463a9836c9d3690a6))
+
+
+### Code Refactoring
+
+* **compatibility:** add optional route parameters ([c27d06d](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/c27d06d10b17d86dd3821931381b3a174ac15c25))
+* **conversion-controller:** add error-handling function ([4c83b39](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/4c83b39195bad7d3846c3624a972253a7d61af23))
+* **conversion-request:** add v2 route for conversions ([a75d2e0](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/a75d2e0906004d5b41de1624fbd86fe0deba8c2d))
+* **conversion-route:** add default value for query param ([4ec484a](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/4ec484a594f399fc83df719b8cda1cf2f2707232))
+* **conversion-service:** make response fields optional ([e8ab520](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/e8ab520c21ef8bd4b280c06ca3c723970a8fa5c8))
+* **structure:** move functions to service ([ea6bfba](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/ea6bfbaee8f724fae510fc5733fa8686f032505c))
+
+
+### Styling
+
+* **lint-issues:** fix lint issues ([7197fef](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/7197fef5d372f57109c2236784b957fec74df9c4))
+
 ### [0.1.11](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.10...v0.1.11) (2021-07-13)
 
 
