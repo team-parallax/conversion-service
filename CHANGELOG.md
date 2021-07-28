@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.13-0](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.12...v0.1.13-0) (2021-07-28)
+
+
+### Docs
+
+* **docker-docs:** add improved documentation for docker ([5ff1444](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/5ff1444bd26fbabd7058722df9dcbacddb1e3c27)), closes [#62](https://gitlab.internal.team-parallax.com/belwue/conversion-service/issues/62)
+
 ### [0.1.12](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.11...v0.1.12) (2021-07-23)
 
 
