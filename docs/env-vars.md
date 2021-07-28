@@ -99,16 +99,7 @@ and there are two input files for the conversion: (a) `about-file-conversions.ht
 
 Then this will result in the following decision chain within the webservice:
 
-```mermaid
-graph LR;
-  Node1[conversion requested] --> Node2[conversion is possible*]
-  Node2 --no--> Node3[notify user that conversion is not possible and exit]
-  Node2 --yes--> Node4[check rules]
-  Node4 --no matching rules*--> Node5[convert using `imagemagick`]
-  Node4 --rule match for html*--> Node6[convert using `unoconv`]
-  Node5 --> Node7[Return result to user]
-  Node6 --> Node7
-```
+![Conversion rule evaluation](docs/rule-check-flow.png "Conversion evaluation process")
 
 Some further notes about the graph:
 
