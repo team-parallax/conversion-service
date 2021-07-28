@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.13-1](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.13-0...v0.1.13-1) (2021-07-28)
+
 ### [0.1.13-0](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.12...v0.1.13-0) (2021-07-28)
 
 
