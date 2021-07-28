@@ -48,8 +48,36 @@ You can use the built image of `teamparallax/conversion-webservice` by running t
 docker pull teamparallax/conversion-webservice:<TAG>
 
 # Run the image
-docker run [--name <NAME>] -p <YOUR_PORT>:3000 teamparallax/conversion-webservice:<TAG>
+docker run [--name <NAME>] -it -p <YOUR_PORT>:3000 teamparallax/conversion-webservice:<TAG>
+
+# Pass env variables to container
+docker run [--name <NAME>] -it -e <KEY>=<VALUE> -p <YOUR_PORT>:3000 teamparallax/conversion-webservice:<TAG>
+
+# Pass variables with env-file
+docker run [--name <NAME>] -it --env-file <PATH TO ENV-FILE> -p <YOUR_PORT>:3000 teamparallax/conversion-webservice:<TAG>
+
 ```
+
+#### Using `docker-compose`
+
+Navigate to the repository location on your system.
+Ensure there is an available `env` file named `template.env` that contains all necessary values for the docker container.
+For further information on environment-variables, see [here](docs/env-vars.md)
+
+```yaml
+version: "3"
+services:
+  conversion-service:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    env_file: ./template.env
+    ports:
+      - 3000:3000
+    restart: always
+```
+
+Running `docker-compose up` within the repository will start the container that runs the `conversion-service` image.
 
 ### Swagger API
 
