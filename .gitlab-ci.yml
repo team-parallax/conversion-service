@@ -10,6 +10,7 @@ stages:
   - prepare
   - test
   - build
+  - deliver
   - review
   - release
 
@@ -41,8 +42,8 @@ build docker:
     REGISTRY: docker.io
   script:
     - echo -n "${DOCKER_PASSWORD}" | docker login -u ${DOCKER_USER} --password-stdin ${REGISTRY}
-    - docker build -t ${IMAGE_BASE_NAME}:${CI_COMMIT_TAG} -f ./Dockerfile .
-    - docker push ${IMAGE_BASE_NAME}:${CI_COMMIT_TAG}
+    - docker build -t ${IMAGE_BASE_NAME}:${CI_COMMIT_TAG} -t ${IMAGE_BASE_NAME}:latest -f ./Dockerfile .
+    - docker push ${IMAGE_BASE_NAME} --all-tags
   rules:
     - if: $CI_COMMIT_TAG
 
