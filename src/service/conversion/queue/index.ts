@@ -39,7 +39,6 @@ export class ConversionQueue {
 	}
 	public addToConversionQueue(
 		requestObject: IConversionFile
-		// Retries: number = 0
 	): IConversionBase {
 		const {
 			conversionTries: maxConversionTries
@@ -56,7 +55,6 @@ export class ConversionQueue {
 			retries,
 			status: EConversionStatus.inQueue
 		})
-		console.log("FROM CONVLOG:\n\n", this.convLog.get(requestObject.conversionId))
 		return {
 			conversionId: requestObject.conversionId
 		}
