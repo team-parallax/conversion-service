@@ -38,12 +38,14 @@ export class ConversionQueue {
 		return this
 	}
 	public addToConversionQueue(
-		requestObject: IConversionFile,
-		retries: number = 0
+		requestObject: IConversionFile
 	): IConversionBase {
 		const {
 			conversionTries: maxConversionTries
 		} = config.conversionMaximaConfiguration
+		const {
+			retries
+		} = requestObject
 		if (retries > maxConversionTries) {
 			throw new MaxConversionTriesError(requestObject.conversionId)
 		}
@@ -77,7 +79,7 @@ export class ConversionQueue {
 				this.logger.log(`Set new filepath for ${conversionId}`)
 				element.path = convertedFilePath
 			}
-			this.logger.log(`Update status for ${conversionId}`)
+			this.logger.log(`Update status for ${conversionId} to ${status}`)
 			element.status = status
 		}
 	}
