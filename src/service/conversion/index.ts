@@ -76,6 +76,8 @@ export class ConversionService extends ConverterService {
 				this.logger.error(`Caught error during conversion:\n${err}`)
 				if (err instanceof MaxConversionTriesError) {
 					this.queueService.changeConvLogEntry(conversionId, EConversionStatus.erroneous)
+					/* Delete input file as it is unconvertable */
+					await deleteFile(path)
 				}
 				else {
 					this.queueService.changeConvLogEntry(conversionId, EConversionStatus.inQueue)
