@@ -57,7 +57,6 @@ describe("ConversionQueueService should pass all tests", () => {
 		expect(updatedEntry?.status).toBe(status)
 		expect(updatedEntry?.path).toBe(convertedFilePath)
 	})
-	it.todo("should add and transform a request to the conversionLog")
 	describe("Should throw an NoSuchConversionIdError", () => {
 		const nonAvailableConversionId = uuid()
 		it("When trying to retrieve non-existent status", () => {

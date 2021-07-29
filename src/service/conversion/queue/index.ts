@@ -8,6 +8,7 @@ import { IConversionInQueue } from "../interface"
 import { Inject } from "typescript-ioc"
 import {
 	InvalidPathError,
+	MaxConversionTriesError,
 	NoSuchConversionIdError
 } from "../../../constants"
 import { Logger } from "../../../service/logger"
@@ -16,6 +17,7 @@ import {
 	TConversionIdToConversionFileMap,
 	TNullableConversionFile
 } from "./types"
+import config from "../../../config"
 const initialIdMap: TConversionIdToConversionFileMap = new Map()
 export class ConversionQueue {
 	private static instance: ConversionQueue
@@ -39,9 +41,16 @@ export class ConversionQueue {
 		requestObject: IConversionFile,
 		retries: number = 0
 	): IConversionBase {
+		const {
+			conversionTries: maxConversionTries
+		} = config.conversionMaximaConfiguration
+		if (retries > maxConversionTries) {
+			throw new MaxConversionTriesError(requestObject.conversionId)
+		}
 		this.conversion.push(requestObject)
 		this.convLog.set(requestObject.conversionId, {
 			...requestObject,
+			retries,
 			status: EConversionStatus.inQueue
 		})
 		return {
