@@ -52,7 +52,8 @@ describe("Conversion Service should pass all tests", () => {
 			async () => {
 				/* Arrange */
 				process.env.MAX_CONVERSION_TRIES = "2"
-				const conversionFile: IConversionFile = createConversionRequestDummy("mp3", "mp4")
+				const conversionTries = 5
+				const conversionFile: IConversionFile = createConversionRequestDummy("mp3", "mp4", conversionTries)
 				/* Act */
 				/* Assert */
 				await expect(

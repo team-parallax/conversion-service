@@ -4,7 +4,7 @@ import { IConversionRequestBody } from "../../service/conversion/interface"
 import { TConvLogChangeParams } from "./types"
 import { TConversionFiles } from "../../service/conversion/queue/types"
 import faker from "faker"
-const maxNumber = 100
+const maxNumber = 4
 export const createConversionRequests = (sampleSize: number = 1): TConversionFiles => {
 	const sample: TConversionFiles = []
 	while (sampleSize > 0) {
