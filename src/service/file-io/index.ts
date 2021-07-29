@@ -23,7 +23,7 @@ export const deleteFile = async (path?: string): Promise<void> => {
 			reject(new InvalidPathError("No path was provided"))
 		}
 		else if (!existsSync(path)) {
-			reject(new InvalidPathError("No path was provided"))
+			reject(new InvalidPathError("Provided Path does not exist"))
 		}
 		else {
 			unlink(path, err => {

@@ -69,12 +69,15 @@ export class ConversionService extends ConverterService {
 				this.logger.log("Done! Unset current conversion file")
 				this.conversionQueue.currentlyConvertingFile = null
 				/* Delete input file. */
+				this.logger.log(`Deleting original input file at ${path}`)
 				await deleteFile(path)
 			}
 			catch (err) {
 				this.logger.error(`Caught error during conversion:\n${err}`)
 				if (err instanceof MaxConversionTriesError) {
 					this.queueService.changeConvLogEntry(conversionId, EConversionStatus.erroneous)
+					/* Delete input file as it is unconvertable */
+					await deleteFile(path)
 				}
 				else {
 					this.queueService.changeConvLogEntry(conversionId, EConversionStatus.inQueue)

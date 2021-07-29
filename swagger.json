@@ -424,7 +424,7 @@
 	},
 	"info": {
 		"title": "conversion-service",
-		"version": "0.1.11",
+		"version": "0.1.13-2",
 		"description": "A webservice with a REST Api which can convert document/media files using different binaries",
 		"license": {
 			"name": "GPL-3.0-or-later"
