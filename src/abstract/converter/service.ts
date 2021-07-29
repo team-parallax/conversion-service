@@ -107,9 +107,15 @@ export class ConverterService {
 				throw error
 			}
 			this.logger.error(
-				`Re-add the file conversion request due to error before: ${error}`
+				`[ conversion-service ] Re-add the file conversion request due to error before: ${error}`
 			)
-			this.conversionQueue.addToConversionQueue(conversionRequest, retries + 1)
+			this.logger.error(
+				`[ conversion-service ] retry value is: ${retries} updated retries: ${retries + 1}`
+			)
+			this.conversionQueue.addToConversionQueue({
+				...conversionRequest,
+				retries: retries + 1
+			})
 			throw new ConversionError(`Error during conversion: ${name} ${message}`)
 		}
 	}
