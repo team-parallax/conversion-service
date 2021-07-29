@@ -42,6 +42,7 @@ export class ConversionQueue {
 		this.conversion.push(requestObject)
 		this.convLog.set(requestObject.conversionId, {
 			...requestObject,
+			retries,
 			status: EConversionStatus.inQueue
 		})
 		return {
