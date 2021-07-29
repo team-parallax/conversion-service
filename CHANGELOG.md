@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0-0](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.12...v0.2.0-0) (2021-07-29)
+
+
+### Bug Fixes
+
+* **conversion-retries:** fix re-queue handling for conversion requests ([1c8a59e](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/1c8a59e42110b5e6011b76f93c09e802c3f3a150)), closes [#63](https://gitlab.internal.team-parallax.com/belwue/conversion-service/issues/63)
+* **file-deletion:** fix input-file deletion ([b843003](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/b843003df95a7afad5ac4addccf7a93df3a3b777)), closes [#61](https://gitlab.internal.team-parallax.com/belwue/conversion-service/issues/61)
+* **retry-handling:** fix retry handling for conversion-requests ([d329a57](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/d329a57c4ee2b516136d09acea21a523be2b7514)), closes [#68](https://gitlab.internal.team-parallax.com/belwue/conversion-service/issues/68)
+
+
+### Docs
+
+* **docker-docs:** add improved documentation for docker ([5ff1444](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/5ff1444bd26fbabd7058722df9dcbacddb1e3c27)), closes [#62](https://gitlab.internal.team-parallax.com/belwue/conversion-service/issues/62)
+
+
+### Code Refactoring
+
+* **error-handling:** add error handling to addToConversionQueue ([b936bf2](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/b936bf2219e6e70af1313beddb763775c1f8f8bc))
+
+
+### Tests
+
+* **conversion-service:** add tests for conversion-abort with max retries ([93b7740](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/93b7740c414d734d1b0e3a5a03a051a0caf92cf9))
+* **retry-handling:** add tests for retry handling for conversions ([67868ac](https://gitlab.internal.team-parallax.com/belwue/conversion-service/commit/67868ac8f49e863aa1f9bcf1f8ac682e08764189))
+
 ### [0.1.13-2](https://gitlab.internal.team-parallax.com/belwue/conversion-service/compare/v0.1.13-1...v0.1.13-2) (2021-07-29)
 
 
